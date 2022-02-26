@@ -1,0 +1,5 @@
+output: apis/v1/zz_server_gen.go
+templates: apis/v1/spec/codegen/templates
+generate:
+  - gin
+package: v1
