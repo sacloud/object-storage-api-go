@@ -98,7 +98,7 @@ lint-def:
 
 .PHONY: textlint
 textlint:
-	@docker run -it --rm -v $$PWD:/work -w /work ghcr.io/sacloud/textlint-action:v0.0.1 .
+	@docker run --rm -v $$PWD:/work -w /work ghcr.io/sacloud/textlint-action:v0.0.1 .
 
 .PHONY: godoc
 godoc:
