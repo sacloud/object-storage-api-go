@@ -455,26 +455,26 @@ type ModelCluster struct {
 	StorageZone *[]string `json:"storage_zone,omitempty"`
 }
 
-// DeleteBucketsNameJSONBody defines parameters for DeleteBucketsName.
-type DeleteBucketsNameJSONBody HandlerPutBucketReqBody
+// DeleteBucketJSONBody defines parameters for DeleteBucket.
+type DeleteBucketJSONBody HandlerPutBucketReqBody
 
-// PutBucketsNameJSONBody defines parameters for PutBucketsName.
-type PutBucketsNameJSONBody HandlerPutBucketReqBody
+// CreateBucketJSONBody defines parameters for CreateBucket.
+type CreateBucketJSONBody HandlerPutBucketReqBody
 
-// PostPermissionsJSONBody defines parameters for PostPermissions.
-type PostPermissionsJSONBody PermissionBucketControlsBody
+// CreatePermissionJSONBody defines parameters for CreatePermission.
+type CreatePermissionJSONBody PermissionBucketControlsBody
 
-// PutPermissionsIdJSONBody defines parameters for PutPermissionsId.
-type PutPermissionsIdJSONBody PermissionBucketControlsBody
+// UpdatePermissionJSONBody defines parameters for UpdatePermission.
+type UpdatePermissionJSONBody PermissionBucketControlsBody
 
-// DeleteBucketsNameJSONRequestBody defines body for DeleteBucketsName for application/json ContentType.
-type DeleteBucketsNameJSONRequestBody DeleteBucketsNameJSONBody
+// DeleteBucketJSONRequestBody defines body for DeleteBucket for application/json ContentType.
+type DeleteBucketJSONRequestBody DeleteBucketJSONBody
 
-// PutBucketsNameJSONRequestBody defines body for PutBucketsName for application/json ContentType.
-type PutBucketsNameJSONRequestBody PutBucketsNameJSONBody
+// CreateBucketJSONRequestBody defines body for CreateBucket for application/json ContentType.
+type CreateBucketJSONRequestBody CreateBucketJSONBody
 
-// PostPermissionsJSONRequestBody defines body for PostPermissions for application/json ContentType.
-type PostPermissionsJSONRequestBody PostPermissionsJSONBody
+// CreatePermissionJSONRequestBody defines body for CreatePermission for application/json ContentType.
+type CreatePermissionJSONRequestBody CreatePermissionJSONBody
 
-// PutPermissionsIdJSONRequestBody defines body for PutPermissionsId for application/json ContentType.
-type PutPermissionsIdJSONRequestBody PutPermissionsIdJSONBody
+// UpdatePermissionJSONRequestBody defines body for UpdatePermission for application/json ContentType.
+type UpdatePermissionJSONRequestBody UpdatePermissionJSONBody

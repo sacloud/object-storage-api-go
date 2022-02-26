@@ -104,80 +104,80 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
-	// DeleteAccount request
-	DeleteAccount(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// DeleteBucket request with any body
+	DeleteBucketWithBody(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetAccount request
-	GetAccount(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	DeleteBucket(ctx context.Context, name string, body DeleteBucketJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// PostAccount request
-	PostAccount(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// CreateBucket request with any body
+	CreateBucketWithBody(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetAccountKeys request
-	GetAccountKeys(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	CreateBucket(ctx context.Context, name string, body CreateBucketJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// PostAccountKeys request
-	PostAccountKeys(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ListClusters request
+	ListClusters(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// DeleteAccountKeysId request
-	DeleteAccountKeysId(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ReadCluster request
+	ReadCluster(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetAccountKeysId request
-	GetAccountKeysId(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// DeleteSiteAccount request
+	DeleteSiteAccount(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// DeleteBucketsName request with any body
-	DeleteBucketsNameWithBody(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ReadSiteAccount request
+	ReadSiteAccount(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	DeleteBucketsName(ctx context.Context, name string, body DeleteBucketsNameJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// CreateSiteAccount request
+	CreateSiteAccount(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// PutBucketsName request with any body
-	PutBucketsNameWithBody(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ListAccountAccessKeys request
+	ListAccountAccessKeys(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	PutBucketsName(ctx context.Context, name string, body PutBucketsNameJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// CreateAccountAccessKey request
+	CreateAccountAccessKey(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetClusters request
-	GetClusters(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// DeleteAccountAccessKey request
+	DeleteAccountAccessKey(ctx context.Context, siteName string, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetClustersId request
-	GetClustersId(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ReadAccountAccessKey request
+	ReadAccountAccessKey(ctx context.Context, siteName string, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetPermissions request
-	GetPermissions(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ListPermissions request
+	ListPermissions(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// PostPermissions request with any body
-	PostPermissionsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// CreatePermission request with any body
+	CreatePermissionWithBody(ctx context.Context, siteName string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	PostPermissions(ctx context.Context, body PostPermissionsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	CreatePermission(ctx context.Context, siteName string, body CreatePermissionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// DeletePermissionsId request
-	DeletePermissionsId(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// DeletePermission request
+	DeletePermission(ctx context.Context, siteName string, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetPermissionsId request
-	GetPermissionsId(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ReadPermission request
+	ReadPermission(ctx context.Context, siteName string, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// PutPermissionsId request with any body
-	PutPermissionsIdWithBody(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// UpdatePermission request with any body
+	UpdatePermissionWithBody(ctx context.Context, siteName string, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	PutPermissionsId(ctx context.Context, id string, body PutPermissionsIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	UpdatePermission(ctx context.Context, siteName string, id string, body UpdatePermissionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetPermissionsIdKeys request
-	GetPermissionsIdKeys(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ListPermissionAccessKeys request
+	ListPermissionAccessKeys(ctx context.Context, siteName string, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// PostPermissionsIdKeys request
-	PostPermissionsIdKeys(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// CreatePermissionAccessKey request
+	CreatePermissionAccessKey(ctx context.Context, siteName string, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// DeletePermissionsIdKeysKeyId request
-	DeletePermissionsIdKeysKeyId(ctx context.Context, id string, keyId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// DeletePermissionAccessKey request
+	DeletePermissionAccessKey(ctx context.Context, siteName string, id string, keyId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetPermissionsIdKeysKeyId request
-	GetPermissionsIdKeysKeyId(ctx context.Context, id string, keyId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ReadPermissionAccessKey request
+	ReadPermissionAccessKey(ctx context.Context, siteName string, id string, keyId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetStatus request
-	GetStatus(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ReadSiteStatus request
+	ReadSiteStatus(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
-func (c *Client) DeleteAccount(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeleteAccountRequest(c.Server)
+func (c *Client) DeleteBucketWithBody(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteBucketRequestWithBody(c.Server, name, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -188,8 +188,8 @@ func (c *Client) DeleteAccount(ctx context.Context, reqEditors ...RequestEditorF
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetAccount(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetAccountRequest(c.Server)
+func (c *Client) DeleteBucket(ctx context.Context, name string, body DeleteBucketJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteBucketRequest(c.Server, name, body)
 	if err != nil {
 		return nil, err
 	}
@@ -200,8 +200,8 @@ func (c *Client) GetAccount(ctx context.Context, reqEditors ...RequestEditorFn) 
 	return c.Client.Do(req)
 }
 
-func (c *Client) PostAccount(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostAccountRequest(c.Server)
+func (c *Client) CreateBucketWithBody(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateBucketRequestWithBody(c.Server, name, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -212,8 +212,8 @@ func (c *Client) PostAccount(ctx context.Context, reqEditors ...RequestEditorFn)
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetAccountKeys(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetAccountKeysRequest(c.Server)
+func (c *Client) CreateBucket(ctx context.Context, name string, body CreateBucketJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateBucketRequest(c.Server, name, body)
 	if err != nil {
 		return nil, err
 	}
@@ -224,8 +224,8 @@ func (c *Client) GetAccountKeys(ctx context.Context, reqEditors ...RequestEditor
 	return c.Client.Do(req)
 }
 
-func (c *Client) PostAccountKeys(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostAccountKeysRequest(c.Server)
+func (c *Client) ListClusters(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListClustersRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -236,8 +236,8 @@ func (c *Client) PostAccountKeys(ctx context.Context, reqEditors ...RequestEdito
 	return c.Client.Do(req)
 }
 
-func (c *Client) DeleteAccountKeysId(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeleteAccountKeysIdRequest(c.Server, id)
+func (c *Client) ReadCluster(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewReadClusterRequest(c.Server, id)
 	if err != nil {
 		return nil, err
 	}
@@ -248,8 +248,8 @@ func (c *Client) DeleteAccountKeysId(ctx context.Context, id string, reqEditors 
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetAccountKeysId(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetAccountKeysIdRequest(c.Server, id)
+func (c *Client) DeleteSiteAccount(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteSiteAccountRequest(c.Server, siteName)
 	if err != nil {
 		return nil, err
 	}
@@ -260,8 +260,8 @@ func (c *Client) GetAccountKeysId(ctx context.Context, id string, reqEditors ...
 	return c.Client.Do(req)
 }
 
-func (c *Client) DeleteBucketsNameWithBody(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeleteBucketsNameRequestWithBody(c.Server, name, contentType, body)
+func (c *Client) ReadSiteAccount(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewReadSiteAccountRequest(c.Server, siteName)
 	if err != nil {
 		return nil, err
 	}
@@ -272,8 +272,8 @@ func (c *Client) DeleteBucketsNameWithBody(ctx context.Context, name string, con
 	return c.Client.Do(req)
 }
 
-func (c *Client) DeleteBucketsName(ctx context.Context, name string, body DeleteBucketsNameJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeleteBucketsNameRequest(c.Server, name, body)
+func (c *Client) CreateSiteAccount(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateSiteAccountRequest(c.Server, siteName)
 	if err != nil {
 		return nil, err
 	}
@@ -284,8 +284,8 @@ func (c *Client) DeleteBucketsName(ctx context.Context, name string, body Delete
 	return c.Client.Do(req)
 }
 
-func (c *Client) PutBucketsNameWithBody(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPutBucketsNameRequestWithBody(c.Server, name, contentType, body)
+func (c *Client) ListAccountAccessKeys(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListAccountAccessKeysRequest(c.Server, siteName)
 	if err != nil {
 		return nil, err
 	}
@@ -296,8 +296,8 @@ func (c *Client) PutBucketsNameWithBody(ctx context.Context, name string, conten
 	return c.Client.Do(req)
 }
 
-func (c *Client) PutBucketsName(ctx context.Context, name string, body PutBucketsNameJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPutBucketsNameRequest(c.Server, name, body)
+func (c *Client) CreateAccountAccessKey(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateAccountAccessKeyRequest(c.Server, siteName)
 	if err != nil {
 		return nil, err
 	}
@@ -308,8 +308,8 @@ func (c *Client) PutBucketsName(ctx context.Context, name string, body PutBucket
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetClusters(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetClustersRequest(c.Server)
+func (c *Client) DeleteAccountAccessKey(ctx context.Context, siteName string, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteAccountAccessKeyRequest(c.Server, siteName, id)
 	if err != nil {
 		return nil, err
 	}
@@ -320,8 +320,8 @@ func (c *Client) GetClusters(ctx context.Context, reqEditors ...RequestEditorFn)
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetClustersId(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetClustersIdRequest(c.Server, id)
+func (c *Client) ReadAccountAccessKey(ctx context.Context, siteName string, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewReadAccountAccessKeyRequest(c.Server, siteName, id)
 	if err != nil {
 		return nil, err
 	}
@@ -332,8 +332,8 @@ func (c *Client) GetClustersId(ctx context.Context, id string, reqEditors ...Req
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetPermissions(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetPermissionsRequest(c.Server)
+func (c *Client) ListPermissions(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListPermissionsRequest(c.Server, siteName)
 	if err != nil {
 		return nil, err
 	}
@@ -344,8 +344,8 @@ func (c *Client) GetPermissions(ctx context.Context, reqEditors ...RequestEditor
 	return c.Client.Do(req)
 }
 
-func (c *Client) PostPermissionsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostPermissionsRequestWithBody(c.Server, contentType, body)
+func (c *Client) CreatePermissionWithBody(ctx context.Context, siteName string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreatePermissionRequestWithBody(c.Server, siteName, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -356,8 +356,8 @@ func (c *Client) PostPermissionsWithBody(ctx context.Context, contentType string
 	return c.Client.Do(req)
 }
 
-func (c *Client) PostPermissions(ctx context.Context, body PostPermissionsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostPermissionsRequest(c.Server, body)
+func (c *Client) CreatePermission(ctx context.Context, siteName string, body CreatePermissionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreatePermissionRequest(c.Server, siteName, body)
 	if err != nil {
 		return nil, err
 	}
@@ -368,8 +368,8 @@ func (c *Client) PostPermissions(ctx context.Context, body PostPermissionsJSONRe
 	return c.Client.Do(req)
 }
 
-func (c *Client) DeletePermissionsId(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeletePermissionsIdRequest(c.Server, id)
+func (c *Client) DeletePermission(ctx context.Context, siteName string, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeletePermissionRequest(c.Server, siteName, id)
 	if err != nil {
 		return nil, err
 	}
@@ -380,8 +380,8 @@ func (c *Client) DeletePermissionsId(ctx context.Context, id string, reqEditors 
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetPermissionsId(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetPermissionsIdRequest(c.Server, id)
+func (c *Client) ReadPermission(ctx context.Context, siteName string, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewReadPermissionRequest(c.Server, siteName, id)
 	if err != nil {
 		return nil, err
 	}
@@ -392,8 +392,8 @@ func (c *Client) GetPermissionsId(ctx context.Context, id string, reqEditors ...
 	return c.Client.Do(req)
 }
 
-func (c *Client) PutPermissionsIdWithBody(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPutPermissionsIdRequestWithBody(c.Server, id, contentType, body)
+func (c *Client) UpdatePermissionWithBody(ctx context.Context, siteName string, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdatePermissionRequestWithBody(c.Server, siteName, id, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -404,8 +404,8 @@ func (c *Client) PutPermissionsIdWithBody(ctx context.Context, id string, conten
 	return c.Client.Do(req)
 }
 
-func (c *Client) PutPermissionsId(ctx context.Context, id string, body PutPermissionsIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPutPermissionsIdRequest(c.Server, id, body)
+func (c *Client) UpdatePermission(ctx context.Context, siteName string, id string, body UpdatePermissionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdatePermissionRequest(c.Server, siteName, id, body)
 	if err != nil {
 		return nil, err
 	}
@@ -416,8 +416,8 @@ func (c *Client) PutPermissionsId(ctx context.Context, id string, body PutPermis
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetPermissionsIdKeys(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetPermissionsIdKeysRequest(c.Server, id)
+func (c *Client) ListPermissionAccessKeys(ctx context.Context, siteName string, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListPermissionAccessKeysRequest(c.Server, siteName, id)
 	if err != nil {
 		return nil, err
 	}
@@ -428,8 +428,8 @@ func (c *Client) GetPermissionsIdKeys(ctx context.Context, id string, reqEditors
 	return c.Client.Do(req)
 }
 
-func (c *Client) PostPermissionsIdKeys(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostPermissionsIdKeysRequest(c.Server, id)
+func (c *Client) CreatePermissionAccessKey(ctx context.Context, siteName string, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreatePermissionAccessKeyRequest(c.Server, siteName, id)
 	if err != nil {
 		return nil, err
 	}
@@ -440,8 +440,8 @@ func (c *Client) PostPermissionsIdKeys(ctx context.Context, id string, reqEditor
 	return c.Client.Do(req)
 }
 
-func (c *Client) DeletePermissionsIdKeysKeyId(ctx context.Context, id string, keyId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeletePermissionsIdKeysKeyIdRequest(c.Server, id, keyId)
+func (c *Client) DeletePermissionAccessKey(ctx context.Context, siteName string, id string, keyId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeletePermissionAccessKeyRequest(c.Server, siteName, id, keyId)
 	if err != nil {
 		return nil, err
 	}
@@ -452,8 +452,8 @@ func (c *Client) DeletePermissionsIdKeysKeyId(ctx context.Context, id string, ke
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetPermissionsIdKeysKeyId(ctx context.Context, id string, keyId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetPermissionsIdKeysKeyIdRequest(c.Server, id, keyId)
+func (c *Client) ReadPermissionAccessKey(ctx context.Context, siteName string, id string, keyId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewReadPermissionAccessKeyRequest(c.Server, siteName, id, keyId)
 	if err != nil {
 		return nil, err
 	}
@@ -464,8 +464,8 @@ func (c *Client) GetPermissionsIdKeysKeyId(ctx context.Context, id string, keyId
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetStatus(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetStatusRequest(c.Server)
+func (c *Client) ReadSiteStatus(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewReadSiteStatusRequest(c.Server, siteName)
 	if err != nil {
 		return nil, err
 	}
@@ -476,222 +476,19 @@ func (c *Client) GetStatus(ctx context.Context, reqEditors ...RequestEditorFn) (
 	return c.Client.Do(req)
 }
 
-// NewDeleteAccountRequest generates requests for DeleteAccount
-func NewDeleteAccountRequest(server string) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/account")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewGetAccountRequest generates requests for GetAccount
-func NewGetAccountRequest(server string) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/account")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewPostAccountRequest generates requests for PostAccount
-func NewPostAccountRequest(server string) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/account")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("POST", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewGetAccountKeysRequest generates requests for GetAccountKeys
-func NewGetAccountKeysRequest(server string) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/account/keys")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewPostAccountKeysRequest generates requests for PostAccountKeys
-func NewPostAccountKeysRequest(server string) (*http.Request, error) {
-	var err error
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/account/keys")
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("POST", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewDeleteAccountKeysIdRequest generates requests for DeleteAccountKeysId
-func NewDeleteAccountKeysIdRequest(server string, id string) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/account/keys/%s", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewGetAccountKeysIdRequest generates requests for GetAccountKeysId
-func NewGetAccountKeysIdRequest(server string, id string) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/account/keys/%s", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest("GET", queryURL.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	return req, nil
-}
-
-// NewDeleteBucketsNameRequest calls the generic DeleteBucketsName builder with application/json body
-func NewDeleteBucketsNameRequest(server string, name string, body DeleteBucketsNameJSONRequestBody) (*http.Request, error) {
+// NewDeleteBucketRequest calls the generic DeleteBucket builder with application/json body
+func NewDeleteBucketRequest(server string, name string, body DeleteBucketJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewDeleteBucketsNameRequestWithBody(server, name, "application/json", bodyReader)
+	return NewDeleteBucketRequestWithBody(server, name, "application/json", bodyReader)
 }
 
-// NewDeleteBucketsNameRequestWithBody generates requests for DeleteBucketsName with any type of body
-func NewDeleteBucketsNameRequestWithBody(server string, name string, contentType string, body io.Reader) (*http.Request, error) {
+// NewDeleteBucketRequestWithBody generates requests for DeleteBucket with any type of body
+func NewDeleteBucketRequestWithBody(server string, name string, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -706,7 +503,7 @@ func NewDeleteBucketsNameRequestWithBody(server string, name string, contentType
 		return nil, err
 	}
 
-	operationPath := fmt.Sprintf("/buckets/%s", pathParam0)
+	operationPath := fmt.Sprintf("/fed/v1/buckets/%s", pathParam0)
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -726,19 +523,19 @@ func NewDeleteBucketsNameRequestWithBody(server string, name string, contentType
 	return req, nil
 }
 
-// NewPutBucketsNameRequest calls the generic PutBucketsName builder with application/json body
-func NewPutBucketsNameRequest(server string, name string, body PutBucketsNameJSONRequestBody) (*http.Request, error) {
+// NewCreateBucketRequest calls the generic CreateBucket builder with application/json body
+func NewCreateBucketRequest(server string, name string, body CreateBucketJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewPutBucketsNameRequestWithBody(server, name, "application/json", bodyReader)
+	return NewCreateBucketRequestWithBody(server, name, "application/json", bodyReader)
 }
 
-// NewPutBucketsNameRequestWithBody generates requests for PutBucketsName with any type of body
-func NewPutBucketsNameRequestWithBody(server string, name string, contentType string, body io.Reader) (*http.Request, error) {
+// NewCreateBucketRequestWithBody generates requests for CreateBucket with any type of body
+func NewCreateBucketRequestWithBody(server string, name string, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -753,7 +550,7 @@ func NewPutBucketsNameRequestWithBody(server string, name string, contentType st
 		return nil, err
 	}
 
-	operationPath := fmt.Sprintf("/buckets/%s", pathParam0)
+	operationPath := fmt.Sprintf("/fed/v1/buckets/%s", pathParam0)
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -773,8 +570,8 @@ func NewPutBucketsNameRequestWithBody(server string, name string, contentType st
 	return req, nil
 }
 
-// NewGetClustersRequest generates requests for GetClusters
-func NewGetClustersRequest(server string) (*http.Request, error) {
+// NewListClustersRequest generates requests for ListClusters
+func NewListClustersRequest(server string) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -782,7 +579,7 @@ func NewGetClustersRequest(server string) (*http.Request, error) {
 		return nil, err
 	}
 
-	operationPath := fmt.Sprintf("/clusters")
+	operationPath := fmt.Sprintf("/fed/v1/clusters")
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -800,8 +597,8 @@ func NewGetClustersRequest(server string) (*http.Request, error) {
 	return req, nil
 }
 
-// NewGetClustersIdRequest generates requests for GetClustersId
-func NewGetClustersIdRequest(server string, id string) (*http.Request, error) {
+// NewReadClusterRequest generates requests for ReadCluster
+func NewReadClusterRequest(server string, id string) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -816,7 +613,7 @@ func NewGetClustersIdRequest(server string, id string) (*http.Request, error) {
 		return nil, err
 	}
 
-	operationPath := fmt.Sprintf("/clusters/%s", pathParam0)
+	operationPath := fmt.Sprintf("/fed/v1/clusters/%s", pathParam0)
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -834,16 +631,57 @@ func NewGetClustersIdRequest(server string, id string) (*http.Request, error) {
 	return req, nil
 }
 
-// NewGetPermissionsRequest generates requests for GetPermissions
-func NewGetPermissionsRequest(server string) (*http.Request, error) {
+// NewDeleteSiteAccountRequest generates requests for DeleteSiteAccount
+func NewDeleteSiteAccountRequest(server string, siteName string) (*http.Request, error) {
 	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_name", runtime.ParamLocationPath, siteName)
+	if err != nil {
+		return nil, err
+	}
 
 	serverURL, err := url.Parse(server)
 	if err != nil {
 		return nil, err
 	}
 
-	operationPath := fmt.Sprintf("/permissions")
+	operationPath := fmt.Sprintf("/%s/v2/account", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewReadSiteAccountRequest generates requests for ReadSiteAccount
+func NewReadSiteAccountRequest(server string, siteName string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_name", runtime.ParamLocationPath, siteName)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/%s/v2/account", pathParam0)
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -861,27 +699,252 @@ func NewGetPermissionsRequest(server string) (*http.Request, error) {
 	return req, nil
 }
 
-// NewPostPermissionsRequest calls the generic PostPermissions builder with application/json body
-func NewPostPermissionsRequest(server string, body PostPermissionsJSONRequestBody) (*http.Request, error) {
+// NewCreateSiteAccountRequest generates requests for CreateSiteAccount
+func NewCreateSiteAccountRequest(server string, siteName string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_name", runtime.ParamLocationPath, siteName)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/%s/v2/account", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewListAccountAccessKeysRequest generates requests for ListAccountAccessKeys
+func NewListAccountAccessKeysRequest(server string, siteName string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_name", runtime.ParamLocationPath, siteName)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/%s/v2/account/keys", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCreateAccountAccessKeyRequest generates requests for CreateAccountAccessKey
+func NewCreateAccountAccessKeyRequest(server string, siteName string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_name", runtime.ParamLocationPath, siteName)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/%s/v2/account/keys", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewDeleteAccountAccessKeyRequest generates requests for DeleteAccountAccessKey
+func NewDeleteAccountAccessKeyRequest(server string, siteName string, id string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_name", runtime.ParamLocationPath, siteName)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/%s/v2/account/keys/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewReadAccountAccessKeyRequest generates requests for ReadAccountAccessKey
+func NewReadAccountAccessKeyRequest(server string, siteName string, id string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_name", runtime.ParamLocationPath, siteName)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/%s/v2/account/keys/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewListPermissionsRequest generates requests for ListPermissions
+func NewListPermissionsRequest(server string, siteName string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_name", runtime.ParamLocationPath, siteName)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/%s/v2/permissions", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewCreatePermissionRequest calls the generic CreatePermission builder with application/json body
+func NewCreatePermissionRequest(server string, siteName string, body CreatePermissionJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewPostPermissionsRequestWithBody(server, "application/json", bodyReader)
+	return NewCreatePermissionRequestWithBody(server, siteName, "application/json", bodyReader)
 }
 
-// NewPostPermissionsRequestWithBody generates requests for PostPermissions with any type of body
-func NewPostPermissionsRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+// NewCreatePermissionRequestWithBody generates requests for CreatePermission with any type of body
+func NewCreatePermissionRequestWithBody(server string, siteName string, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_name", runtime.ParamLocationPath, siteName)
+	if err != nil {
+		return nil, err
+	}
 
 	serverURL, err := url.Parse(server)
 	if err != nil {
 		return nil, err
 	}
 
-	operationPath := fmt.Sprintf("/permissions")
+	operationPath := fmt.Sprintf("/%s/v2/permissions", pathParam0)
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -901,13 +964,20 @@ func NewPostPermissionsRequestWithBody(server string, contentType string, body i
 	return req, nil
 }
 
-// NewDeletePermissionsIdRequest generates requests for DeletePermissionsId
-func NewDeletePermissionsIdRequest(server string, id string) (*http.Request, error) {
+// NewDeletePermissionRequest generates requests for DeletePermission
+func NewDeletePermissionRequest(server string, siteName string, id string) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_name", runtime.ParamLocationPath, siteName)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
 	if err != nil {
 		return nil, err
 	}
@@ -917,7 +987,7 @@ func NewDeletePermissionsIdRequest(server string, id string) (*http.Request, err
 		return nil, err
 	}
 
-	operationPath := fmt.Sprintf("/permissions/%s", pathParam0)
+	operationPath := fmt.Sprintf("/%s/v2/permissions/%s", pathParam0, pathParam1)
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -935,13 +1005,20 @@ func NewDeletePermissionsIdRequest(server string, id string) (*http.Request, err
 	return req, nil
 }
 
-// NewGetPermissionsIdRequest generates requests for GetPermissionsId
-func NewGetPermissionsIdRequest(server string, id string) (*http.Request, error) {
+// NewReadPermissionRequest generates requests for ReadPermission
+func NewReadPermissionRequest(server string, siteName string, id string) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_name", runtime.ParamLocationPath, siteName)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
 	if err != nil {
 		return nil, err
 	}
@@ -951,7 +1028,7 @@ func NewGetPermissionsIdRequest(server string, id string) (*http.Request, error)
 		return nil, err
 	}
 
-	operationPath := fmt.Sprintf("/permissions/%s", pathParam0)
+	operationPath := fmt.Sprintf("/%s/v2/permissions/%s", pathParam0, pathParam1)
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -969,24 +1046,31 @@ func NewGetPermissionsIdRequest(server string, id string) (*http.Request, error)
 	return req, nil
 }
 
-// NewPutPermissionsIdRequest calls the generic PutPermissionsId builder with application/json body
-func NewPutPermissionsIdRequest(server string, id string, body PutPermissionsIdJSONRequestBody) (*http.Request, error) {
+// NewUpdatePermissionRequest calls the generic UpdatePermission builder with application/json body
+func NewUpdatePermissionRequest(server string, siteName string, id string, body UpdatePermissionJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewPutPermissionsIdRequestWithBody(server, id, "application/json", bodyReader)
+	return NewUpdatePermissionRequestWithBody(server, siteName, id, "application/json", bodyReader)
 }
 
-// NewPutPermissionsIdRequestWithBody generates requests for PutPermissionsId with any type of body
-func NewPutPermissionsIdRequestWithBody(server string, id string, contentType string, body io.Reader) (*http.Request, error) {
+// NewUpdatePermissionRequestWithBody generates requests for UpdatePermission with any type of body
+func NewUpdatePermissionRequestWithBody(server string, siteName string, id string, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_name", runtime.ParamLocationPath, siteName)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
 	if err != nil {
 		return nil, err
 	}
@@ -996,7 +1080,7 @@ func NewPutPermissionsIdRequestWithBody(server string, id string, contentType st
 		return nil, err
 	}
 
-	operationPath := fmt.Sprintf("/permissions/%s", pathParam0)
+	operationPath := fmt.Sprintf("/%s/v2/permissions/%s", pathParam0, pathParam1)
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -1016,13 +1100,20 @@ func NewPutPermissionsIdRequestWithBody(server string, id string, contentType st
 	return req, nil
 }
 
-// NewGetPermissionsIdKeysRequest generates requests for GetPermissionsIdKeys
-func NewGetPermissionsIdKeysRequest(server string, id string) (*http.Request, error) {
+// NewListPermissionAccessKeysRequest generates requests for ListPermissionAccessKeys
+func NewListPermissionAccessKeysRequest(server string, siteName string, id string) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_name", runtime.ParamLocationPath, siteName)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
 	if err != nil {
 		return nil, err
 	}
@@ -1032,7 +1123,7 @@ func NewGetPermissionsIdKeysRequest(server string, id string) (*http.Request, er
 		return nil, err
 	}
 
-	operationPath := fmt.Sprintf("/permissions/%s/keys", pathParam0)
+	operationPath := fmt.Sprintf("/%s/v2/permissions/%s/keys", pathParam0, pathParam1)
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -1050,13 +1141,20 @@ func NewGetPermissionsIdKeysRequest(server string, id string) (*http.Request, er
 	return req, nil
 }
 
-// NewPostPermissionsIdKeysRequest generates requests for PostPermissionsIdKeys
-func NewPostPermissionsIdKeysRequest(server string, id string) (*http.Request, error) {
+// NewCreatePermissionAccessKeyRequest generates requests for CreatePermissionAccessKey
+func NewCreatePermissionAccessKeyRequest(server string, siteName string, id string) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_name", runtime.ParamLocationPath, siteName)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
 	if err != nil {
 		return nil, err
 	}
@@ -1066,7 +1164,7 @@ func NewPostPermissionsIdKeysRequest(server string, id string) (*http.Request, e
 		return nil, err
 	}
 
-	operationPath := fmt.Sprintf("/permissions/%s/keys", pathParam0)
+	operationPath := fmt.Sprintf("/%s/v2/permissions/%s/keys", pathParam0, pathParam1)
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -1084,20 +1182,27 @@ func NewPostPermissionsIdKeysRequest(server string, id string) (*http.Request, e
 	return req, nil
 }
 
-// NewDeletePermissionsIdKeysKeyIdRequest generates requests for DeletePermissionsIdKeysKeyId
-func NewDeletePermissionsIdKeysKeyIdRequest(server string, id string, keyId string) (*http.Request, error) {
+// NewDeletePermissionAccessKeyRequest generates requests for DeletePermissionAccessKey
+func NewDeletePermissionAccessKeyRequest(server string, siteName string, id string, keyId string) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_name", runtime.ParamLocationPath, siteName)
 	if err != nil {
 		return nil, err
 	}
 
 	var pathParam1 string
 
-	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "key_id", runtime.ParamLocationPath, keyId)
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam2 string
+
+	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "key_id", runtime.ParamLocationPath, keyId)
 	if err != nil {
 		return nil, err
 	}
@@ -1107,7 +1212,7 @@ func NewDeletePermissionsIdKeysKeyIdRequest(server string, id string, keyId stri
 		return nil, err
 	}
 
-	operationPath := fmt.Sprintf("/permissions/%s/keys/%s", pathParam0, pathParam1)
+	operationPath := fmt.Sprintf("/%s/v2/permissions/%s/keys/%s", pathParam0, pathParam1, pathParam2)
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -1125,20 +1230,27 @@ func NewDeletePermissionsIdKeysKeyIdRequest(server string, id string, keyId stri
 	return req, nil
 }
 
-// NewGetPermissionsIdKeysKeyIdRequest generates requests for GetPermissionsIdKeysKeyId
-func NewGetPermissionsIdKeysKeyIdRequest(server string, id string, keyId string) (*http.Request, error) {
+// NewReadPermissionAccessKeyRequest generates requests for ReadPermissionAccessKey
+func NewReadPermissionAccessKeyRequest(server string, siteName string, id string, keyId string) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_name", runtime.ParamLocationPath, siteName)
 	if err != nil {
 		return nil, err
 	}
 
 	var pathParam1 string
 
-	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "key_id", runtime.ParamLocationPath, keyId)
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam2 string
+
+	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "key_id", runtime.ParamLocationPath, keyId)
 	if err != nil {
 		return nil, err
 	}
@@ -1148,7 +1260,7 @@ func NewGetPermissionsIdKeysKeyIdRequest(server string, id string, keyId string)
 		return nil, err
 	}
 
-	operationPath := fmt.Sprintf("/permissions/%s/keys/%s", pathParam0, pathParam1)
+	operationPath := fmt.Sprintf("/%s/v2/permissions/%s/keys/%s", pathParam0, pathParam1, pathParam2)
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -1166,16 +1278,23 @@ func NewGetPermissionsIdKeysKeyIdRequest(server string, id string, keyId string)
 	return req, nil
 }
 
-// NewGetStatusRequest generates requests for GetStatus
-func NewGetStatusRequest(server string) (*http.Request, error) {
+// NewReadSiteStatusRequest generates requests for ReadSiteStatus
+func NewReadSiteStatusRequest(server string, siteName string) (*http.Request, error) {
 	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_name", runtime.ParamLocationPath, siteName)
+	if err != nil {
+		return nil, err
+	}
 
 	serverURL, err := url.Parse(server)
 	if err != nil {
 		return nil, err
 	}
 
-	operationPath := fmt.Sprintf("/status")
+	operationPath := fmt.Sprintf("/%s/v2/status", pathParam0)
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -1236,88 +1355,88 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
-	// DeleteAccount request
-	DeleteAccountWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*DeleteAccountResponse, error)
+	// DeleteBucket request with any body
+	DeleteBucketWithBodyWithResponse(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*DeleteBucketResponse, error)
 
-	// GetAccount request
-	GetAccountWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetAccountResponse, error)
+	DeleteBucketWithResponse(ctx context.Context, name string, body DeleteBucketJSONRequestBody, reqEditors ...RequestEditorFn) (*DeleteBucketResponse, error)
 
-	// PostAccount request
-	PostAccountWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*PostAccountResponse, error)
+	// CreateBucket request with any body
+	CreateBucketWithBodyWithResponse(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateBucketResponse, error)
 
-	// GetAccountKeys request
-	GetAccountKeysWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetAccountKeysResponse, error)
+	CreateBucketWithResponse(ctx context.Context, name string, body CreateBucketJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateBucketResponse, error)
 
-	// PostAccountKeys request
-	PostAccountKeysWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*PostAccountKeysResponse, error)
+	// ListClusters request
+	ListClustersWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListClustersResponse, error)
 
-	// DeleteAccountKeysId request
-	DeleteAccountKeysIdWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*DeleteAccountKeysIdResponse, error)
+	// ReadCluster request
+	ReadClusterWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*ReadClusterResponse, error)
 
-	// GetAccountKeysId request
-	GetAccountKeysIdWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetAccountKeysIdResponse, error)
+	// DeleteSiteAccount request
+	DeleteSiteAccountWithResponse(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*DeleteSiteAccountResponse, error)
 
-	// DeleteBucketsName request with any body
-	DeleteBucketsNameWithBodyWithResponse(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*DeleteBucketsNameResponse, error)
+	// ReadSiteAccount request
+	ReadSiteAccountWithResponse(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*ReadSiteAccountResponse, error)
 
-	DeleteBucketsNameWithResponse(ctx context.Context, name string, body DeleteBucketsNameJSONRequestBody, reqEditors ...RequestEditorFn) (*DeleteBucketsNameResponse, error)
+	// CreateSiteAccount request
+	CreateSiteAccountWithResponse(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*CreateSiteAccountResponse, error)
 
-	// PutBucketsName request with any body
-	PutBucketsNameWithBodyWithResponse(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutBucketsNameResponse, error)
+	// ListAccountAccessKeys request
+	ListAccountAccessKeysWithResponse(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*ListAccountAccessKeysResponse, error)
 
-	PutBucketsNameWithResponse(ctx context.Context, name string, body PutBucketsNameJSONRequestBody, reqEditors ...RequestEditorFn) (*PutBucketsNameResponse, error)
+	// CreateAccountAccessKey request
+	CreateAccountAccessKeyWithResponse(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*CreateAccountAccessKeyResponse, error)
 
-	// GetClusters request
-	GetClustersWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetClustersResponse, error)
+	// DeleteAccountAccessKey request
+	DeleteAccountAccessKeyWithResponse(ctx context.Context, siteName string, id string, reqEditors ...RequestEditorFn) (*DeleteAccountAccessKeyResponse, error)
 
-	// GetClustersId request
-	GetClustersIdWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetClustersIdResponse, error)
+	// ReadAccountAccessKey request
+	ReadAccountAccessKeyWithResponse(ctx context.Context, siteName string, id string, reqEditors ...RequestEditorFn) (*ReadAccountAccessKeyResponse, error)
 
-	// GetPermissions request
-	GetPermissionsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetPermissionsResponse, error)
+	// ListPermissions request
+	ListPermissionsWithResponse(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*ListPermissionsResponse, error)
 
-	// PostPermissions request with any body
-	PostPermissionsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostPermissionsResponse, error)
+	// CreatePermission request with any body
+	CreatePermissionWithBodyWithResponse(ctx context.Context, siteName string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreatePermissionResponse, error)
 
-	PostPermissionsWithResponse(ctx context.Context, body PostPermissionsJSONRequestBody, reqEditors ...RequestEditorFn) (*PostPermissionsResponse, error)
+	CreatePermissionWithResponse(ctx context.Context, siteName string, body CreatePermissionJSONRequestBody, reqEditors ...RequestEditorFn) (*CreatePermissionResponse, error)
 
-	// DeletePermissionsId request
-	DeletePermissionsIdWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*DeletePermissionsIdResponse, error)
+	// DeletePermission request
+	DeletePermissionWithResponse(ctx context.Context, siteName string, id string, reqEditors ...RequestEditorFn) (*DeletePermissionResponse, error)
 
-	// GetPermissionsId request
-	GetPermissionsIdWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetPermissionsIdResponse, error)
+	// ReadPermission request
+	ReadPermissionWithResponse(ctx context.Context, siteName string, id string, reqEditors ...RequestEditorFn) (*ReadPermissionResponse, error)
 
-	// PutPermissionsId request with any body
-	PutPermissionsIdWithBodyWithResponse(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutPermissionsIdResponse, error)
+	// UpdatePermission request with any body
+	UpdatePermissionWithBodyWithResponse(ctx context.Context, siteName string, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdatePermissionResponse, error)
 
-	PutPermissionsIdWithResponse(ctx context.Context, id string, body PutPermissionsIdJSONRequestBody, reqEditors ...RequestEditorFn) (*PutPermissionsIdResponse, error)
+	UpdatePermissionWithResponse(ctx context.Context, siteName string, id string, body UpdatePermissionJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdatePermissionResponse, error)
 
-	// GetPermissionsIdKeys request
-	GetPermissionsIdKeysWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetPermissionsIdKeysResponse, error)
+	// ListPermissionAccessKeys request
+	ListPermissionAccessKeysWithResponse(ctx context.Context, siteName string, id string, reqEditors ...RequestEditorFn) (*ListPermissionAccessKeysResponse, error)
 
-	// PostPermissionsIdKeys request
-	PostPermissionsIdKeysWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*PostPermissionsIdKeysResponse, error)
+	// CreatePermissionAccessKey request
+	CreatePermissionAccessKeyWithResponse(ctx context.Context, siteName string, id string, reqEditors ...RequestEditorFn) (*CreatePermissionAccessKeyResponse, error)
 
-	// DeletePermissionsIdKeysKeyId request
-	DeletePermissionsIdKeysKeyIdWithResponse(ctx context.Context, id string, keyId string, reqEditors ...RequestEditorFn) (*DeletePermissionsIdKeysKeyIdResponse, error)
+	// DeletePermissionAccessKey request
+	DeletePermissionAccessKeyWithResponse(ctx context.Context, siteName string, id string, keyId string, reqEditors ...RequestEditorFn) (*DeletePermissionAccessKeyResponse, error)
 
-	// GetPermissionsIdKeysKeyId request
-	GetPermissionsIdKeysKeyIdWithResponse(ctx context.Context, id string, keyId string, reqEditors ...RequestEditorFn) (*GetPermissionsIdKeysKeyIdResponse, error)
+	// ReadPermissionAccessKey request
+	ReadPermissionAccessKeyWithResponse(ctx context.Context, siteName string, id string, keyId string, reqEditors ...RequestEditorFn) (*ReadPermissionAccessKeyResponse, error)
 
-	// GetStatus request
-	GetStatusWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetStatusResponse, error)
+	// ReadSiteStatus request
+	ReadSiteStatusWithResponse(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*ReadSiteStatusResponse, error)
 }
 
-type DeleteAccountResponse struct {
+type DeleteBucketResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON401      *Error401
+	JSON201      *HandlerPutBucketRes
+	JSON400      *Error400
 	JSON409      *Error409
-	JSONDefault  *ErrorDefault
 }
 
 // Status returns HTTPResponse.Status
-func (r DeleteAccountResponse) Status() string {
+func (r DeleteBucketResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1325,7 +1444,7 @@ func (r DeleteAccountResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r DeleteAccountResponse) StatusCode() int {
+func (r DeleteBucketResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -1334,19 +1453,171 @@ func (r DeleteAccountResponse) StatusCode() int {
 
 // TODO 後で検討
 // // // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-// func (r DeleteAccountResponse) Result() (error) {
-//     return eCoalesce(r.JSON401,r.JSON409,r.JSONDefault,r.UndefinedError())
+// func (r DeleteBucketResponse) Result() (error) {
+//     return eCoalesce(r.JSON201,r.JSON400,r.JSON409,r.UndefinedError())
 // }
 //
 // // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-// func (r DeleteAccountResponse) UndefinedError() error {
+// func (r DeleteBucketResponse) UndefinedError() error {
 //     if !isOKStatus(r.HTTPResponse.StatusCode){
 //         return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
 //     }
 //     return nil
 // }
 
-type GetAccountResponse struct {
+type CreateBucketResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *HandlerPutBucketRes
+	JSON400      *Error400
+	JSON404      *Error404
+	JSON409      *Error409
+}
+
+// Status returns HTTPResponse.Status
+func (r CreateBucketResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r CreateBucketResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// TODO 後で検討
+// // // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
+// func (r CreateBucketResponse) Result() (error) {
+//     return eCoalesce(r.JSON201,r.JSON400,r.JSON404,r.JSON409,r.UndefinedError())
+// }
+//
+// // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
+// func (r CreateBucketResponse) UndefinedError() error {
+//     if !isOKStatus(r.HTTPResponse.StatusCode){
+//         return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
+//     }
+//     return nil
+// }
+
+type ListClustersResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *HandlerListClustersRes
+	JSON401      *Error401
+}
+
+// Status returns HTTPResponse.Status
+func (r ListClustersResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ListClustersResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// TODO 後で検討
+// // // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
+// func (r ListClustersResponse) Result() (*HandlerListClustersRes,error) {
+//     return r.JSON200, eCoalesce(r.JSON401,r.UndefinedError())
+// }
+//
+// // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
+// func (r ListClustersResponse) UndefinedError() error {
+//     if !isOKStatus(r.HTTPResponse.StatusCode){
+//         return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
+//     }
+//     return nil
+// }
+
+type ReadClusterResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *HandlerGetClusterRes
+	JSON401      *Error401
+	JSON404      *Error404
+}
+
+// Status returns HTTPResponse.Status
+func (r ReadClusterResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ReadClusterResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// TODO 後で検討
+// // // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
+// func (r ReadClusterResponse) Result() (*HandlerGetClusterRes,error) {
+//     return r.JSON200, eCoalesce(r.JSON401,r.JSON404,r.UndefinedError())
+// }
+//
+// // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
+// func (r ReadClusterResponse) UndefinedError() error {
+//     if !isOKStatus(r.HTTPResponse.StatusCode){
+//         return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
+//     }
+//     return nil
+// }
+
+type DeleteSiteAccountResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON401      *Error401
+	JSON409      *Error409
+	JSONDefault  *ErrorDefault
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteSiteAccountResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteSiteAccountResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// TODO 後で検討
+// // // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
+// func (r DeleteSiteAccountResponse) Result() (error) {
+//     return eCoalesce(r.JSON401,r.JSON409,r.JSONDefault,r.UndefinedError())
+// }
+//
+// // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
+// func (r DeleteSiteAccountResponse) UndefinedError() error {
+//     if !isOKStatus(r.HTTPResponse.StatusCode){
+//         return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
+//     }
+//     return nil
+// }
+
+type ReadSiteAccountResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *Account
@@ -1356,7 +1627,7 @@ type GetAccountResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetAccountResponse) Status() string {
+func (r ReadSiteAccountResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1364,7 +1635,7 @@ func (r GetAccountResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetAccountResponse) StatusCode() int {
+func (r ReadSiteAccountResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -1373,19 +1644,19 @@ func (r GetAccountResponse) StatusCode() int {
 
 // TODO 後で検討
 // // // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-// func (r GetAccountResponse) Result() (*Account,error) {
+// func (r ReadSiteAccountResponse) Result() (*Account,error) {
 //     return r.JSON200, eCoalesce(r.JSON401,r.JSON404,r.JSONDefault,r.UndefinedError())
 // }
 //
 // // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-// func (r GetAccountResponse) UndefinedError() error {
+// func (r ReadSiteAccountResponse) UndefinedError() error {
 //     if !isOKStatus(r.HTTPResponse.StatusCode){
 //         return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
 //     }
 //     return nil
 // }
 
-type PostAccountResponse struct {
+type CreateSiteAccountResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON201      *Account
@@ -1396,7 +1667,7 @@ type PostAccountResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r PostAccountResponse) Status() string {
+func (r CreateSiteAccountResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1404,7 +1675,7 @@ func (r PostAccountResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r PostAccountResponse) StatusCode() int {
+func (r CreateSiteAccountResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -1413,19 +1684,19 @@ func (r PostAccountResponse) StatusCode() int {
 
 // TODO 後で検討
 // // // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-// func (r PostAccountResponse) Result() (error) {
+// func (r CreateSiteAccountResponse) Result() (error) {
 //     return eCoalesce(r.JSON201,r.JSON401,r.JSON403,r.JSON409,r.JSONDefault,r.UndefinedError())
 // }
 //
 // // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-// func (r PostAccountResponse) UndefinedError() error {
+// func (r CreateSiteAccountResponse) UndefinedError() error {
 //     if !isOKStatus(r.HTTPResponse.StatusCode){
 //         return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
 //     }
 //     return nil
 // }
 
-type GetAccountKeysResponse struct {
+type ListAccountAccessKeysResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *AccountKeys
@@ -1435,7 +1706,7 @@ type GetAccountKeysResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetAccountKeysResponse) Status() string {
+func (r ListAccountAccessKeysResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1443,7 +1714,7 @@ func (r GetAccountKeysResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetAccountKeysResponse) StatusCode() int {
+func (r ListAccountAccessKeysResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -1452,19 +1723,19 @@ func (r GetAccountKeysResponse) StatusCode() int {
 
 // TODO 後で検討
 // // // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-// func (r GetAccountKeysResponse) Result() (*AccountKeys,error) {
+// func (r ListAccountAccessKeysResponse) Result() (*AccountKeys,error) {
 //     return r.JSON200, eCoalesce(r.JSON401,r.JSON404,r.JSONDefault,r.UndefinedError())
 // }
 //
 // // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-// func (r GetAccountKeysResponse) UndefinedError() error {
+// func (r ListAccountAccessKeysResponse) UndefinedError() error {
 //     if !isOKStatus(r.HTTPResponse.StatusCode){
 //         return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
 //     }
 //     return nil
 // }
 
-type PostAccountKeysResponse struct {
+type CreateAccountAccessKeyResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON201      *AccountKey
@@ -1475,7 +1746,7 @@ type PostAccountKeysResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r PostAccountKeysResponse) Status() string {
+func (r CreateAccountAccessKeyResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1483,7 +1754,7 @@ func (r PostAccountKeysResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r PostAccountKeysResponse) StatusCode() int {
+func (r CreateAccountAccessKeyResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -1492,19 +1763,19 @@ func (r PostAccountKeysResponse) StatusCode() int {
 
 // TODO 後で検討
 // // // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-// func (r PostAccountKeysResponse) Result() (error) {
+// func (r CreateAccountAccessKeyResponse) Result() (error) {
 //     return eCoalesce(r.JSON201,r.JSON401,r.JSON404,r.JSON409,r.JSONDefault,r.UndefinedError())
 // }
 //
 // // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-// func (r PostAccountKeysResponse) UndefinedError() error {
+// func (r CreateAccountAccessKeyResponse) UndefinedError() error {
 //     if !isOKStatus(r.HTTPResponse.StatusCode){
 //         return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
 //     }
 //     return nil
 // }
 
-type DeleteAccountKeysIdResponse struct {
+type DeleteAccountAccessKeyResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON401      *Error401
@@ -1512,7 +1783,7 @@ type DeleteAccountKeysIdResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r DeleteAccountKeysIdResponse) Status() string {
+func (r DeleteAccountAccessKeyResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1520,7 +1791,7 @@ func (r DeleteAccountKeysIdResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r DeleteAccountKeysIdResponse) StatusCode() int {
+func (r DeleteAccountAccessKeyResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -1529,19 +1800,19 @@ func (r DeleteAccountKeysIdResponse) StatusCode() int {
 
 // TODO 後で検討
 // // // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-// func (r DeleteAccountKeysIdResponse) Result() (error) {
+// func (r DeleteAccountAccessKeyResponse) Result() (error) {
 //     return eCoalesce(r.JSON401,r.JSONDefault,r.UndefinedError())
 // }
 //
 // // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-// func (r DeleteAccountKeysIdResponse) UndefinedError() error {
+// func (r DeleteAccountAccessKeyResponse) UndefinedError() error {
 //     if !isOKStatus(r.HTTPResponse.StatusCode){
 //         return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
 //     }
 //     return nil
 // }
 
-type GetAccountKeysIdResponse struct {
+type ReadAccountAccessKeyResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *AccountKey
@@ -1551,7 +1822,7 @@ type GetAccountKeysIdResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetAccountKeysIdResponse) Status() string {
+func (r ReadAccountAccessKeyResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1559,7 +1830,7 @@ func (r GetAccountKeysIdResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetAccountKeysIdResponse) StatusCode() int {
+func (r ReadAccountAccessKeyResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -1568,171 +1839,19 @@ func (r GetAccountKeysIdResponse) StatusCode() int {
 
 // TODO 後で検討
 // // // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-// func (r GetAccountKeysIdResponse) Result() (*AccountKey,error) {
+// func (r ReadAccountAccessKeyResponse) Result() (*AccountKey,error) {
 //     return r.JSON200, eCoalesce(r.JSON401,r.JSON404,r.JSONDefault,r.UndefinedError())
 // }
 //
 // // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-// func (r GetAccountKeysIdResponse) UndefinedError() error {
+// func (r ReadAccountAccessKeyResponse) UndefinedError() error {
 //     if !isOKStatus(r.HTTPResponse.StatusCode){
 //         return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
 //     }
 //     return nil
 // }
 
-type DeleteBucketsNameResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON201      *HandlerPutBucketRes
-	JSON400      *Error400
-	JSON409      *Error409
-}
-
-// Status returns HTTPResponse.Status
-func (r DeleteBucketsNameResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r DeleteBucketsNameResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// TODO 後で検討
-// // // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-// func (r DeleteBucketsNameResponse) Result() (error) {
-//     return eCoalesce(r.JSON201,r.JSON400,r.JSON409,r.UndefinedError())
-// }
-//
-// // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-// func (r DeleteBucketsNameResponse) UndefinedError() error {
-//     if !isOKStatus(r.HTTPResponse.StatusCode){
-//         return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
-//     }
-//     return nil
-// }
-
-type PutBucketsNameResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON201      *HandlerPutBucketRes
-	JSON400      *Error400
-	JSON404      *Error404
-	JSON409      *Error409
-}
-
-// Status returns HTTPResponse.Status
-func (r PutBucketsNameResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r PutBucketsNameResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// TODO 後で検討
-// // // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-// func (r PutBucketsNameResponse) Result() (error) {
-//     return eCoalesce(r.JSON201,r.JSON400,r.JSON404,r.JSON409,r.UndefinedError())
-// }
-//
-// // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-// func (r PutBucketsNameResponse) UndefinedError() error {
-//     if !isOKStatus(r.HTTPResponse.StatusCode){
-//         return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
-//     }
-//     return nil
-// }
-
-type GetClustersResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *HandlerListClustersRes
-	JSON401      *Error401
-}
-
-// Status returns HTTPResponse.Status
-func (r GetClustersResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r GetClustersResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// TODO 後で検討
-// // // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-// func (r GetClustersResponse) Result() (*HandlerListClustersRes,error) {
-//     return r.JSON200, eCoalesce(r.JSON401,r.UndefinedError())
-// }
-//
-// // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-// func (r GetClustersResponse) UndefinedError() error {
-//     if !isOKStatus(r.HTTPResponse.StatusCode){
-//         return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
-//     }
-//     return nil
-// }
-
-type GetClustersIdResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	JSON200      *HandlerGetClusterRes
-	JSON401      *Error401
-	JSON404      *Error404
-}
-
-// Status returns HTTPResponse.Status
-func (r GetClustersIdResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r GetClustersIdResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// TODO 後で検討
-// // // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-// func (r GetClustersIdResponse) Result() (*HandlerGetClusterRes,error) {
-//     return r.JSON200, eCoalesce(r.JSON401,r.JSON404,r.UndefinedError())
-// }
-//
-// // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-// func (r GetClustersIdResponse) UndefinedError() error {
-//     if !isOKStatus(r.HTTPResponse.StatusCode){
-//         return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
-//     }
-//     return nil
-// }
-
-type GetPermissionsResponse struct {
+type ListPermissionsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *Permission
@@ -1741,7 +1860,7 @@ type GetPermissionsResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetPermissionsResponse) Status() string {
+func (r ListPermissionsResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1749,7 +1868,7 @@ func (r GetPermissionsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetPermissionsResponse) StatusCode() int {
+func (r ListPermissionsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -1758,19 +1877,19 @@ func (r GetPermissionsResponse) StatusCode() int {
 
 // TODO 後で検討
 // // // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-// func (r GetPermissionsResponse) Result() (*Permission,error) {
+// func (r ListPermissionsResponse) Result() (*Permission,error) {
 //     return r.JSON200, eCoalesce(r.JSON401,r.JSONDefault,r.UndefinedError())
 // }
 //
 // // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-// func (r GetPermissionsResponse) UndefinedError() error {
+// func (r ListPermissionsResponse) UndefinedError() error {
 //     if !isOKStatus(r.HTTPResponse.StatusCode){
 //         return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
 //     }
 //     return nil
 // }
 
-type PostPermissionsResponse struct {
+type CreatePermissionResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON201      *Permission
@@ -1781,7 +1900,7 @@ type PostPermissionsResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r PostPermissionsResponse) Status() string {
+func (r CreatePermissionResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1789,7 +1908,7 @@ func (r PostPermissionsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r PostPermissionsResponse) StatusCode() int {
+func (r CreatePermissionResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -1798,19 +1917,19 @@ func (r PostPermissionsResponse) StatusCode() int {
 
 // TODO 後で検討
 // // // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-// func (r PostPermissionsResponse) Result() (error) {
+// func (r CreatePermissionResponse) Result() (error) {
 //     return eCoalesce(r.JSON201,r.JSON401,r.JSON404,r.JSON409,r.JSONDefault,r.UndefinedError())
 // }
 //
 // // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-// func (r PostPermissionsResponse) UndefinedError() error {
+// func (r CreatePermissionResponse) UndefinedError() error {
 //     if !isOKStatus(r.HTTPResponse.StatusCode){
 //         return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
 //     }
 //     return nil
 // }
 
-type DeletePermissionsIdResponse struct {
+type DeletePermissionResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON401      *Error401
@@ -1818,7 +1937,7 @@ type DeletePermissionsIdResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r DeletePermissionsIdResponse) Status() string {
+func (r DeletePermissionResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1826,7 +1945,7 @@ func (r DeletePermissionsIdResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r DeletePermissionsIdResponse) StatusCode() int {
+func (r DeletePermissionResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -1835,19 +1954,19 @@ func (r DeletePermissionsIdResponse) StatusCode() int {
 
 // TODO 後で検討
 // // // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-// func (r DeletePermissionsIdResponse) Result() (error) {
+// func (r DeletePermissionResponse) Result() (error) {
 //     return eCoalesce(r.JSON401,r.JSONDefault,r.UndefinedError())
 // }
 //
 // // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-// func (r DeletePermissionsIdResponse) UndefinedError() error {
+// func (r DeletePermissionResponse) UndefinedError() error {
 //     if !isOKStatus(r.HTTPResponse.StatusCode){
 //         return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
 //     }
 //     return nil
 // }
 
-type GetPermissionsIdResponse struct {
+type ReadPermissionResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *Permission
@@ -1857,7 +1976,7 @@ type GetPermissionsIdResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetPermissionsIdResponse) Status() string {
+func (r ReadPermissionResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1865,7 +1984,7 @@ func (r GetPermissionsIdResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetPermissionsIdResponse) StatusCode() int {
+func (r ReadPermissionResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -1874,19 +1993,19 @@ func (r GetPermissionsIdResponse) StatusCode() int {
 
 // TODO 後で検討
 // // // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-// func (r GetPermissionsIdResponse) Result() (*Permission,error) {
+// func (r ReadPermissionResponse) Result() (*Permission,error) {
 //     return r.JSON200, eCoalesce(r.JSON401,r.JSON404,r.JSONDefault,r.UndefinedError())
 // }
 //
 // // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-// func (r GetPermissionsIdResponse) UndefinedError() error {
+// func (r ReadPermissionResponse) UndefinedError() error {
 //     if !isOKStatus(r.HTTPResponse.StatusCode){
 //         return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
 //     }
 //     return nil
 // }
 
-type PutPermissionsIdResponse struct {
+type UpdatePermissionResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *Permission
@@ -1897,7 +2016,7 @@ type PutPermissionsIdResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r PutPermissionsIdResponse) Status() string {
+func (r UpdatePermissionResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1905,7 +2024,7 @@ func (r PutPermissionsIdResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r PutPermissionsIdResponse) StatusCode() int {
+func (r UpdatePermissionResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -1914,19 +2033,19 @@ func (r PutPermissionsIdResponse) StatusCode() int {
 
 // TODO 後で検討
 // // // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-// func (r PutPermissionsIdResponse) Result() (*Permission,error) {
+// func (r UpdatePermissionResponse) Result() (*Permission,error) {
 //     return r.JSON200, eCoalesce(r.JSON401,r.JSON404,r.JSON409,r.JSONDefault,r.UndefinedError())
 // }
 //
 // // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-// func (r PutPermissionsIdResponse) UndefinedError() error {
+// func (r UpdatePermissionResponse) UndefinedError() error {
 //     if !isOKStatus(r.HTTPResponse.StatusCode){
 //         return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
 //     }
 //     return nil
 // }
 
-type GetPermissionsIdKeysResponse struct {
+type ListPermissionAccessKeysResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *PermissionKey
@@ -1936,7 +2055,7 @@ type GetPermissionsIdKeysResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetPermissionsIdKeysResponse) Status() string {
+func (r ListPermissionAccessKeysResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1944,7 +2063,7 @@ func (r GetPermissionsIdKeysResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetPermissionsIdKeysResponse) StatusCode() int {
+func (r ListPermissionAccessKeysResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -1953,19 +2072,19 @@ func (r GetPermissionsIdKeysResponse) StatusCode() int {
 
 // TODO 後で検討
 // // // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-// func (r GetPermissionsIdKeysResponse) Result() (*PermissionKey,error) {
+// func (r ListPermissionAccessKeysResponse) Result() (*PermissionKey,error) {
 //     return r.JSON200, eCoalesce(r.JSON401,r.JSON404,r.JSONDefault,r.UndefinedError())
 // }
 //
 // // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-// func (r GetPermissionsIdKeysResponse) UndefinedError() error {
+// func (r ListPermissionAccessKeysResponse) UndefinedError() error {
 //     if !isOKStatus(r.HTTPResponse.StatusCode){
 //         return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
 //     }
 //     return nil
 // }
 
-type PostPermissionsIdKeysResponse struct {
+type CreatePermissionAccessKeyResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON201      *PermissionKey
@@ -1976,7 +2095,7 @@ type PostPermissionsIdKeysResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r PostPermissionsIdKeysResponse) Status() string {
+func (r CreatePermissionAccessKeyResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1984,7 +2103,7 @@ func (r PostPermissionsIdKeysResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r PostPermissionsIdKeysResponse) StatusCode() int {
+func (r CreatePermissionAccessKeyResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -1993,19 +2112,19 @@ func (r PostPermissionsIdKeysResponse) StatusCode() int {
 
 // TODO 後で検討
 // // // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-// func (r PostPermissionsIdKeysResponse) Result() (error) {
+// func (r CreatePermissionAccessKeyResponse) Result() (error) {
 //     return eCoalesce(r.JSON201,r.JSON401,r.JSON404,r.JSON409,r.JSONDefault,r.UndefinedError())
 // }
 //
 // // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-// func (r PostPermissionsIdKeysResponse) UndefinedError() error {
+// func (r CreatePermissionAccessKeyResponse) UndefinedError() error {
 //     if !isOKStatus(r.HTTPResponse.StatusCode){
 //         return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
 //     }
 //     return nil
 // }
 
-type DeletePermissionsIdKeysKeyIdResponse struct {
+type DeletePermissionAccessKeyResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON401      *Error401
@@ -2014,7 +2133,7 @@ type DeletePermissionsIdKeysKeyIdResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r DeletePermissionsIdKeysKeyIdResponse) Status() string {
+func (r DeletePermissionAccessKeyResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2022,7 +2141,7 @@ func (r DeletePermissionsIdKeysKeyIdResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r DeletePermissionsIdKeysKeyIdResponse) StatusCode() int {
+func (r DeletePermissionAccessKeyResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -2031,19 +2150,19 @@ func (r DeletePermissionsIdKeysKeyIdResponse) StatusCode() int {
 
 // TODO 後で検討
 // // // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-// func (r DeletePermissionsIdKeysKeyIdResponse) Result() (error) {
+// func (r DeletePermissionAccessKeyResponse) Result() (error) {
 //     return eCoalesce(r.JSON401,r.JSON404,r.JSONDefault,r.UndefinedError())
 // }
 //
 // // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-// func (r DeletePermissionsIdKeysKeyIdResponse) UndefinedError() error {
+// func (r DeletePermissionAccessKeyResponse) UndefinedError() error {
 //     if !isOKStatus(r.HTTPResponse.StatusCode){
 //         return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
 //     }
 //     return nil
 // }
 
-type GetPermissionsIdKeysKeyIdResponse struct {
+type ReadPermissionAccessKeyResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *PermissionKey
@@ -2053,7 +2172,7 @@ type GetPermissionsIdKeysKeyIdResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetPermissionsIdKeysKeyIdResponse) Status() string {
+func (r ReadPermissionAccessKeyResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2061,7 +2180,7 @@ func (r GetPermissionsIdKeysKeyIdResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetPermissionsIdKeysKeyIdResponse) StatusCode() int {
+func (r ReadPermissionAccessKeyResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -2070,19 +2189,19 @@ func (r GetPermissionsIdKeysKeyIdResponse) StatusCode() int {
 
 // TODO 後で検討
 // // // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-// func (r GetPermissionsIdKeysKeyIdResponse) Result() (*PermissionKey,error) {
+// func (r ReadPermissionAccessKeyResponse) Result() (*PermissionKey,error) {
 //     return r.JSON200, eCoalesce(r.JSON401,r.JSON404,r.JSONDefault,r.UndefinedError())
 // }
 //
 // // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-// func (r GetPermissionsIdKeysKeyIdResponse) UndefinedError() error {
+// func (r ReadPermissionAccessKeyResponse) UndefinedError() error {
 //     if !isOKStatus(r.HTTPResponse.StatusCode){
 //         return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
 //     }
 //     return nil
 // }
 
-type GetStatusResponse struct {
+type ReadSiteStatusResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *Status
@@ -2091,7 +2210,7 @@ type GetStatusResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetStatusResponse) Status() string {
+func (r ReadSiteStatusResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2099,7 +2218,7 @@ func (r GetStatusResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetStatusResponse) StatusCode() int {
+func (r ReadSiteStatusResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -2108,248 +2227,408 @@ func (r GetStatusResponse) StatusCode() int {
 
 // TODO 後で検討
 // // // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-// func (r GetStatusResponse) Result() (*Status,error) {
+// func (r ReadSiteStatusResponse) Result() (*Status,error) {
 //     return r.JSON200, eCoalesce(r.JSON401,r.JSONDefault,r.UndefinedError())
 // }
 //
 // // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-// func (r GetStatusResponse) UndefinedError() error {
+// func (r ReadSiteStatusResponse) UndefinedError() error {
 //     if !isOKStatus(r.HTTPResponse.StatusCode){
 //         return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
 //     }
 //     return nil
 // }
 
-// DeleteAccountWithResponse request returning *DeleteAccountResponse
-func (c *ClientWithResponses) DeleteAccountWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*DeleteAccountResponse, error) {
-	rsp, err := c.DeleteAccount(ctx, reqEditors...)
+// DeleteBucketWithBodyWithResponse request with arbitrary body returning *DeleteBucketResponse
+func (c *ClientWithResponses) DeleteBucketWithBodyWithResponse(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*DeleteBucketResponse, error) {
+	rsp, err := c.DeleteBucketWithBody(ctx, name, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseDeleteAccountResponse(rsp)
+	return ParseDeleteBucketResponse(rsp)
 }
 
-// GetAccountWithResponse request returning *GetAccountResponse
-func (c *ClientWithResponses) GetAccountWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetAccountResponse, error) {
-	rsp, err := c.GetAccount(ctx, reqEditors...)
+func (c *ClientWithResponses) DeleteBucketWithResponse(ctx context.Context, name string, body DeleteBucketJSONRequestBody, reqEditors ...RequestEditorFn) (*DeleteBucketResponse, error) {
+	rsp, err := c.DeleteBucket(ctx, name, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetAccountResponse(rsp)
+	return ParseDeleteBucketResponse(rsp)
 }
 
-// PostAccountWithResponse request returning *PostAccountResponse
-func (c *ClientWithResponses) PostAccountWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*PostAccountResponse, error) {
-	rsp, err := c.PostAccount(ctx, reqEditors...)
+// CreateBucketWithBodyWithResponse request with arbitrary body returning *CreateBucketResponse
+func (c *ClientWithResponses) CreateBucketWithBodyWithResponse(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateBucketResponse, error) {
+	rsp, err := c.CreateBucketWithBody(ctx, name, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePostAccountResponse(rsp)
+	return ParseCreateBucketResponse(rsp)
 }
 
-// GetAccountKeysWithResponse request returning *GetAccountKeysResponse
-func (c *ClientWithResponses) GetAccountKeysWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetAccountKeysResponse, error) {
-	rsp, err := c.GetAccountKeys(ctx, reqEditors...)
+func (c *ClientWithResponses) CreateBucketWithResponse(ctx context.Context, name string, body CreateBucketJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateBucketResponse, error) {
+	rsp, err := c.CreateBucket(ctx, name, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetAccountKeysResponse(rsp)
+	return ParseCreateBucketResponse(rsp)
 }
 
-// PostAccountKeysWithResponse request returning *PostAccountKeysResponse
-func (c *ClientWithResponses) PostAccountKeysWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*PostAccountKeysResponse, error) {
-	rsp, err := c.PostAccountKeys(ctx, reqEditors...)
+// ListClustersWithResponse request returning *ListClustersResponse
+func (c *ClientWithResponses) ListClustersWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListClustersResponse, error) {
+	rsp, err := c.ListClusters(ctx, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePostAccountKeysResponse(rsp)
+	return ParseListClustersResponse(rsp)
 }
 
-// DeleteAccountKeysIdWithResponse request returning *DeleteAccountKeysIdResponse
-func (c *ClientWithResponses) DeleteAccountKeysIdWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*DeleteAccountKeysIdResponse, error) {
-	rsp, err := c.DeleteAccountKeysId(ctx, id, reqEditors...)
+// ReadClusterWithResponse request returning *ReadClusterResponse
+func (c *ClientWithResponses) ReadClusterWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*ReadClusterResponse, error) {
+	rsp, err := c.ReadCluster(ctx, id, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseDeleteAccountKeysIdResponse(rsp)
+	return ParseReadClusterResponse(rsp)
 }
 
-// GetAccountKeysIdWithResponse request returning *GetAccountKeysIdResponse
-func (c *ClientWithResponses) GetAccountKeysIdWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetAccountKeysIdResponse, error) {
-	rsp, err := c.GetAccountKeysId(ctx, id, reqEditors...)
+// DeleteSiteAccountWithResponse request returning *DeleteSiteAccountResponse
+func (c *ClientWithResponses) DeleteSiteAccountWithResponse(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*DeleteSiteAccountResponse, error) {
+	rsp, err := c.DeleteSiteAccount(ctx, siteName, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetAccountKeysIdResponse(rsp)
+	return ParseDeleteSiteAccountResponse(rsp)
 }
 
-// DeleteBucketsNameWithBodyWithResponse request with arbitrary body returning *DeleteBucketsNameResponse
-func (c *ClientWithResponses) DeleteBucketsNameWithBodyWithResponse(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*DeleteBucketsNameResponse, error) {
-	rsp, err := c.DeleteBucketsNameWithBody(ctx, name, contentType, body, reqEditors...)
+// ReadSiteAccountWithResponse request returning *ReadSiteAccountResponse
+func (c *ClientWithResponses) ReadSiteAccountWithResponse(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*ReadSiteAccountResponse, error) {
+	rsp, err := c.ReadSiteAccount(ctx, siteName, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseDeleteBucketsNameResponse(rsp)
+	return ParseReadSiteAccountResponse(rsp)
 }
 
-func (c *ClientWithResponses) DeleteBucketsNameWithResponse(ctx context.Context, name string, body DeleteBucketsNameJSONRequestBody, reqEditors ...RequestEditorFn) (*DeleteBucketsNameResponse, error) {
-	rsp, err := c.DeleteBucketsName(ctx, name, body, reqEditors...)
+// CreateSiteAccountWithResponse request returning *CreateSiteAccountResponse
+func (c *ClientWithResponses) CreateSiteAccountWithResponse(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*CreateSiteAccountResponse, error) {
+	rsp, err := c.CreateSiteAccount(ctx, siteName, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseDeleteBucketsNameResponse(rsp)
+	return ParseCreateSiteAccountResponse(rsp)
 }
 
-// PutBucketsNameWithBodyWithResponse request with arbitrary body returning *PutBucketsNameResponse
-func (c *ClientWithResponses) PutBucketsNameWithBodyWithResponse(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutBucketsNameResponse, error) {
-	rsp, err := c.PutBucketsNameWithBody(ctx, name, contentType, body, reqEditors...)
+// ListAccountAccessKeysWithResponse request returning *ListAccountAccessKeysResponse
+func (c *ClientWithResponses) ListAccountAccessKeysWithResponse(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*ListAccountAccessKeysResponse, error) {
+	rsp, err := c.ListAccountAccessKeys(ctx, siteName, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePutBucketsNameResponse(rsp)
+	return ParseListAccountAccessKeysResponse(rsp)
 }
 
-func (c *ClientWithResponses) PutBucketsNameWithResponse(ctx context.Context, name string, body PutBucketsNameJSONRequestBody, reqEditors ...RequestEditorFn) (*PutBucketsNameResponse, error) {
-	rsp, err := c.PutBucketsName(ctx, name, body, reqEditors...)
+// CreateAccountAccessKeyWithResponse request returning *CreateAccountAccessKeyResponse
+func (c *ClientWithResponses) CreateAccountAccessKeyWithResponse(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*CreateAccountAccessKeyResponse, error) {
+	rsp, err := c.CreateAccountAccessKey(ctx, siteName, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePutBucketsNameResponse(rsp)
+	return ParseCreateAccountAccessKeyResponse(rsp)
 }
 
-// GetClustersWithResponse request returning *GetClustersResponse
-func (c *ClientWithResponses) GetClustersWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetClustersResponse, error) {
-	rsp, err := c.GetClusters(ctx, reqEditors...)
+// DeleteAccountAccessKeyWithResponse request returning *DeleteAccountAccessKeyResponse
+func (c *ClientWithResponses) DeleteAccountAccessKeyWithResponse(ctx context.Context, siteName string, id string, reqEditors ...RequestEditorFn) (*DeleteAccountAccessKeyResponse, error) {
+	rsp, err := c.DeleteAccountAccessKey(ctx, siteName, id, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetClustersResponse(rsp)
+	return ParseDeleteAccountAccessKeyResponse(rsp)
 }
 
-// GetClustersIdWithResponse request returning *GetClustersIdResponse
-func (c *ClientWithResponses) GetClustersIdWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetClustersIdResponse, error) {
-	rsp, err := c.GetClustersId(ctx, id, reqEditors...)
+// ReadAccountAccessKeyWithResponse request returning *ReadAccountAccessKeyResponse
+func (c *ClientWithResponses) ReadAccountAccessKeyWithResponse(ctx context.Context, siteName string, id string, reqEditors ...RequestEditorFn) (*ReadAccountAccessKeyResponse, error) {
+	rsp, err := c.ReadAccountAccessKey(ctx, siteName, id, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetClustersIdResponse(rsp)
+	return ParseReadAccountAccessKeyResponse(rsp)
 }
 
-// GetPermissionsWithResponse request returning *GetPermissionsResponse
-func (c *ClientWithResponses) GetPermissionsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetPermissionsResponse, error) {
-	rsp, err := c.GetPermissions(ctx, reqEditors...)
+// ListPermissionsWithResponse request returning *ListPermissionsResponse
+func (c *ClientWithResponses) ListPermissionsWithResponse(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*ListPermissionsResponse, error) {
+	rsp, err := c.ListPermissions(ctx, siteName, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetPermissionsResponse(rsp)
+	return ParseListPermissionsResponse(rsp)
 }
 
-// PostPermissionsWithBodyWithResponse request with arbitrary body returning *PostPermissionsResponse
-func (c *ClientWithResponses) PostPermissionsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostPermissionsResponse, error) {
-	rsp, err := c.PostPermissionsWithBody(ctx, contentType, body, reqEditors...)
+// CreatePermissionWithBodyWithResponse request with arbitrary body returning *CreatePermissionResponse
+func (c *ClientWithResponses) CreatePermissionWithBodyWithResponse(ctx context.Context, siteName string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreatePermissionResponse, error) {
+	rsp, err := c.CreatePermissionWithBody(ctx, siteName, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePostPermissionsResponse(rsp)
+	return ParseCreatePermissionResponse(rsp)
 }
 
-func (c *ClientWithResponses) PostPermissionsWithResponse(ctx context.Context, body PostPermissionsJSONRequestBody, reqEditors ...RequestEditorFn) (*PostPermissionsResponse, error) {
-	rsp, err := c.PostPermissions(ctx, body, reqEditors...)
+func (c *ClientWithResponses) CreatePermissionWithResponse(ctx context.Context, siteName string, body CreatePermissionJSONRequestBody, reqEditors ...RequestEditorFn) (*CreatePermissionResponse, error) {
+	rsp, err := c.CreatePermission(ctx, siteName, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePostPermissionsResponse(rsp)
+	return ParseCreatePermissionResponse(rsp)
 }
 
-// DeletePermissionsIdWithResponse request returning *DeletePermissionsIdResponse
-func (c *ClientWithResponses) DeletePermissionsIdWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*DeletePermissionsIdResponse, error) {
-	rsp, err := c.DeletePermissionsId(ctx, id, reqEditors...)
+// DeletePermissionWithResponse request returning *DeletePermissionResponse
+func (c *ClientWithResponses) DeletePermissionWithResponse(ctx context.Context, siteName string, id string, reqEditors ...RequestEditorFn) (*DeletePermissionResponse, error) {
+	rsp, err := c.DeletePermission(ctx, siteName, id, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseDeletePermissionsIdResponse(rsp)
+	return ParseDeletePermissionResponse(rsp)
 }
 
-// GetPermissionsIdWithResponse request returning *GetPermissionsIdResponse
-func (c *ClientWithResponses) GetPermissionsIdWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetPermissionsIdResponse, error) {
-	rsp, err := c.GetPermissionsId(ctx, id, reqEditors...)
+// ReadPermissionWithResponse request returning *ReadPermissionResponse
+func (c *ClientWithResponses) ReadPermissionWithResponse(ctx context.Context, siteName string, id string, reqEditors ...RequestEditorFn) (*ReadPermissionResponse, error) {
+	rsp, err := c.ReadPermission(ctx, siteName, id, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetPermissionsIdResponse(rsp)
+	return ParseReadPermissionResponse(rsp)
 }
 
-// PutPermissionsIdWithBodyWithResponse request with arbitrary body returning *PutPermissionsIdResponse
-func (c *ClientWithResponses) PutPermissionsIdWithBodyWithResponse(ctx context.Context, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutPermissionsIdResponse, error) {
-	rsp, err := c.PutPermissionsIdWithBody(ctx, id, contentType, body, reqEditors...)
+// UpdatePermissionWithBodyWithResponse request with arbitrary body returning *UpdatePermissionResponse
+func (c *ClientWithResponses) UpdatePermissionWithBodyWithResponse(ctx context.Context, siteName string, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdatePermissionResponse, error) {
+	rsp, err := c.UpdatePermissionWithBody(ctx, siteName, id, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePutPermissionsIdResponse(rsp)
+	return ParseUpdatePermissionResponse(rsp)
 }
 
-func (c *ClientWithResponses) PutPermissionsIdWithResponse(ctx context.Context, id string, body PutPermissionsIdJSONRequestBody, reqEditors ...RequestEditorFn) (*PutPermissionsIdResponse, error) {
-	rsp, err := c.PutPermissionsId(ctx, id, body, reqEditors...)
+func (c *ClientWithResponses) UpdatePermissionWithResponse(ctx context.Context, siteName string, id string, body UpdatePermissionJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdatePermissionResponse, error) {
+	rsp, err := c.UpdatePermission(ctx, siteName, id, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePutPermissionsIdResponse(rsp)
+	return ParseUpdatePermissionResponse(rsp)
 }
 
-// GetPermissionsIdKeysWithResponse request returning *GetPermissionsIdKeysResponse
-func (c *ClientWithResponses) GetPermissionsIdKeysWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*GetPermissionsIdKeysResponse, error) {
-	rsp, err := c.GetPermissionsIdKeys(ctx, id, reqEditors...)
+// ListPermissionAccessKeysWithResponse request returning *ListPermissionAccessKeysResponse
+func (c *ClientWithResponses) ListPermissionAccessKeysWithResponse(ctx context.Context, siteName string, id string, reqEditors ...RequestEditorFn) (*ListPermissionAccessKeysResponse, error) {
+	rsp, err := c.ListPermissionAccessKeys(ctx, siteName, id, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetPermissionsIdKeysResponse(rsp)
+	return ParseListPermissionAccessKeysResponse(rsp)
 }
 
-// PostPermissionsIdKeysWithResponse request returning *PostPermissionsIdKeysResponse
-func (c *ClientWithResponses) PostPermissionsIdKeysWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*PostPermissionsIdKeysResponse, error) {
-	rsp, err := c.PostPermissionsIdKeys(ctx, id, reqEditors...)
+// CreatePermissionAccessKeyWithResponse request returning *CreatePermissionAccessKeyResponse
+func (c *ClientWithResponses) CreatePermissionAccessKeyWithResponse(ctx context.Context, siteName string, id string, reqEditors ...RequestEditorFn) (*CreatePermissionAccessKeyResponse, error) {
+	rsp, err := c.CreatePermissionAccessKey(ctx, siteName, id, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePostPermissionsIdKeysResponse(rsp)
+	return ParseCreatePermissionAccessKeyResponse(rsp)
 }
 
-// DeletePermissionsIdKeysKeyIdWithResponse request returning *DeletePermissionsIdKeysKeyIdResponse
-func (c *ClientWithResponses) DeletePermissionsIdKeysKeyIdWithResponse(ctx context.Context, id string, keyId string, reqEditors ...RequestEditorFn) (*DeletePermissionsIdKeysKeyIdResponse, error) {
-	rsp, err := c.DeletePermissionsIdKeysKeyId(ctx, id, keyId, reqEditors...)
+// DeletePermissionAccessKeyWithResponse request returning *DeletePermissionAccessKeyResponse
+func (c *ClientWithResponses) DeletePermissionAccessKeyWithResponse(ctx context.Context, siteName string, id string, keyId string, reqEditors ...RequestEditorFn) (*DeletePermissionAccessKeyResponse, error) {
+	rsp, err := c.DeletePermissionAccessKey(ctx, siteName, id, keyId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseDeletePermissionsIdKeysKeyIdResponse(rsp)
+	return ParseDeletePermissionAccessKeyResponse(rsp)
 }
 
-// GetPermissionsIdKeysKeyIdWithResponse request returning *GetPermissionsIdKeysKeyIdResponse
-func (c *ClientWithResponses) GetPermissionsIdKeysKeyIdWithResponse(ctx context.Context, id string, keyId string, reqEditors ...RequestEditorFn) (*GetPermissionsIdKeysKeyIdResponse, error) {
-	rsp, err := c.GetPermissionsIdKeysKeyId(ctx, id, keyId, reqEditors...)
+// ReadPermissionAccessKeyWithResponse request returning *ReadPermissionAccessKeyResponse
+func (c *ClientWithResponses) ReadPermissionAccessKeyWithResponse(ctx context.Context, siteName string, id string, keyId string, reqEditors ...RequestEditorFn) (*ReadPermissionAccessKeyResponse, error) {
+	rsp, err := c.ReadPermissionAccessKey(ctx, siteName, id, keyId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetPermissionsIdKeysKeyIdResponse(rsp)
+	return ParseReadPermissionAccessKeyResponse(rsp)
 }
 
-// GetStatusWithResponse request returning *GetStatusResponse
-func (c *ClientWithResponses) GetStatusWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetStatusResponse, error) {
-	rsp, err := c.GetStatus(ctx, reqEditors...)
+// ReadSiteStatusWithResponse request returning *ReadSiteStatusResponse
+func (c *ClientWithResponses) ReadSiteStatusWithResponse(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*ReadSiteStatusResponse, error) {
+	rsp, err := c.ReadSiteStatus(ctx, siteName, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetStatusResponse(rsp)
+	return ParseReadSiteStatusResponse(rsp)
 }
 
-// ParseDeleteAccountResponse parses an HTTP response from a DeleteAccountWithResponse call
-func ParseDeleteAccountResponse(rsp *http.Response) (*DeleteAccountResponse, error) {
+// ParseDeleteBucketResponse parses an HTTP response from a DeleteBucketWithResponse call
+func ParseDeleteBucketResponse(rsp *http.Response) (*DeleteBucketResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &DeleteAccountResponse{
+	response := &DeleteBucketResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest HandlerPutBucketRes
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error400
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest Error409
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseCreateBucketResponse parses an HTTP response from a CreateBucketWithResponse call
+func ParseCreateBucketResponse(rsp *http.Response) (*CreateBucketResponse, error) {
+	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &CreateBucketResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest HandlerPutBucketRes
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest Error400
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest Error404
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest Error409
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseListClustersResponse parses an HTTP response from a ListClustersWithResponse call
+func ParseListClustersResponse(rsp *http.Response) (*ListClustersResponse, error) {
+	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ListClustersResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest HandlerListClustersRes
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest Error401
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseReadClusterResponse parses an HTTP response from a ReadClusterWithResponse call
+func ParseReadClusterResponse(rsp *http.Response) (*ReadClusterResponse, error) {
+	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ReadClusterResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest HandlerGetClusterRes
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest Error401
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest Error404
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteSiteAccountResponse parses an HTTP response from a DeleteSiteAccountWithResponse call
+func ParseDeleteSiteAccountResponse(rsp *http.Response) (*DeleteSiteAccountResponse, error) {
+	bodyBytes, err := ioutil.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteSiteAccountResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2381,15 +2660,15 @@ func ParseDeleteAccountResponse(rsp *http.Response) (*DeleteAccountResponse, err
 	return response, nil
 }
 
-// ParseGetAccountResponse parses an HTTP response from a GetAccountWithResponse call
-func ParseGetAccountResponse(rsp *http.Response) (*GetAccountResponse, error) {
+// ParseReadSiteAccountResponse parses an HTTP response from a ReadSiteAccountWithResponse call
+func ParseReadSiteAccountResponse(rsp *http.Response) (*ReadSiteAccountResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetAccountResponse{
+	response := &ReadSiteAccountResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2428,15 +2707,15 @@ func ParseGetAccountResponse(rsp *http.Response) (*GetAccountResponse, error) {
 	return response, nil
 }
 
-// ParsePostAccountResponse parses an HTTP response from a PostAccountWithResponse call
-func ParsePostAccountResponse(rsp *http.Response) (*PostAccountResponse, error) {
+// ParseCreateSiteAccountResponse parses an HTTP response from a CreateSiteAccountWithResponse call
+func ParseCreateSiteAccountResponse(rsp *http.Response) (*CreateSiteAccountResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &PostAccountResponse{
+	response := &CreateSiteAccountResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2482,15 +2761,15 @@ func ParsePostAccountResponse(rsp *http.Response) (*PostAccountResponse, error) 
 	return response, nil
 }
 
-// ParseGetAccountKeysResponse parses an HTTP response from a GetAccountKeysWithResponse call
-func ParseGetAccountKeysResponse(rsp *http.Response) (*GetAccountKeysResponse, error) {
+// ParseListAccountAccessKeysResponse parses an HTTP response from a ListAccountAccessKeysWithResponse call
+func ParseListAccountAccessKeysResponse(rsp *http.Response) (*ListAccountAccessKeysResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetAccountKeysResponse{
+	response := &ListAccountAccessKeysResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2529,15 +2808,15 @@ func ParseGetAccountKeysResponse(rsp *http.Response) (*GetAccountKeysResponse, e
 	return response, nil
 }
 
-// ParsePostAccountKeysResponse parses an HTTP response from a PostAccountKeysWithResponse call
-func ParsePostAccountKeysResponse(rsp *http.Response) (*PostAccountKeysResponse, error) {
+// ParseCreateAccountAccessKeyResponse parses an HTTP response from a CreateAccountAccessKeyWithResponse call
+func ParseCreateAccountAccessKeyResponse(rsp *http.Response) (*CreateAccountAccessKeyResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &PostAccountKeysResponse{
+	response := &CreateAccountAccessKeyResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2583,15 +2862,15 @@ func ParsePostAccountKeysResponse(rsp *http.Response) (*PostAccountKeysResponse,
 	return response, nil
 }
 
-// ParseDeleteAccountKeysIdResponse parses an HTTP response from a DeleteAccountKeysIdWithResponse call
-func ParseDeleteAccountKeysIdResponse(rsp *http.Response) (*DeleteAccountKeysIdResponse, error) {
+// ParseDeleteAccountAccessKeyResponse parses an HTTP response from a DeleteAccountAccessKeyWithResponse call
+func ParseDeleteAccountAccessKeyResponse(rsp *http.Response) (*DeleteAccountAccessKeyResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &DeleteAccountKeysIdResponse{
+	response := &DeleteAccountAccessKeyResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2616,15 +2895,15 @@ func ParseDeleteAccountKeysIdResponse(rsp *http.Response) (*DeleteAccountKeysIdR
 	return response, nil
 }
 
-// ParseGetAccountKeysIdResponse parses an HTTP response from a GetAccountKeysIdWithResponse call
-func ParseGetAccountKeysIdResponse(rsp *http.Response) (*GetAccountKeysIdResponse, error) {
+// ParseReadAccountAccessKeyResponse parses an HTTP response from a ReadAccountAccessKeyWithResponse call
+func ParseReadAccountAccessKeyResponse(rsp *http.Response) (*ReadAccountAccessKeyResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetAccountKeysIdResponse{
+	response := &ReadAccountAccessKeyResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2663,175 +2942,15 @@ func ParseGetAccountKeysIdResponse(rsp *http.Response) (*GetAccountKeysIdRespons
 	return response, nil
 }
 
-// ParseDeleteBucketsNameResponse parses an HTTP response from a DeleteBucketsNameWithResponse call
-func ParseDeleteBucketsNameResponse(rsp *http.Response) (*DeleteBucketsNameResponse, error) {
+// ParseListPermissionsResponse parses an HTTP response from a ListPermissionsWithResponse call
+func ParseListPermissionsResponse(rsp *http.Response) (*ListPermissionsResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &DeleteBucketsNameResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
-		var dest HandlerPutBucketRes
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON201 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
-		var dest Error400
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON400 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
-		var dest Error409
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON409 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParsePutBucketsNameResponse parses an HTTP response from a PutBucketsNameWithResponse call
-func ParsePutBucketsNameResponse(rsp *http.Response) (*PutBucketsNameResponse, error) {
-	bodyBytes, err := ioutil.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &PutBucketsNameResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
-		var dest HandlerPutBucketRes
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON201 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
-		var dest Error400
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON400 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
-		var dest Error404
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON404 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
-		var dest Error409
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON409 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseGetClustersResponse parses an HTTP response from a GetClustersWithResponse call
-func ParseGetClustersResponse(rsp *http.Response) (*GetClustersResponse, error) {
-	bodyBytes, err := ioutil.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &GetClustersResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest HandlerListClustersRes
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
-		var dest Error401
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON401 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseGetClustersIdResponse parses an HTTP response from a GetClustersIdWithResponse call
-func ParseGetClustersIdResponse(rsp *http.Response) (*GetClustersIdResponse, error) {
-	bodyBytes, err := ioutil.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &GetClustersIdResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest HandlerGetClusterRes
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
-		var dest Error401
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON401 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
-		var dest Error404
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON404 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseGetPermissionsResponse parses an HTTP response from a GetPermissionsWithResponse call
-func ParseGetPermissionsResponse(rsp *http.Response) (*GetPermissionsResponse, error) {
-	bodyBytes, err := ioutil.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &GetPermissionsResponse{
+	response := &ListPermissionsResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2863,15 +2982,15 @@ func ParseGetPermissionsResponse(rsp *http.Response) (*GetPermissionsResponse, e
 	return response, nil
 }
 
-// ParsePostPermissionsResponse parses an HTTP response from a PostPermissionsWithResponse call
-func ParsePostPermissionsResponse(rsp *http.Response) (*PostPermissionsResponse, error) {
+// ParseCreatePermissionResponse parses an HTTP response from a CreatePermissionWithResponse call
+func ParseCreatePermissionResponse(rsp *http.Response) (*CreatePermissionResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &PostPermissionsResponse{
+	response := &CreatePermissionResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2917,15 +3036,15 @@ func ParsePostPermissionsResponse(rsp *http.Response) (*PostPermissionsResponse,
 	return response, nil
 }
 
-// ParseDeletePermissionsIdResponse parses an HTTP response from a DeletePermissionsIdWithResponse call
-func ParseDeletePermissionsIdResponse(rsp *http.Response) (*DeletePermissionsIdResponse, error) {
+// ParseDeletePermissionResponse parses an HTTP response from a DeletePermissionWithResponse call
+func ParseDeletePermissionResponse(rsp *http.Response) (*DeletePermissionResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &DeletePermissionsIdResponse{
+	response := &DeletePermissionResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2950,15 +3069,15 @@ func ParseDeletePermissionsIdResponse(rsp *http.Response) (*DeletePermissionsIdR
 	return response, nil
 }
 
-// ParseGetPermissionsIdResponse parses an HTTP response from a GetPermissionsIdWithResponse call
-func ParseGetPermissionsIdResponse(rsp *http.Response) (*GetPermissionsIdResponse, error) {
+// ParseReadPermissionResponse parses an HTTP response from a ReadPermissionWithResponse call
+func ParseReadPermissionResponse(rsp *http.Response) (*ReadPermissionResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetPermissionsIdResponse{
+	response := &ReadPermissionResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2997,15 +3116,15 @@ func ParseGetPermissionsIdResponse(rsp *http.Response) (*GetPermissionsIdRespons
 	return response, nil
 }
 
-// ParsePutPermissionsIdResponse parses an HTTP response from a PutPermissionsIdWithResponse call
-func ParsePutPermissionsIdResponse(rsp *http.Response) (*PutPermissionsIdResponse, error) {
+// ParseUpdatePermissionResponse parses an HTTP response from a UpdatePermissionWithResponse call
+func ParseUpdatePermissionResponse(rsp *http.Response) (*UpdatePermissionResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &PutPermissionsIdResponse{
+	response := &UpdatePermissionResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -3051,15 +3170,15 @@ func ParsePutPermissionsIdResponse(rsp *http.Response) (*PutPermissionsIdRespons
 	return response, nil
 }
 
-// ParseGetPermissionsIdKeysResponse parses an HTTP response from a GetPermissionsIdKeysWithResponse call
-func ParseGetPermissionsIdKeysResponse(rsp *http.Response) (*GetPermissionsIdKeysResponse, error) {
+// ParseListPermissionAccessKeysResponse parses an HTTP response from a ListPermissionAccessKeysWithResponse call
+func ParseListPermissionAccessKeysResponse(rsp *http.Response) (*ListPermissionAccessKeysResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetPermissionsIdKeysResponse{
+	response := &ListPermissionAccessKeysResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -3098,15 +3217,15 @@ func ParseGetPermissionsIdKeysResponse(rsp *http.Response) (*GetPermissionsIdKey
 	return response, nil
 }
 
-// ParsePostPermissionsIdKeysResponse parses an HTTP response from a PostPermissionsIdKeysWithResponse call
-func ParsePostPermissionsIdKeysResponse(rsp *http.Response) (*PostPermissionsIdKeysResponse, error) {
+// ParseCreatePermissionAccessKeyResponse parses an HTTP response from a CreatePermissionAccessKeyWithResponse call
+func ParseCreatePermissionAccessKeyResponse(rsp *http.Response) (*CreatePermissionAccessKeyResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &PostPermissionsIdKeysResponse{
+	response := &CreatePermissionAccessKeyResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -3152,15 +3271,15 @@ func ParsePostPermissionsIdKeysResponse(rsp *http.Response) (*PostPermissionsIdK
 	return response, nil
 }
 
-// ParseDeletePermissionsIdKeysKeyIdResponse parses an HTTP response from a DeletePermissionsIdKeysKeyIdWithResponse call
-func ParseDeletePermissionsIdKeysKeyIdResponse(rsp *http.Response) (*DeletePermissionsIdKeysKeyIdResponse, error) {
+// ParseDeletePermissionAccessKeyResponse parses an HTTP response from a DeletePermissionAccessKeyWithResponse call
+func ParseDeletePermissionAccessKeyResponse(rsp *http.Response) (*DeletePermissionAccessKeyResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &DeletePermissionsIdKeysKeyIdResponse{
+	response := &DeletePermissionAccessKeyResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -3192,15 +3311,15 @@ func ParseDeletePermissionsIdKeysKeyIdResponse(rsp *http.Response) (*DeletePermi
 	return response, nil
 }
 
-// ParseGetPermissionsIdKeysKeyIdResponse parses an HTTP response from a GetPermissionsIdKeysKeyIdWithResponse call
-func ParseGetPermissionsIdKeysKeyIdResponse(rsp *http.Response) (*GetPermissionsIdKeysKeyIdResponse, error) {
+// ParseReadPermissionAccessKeyResponse parses an HTTP response from a ReadPermissionAccessKeyWithResponse call
+func ParseReadPermissionAccessKeyResponse(rsp *http.Response) (*ReadPermissionAccessKeyResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetPermissionsIdKeysKeyIdResponse{
+	response := &ReadPermissionAccessKeyResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -3239,15 +3358,15 @@ func ParseGetPermissionsIdKeysKeyIdResponse(rsp *http.Response) (*GetPermissions
 	return response, nil
 }
 
-// ParseGetStatusResponse parses an HTTP response from a GetStatusWithResponse call
-func ParseGetStatusResponse(rsp *http.Response) (*GetStatusResponse, error) {
+// ParseReadSiteStatusResponse parses an HTTP response from a ReadSiteStatusWithResponse call
+func ParseReadSiteStatusResponse(rsp *http.Response) (*ReadSiteStatusResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetStatusResponse{
+	response := &ReadSiteStatusResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

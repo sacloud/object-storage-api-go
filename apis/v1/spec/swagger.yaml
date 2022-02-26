@@ -311,12 +311,11 @@ info:
 
     <!-- ReDoc-Inject: <security-definitions> -->
 paths:
-  /clusters:
+  /fed/v1/clusters:
     get:
+      operationId: "ListClusters"
       tags:
         - サイト
-      servers:
-        - url: 'https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/fed/v1/'
       summary: サイト一覧の取得
       description: |-
         アクセス先ベースURL: `https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/fed/v1/`
@@ -338,12 +337,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error401'
-  '/clusters/{id}':
+  '/fed/v1/clusters/{id}':
     get:
+      operationId: "ReadCluster"
       tags:
         - サイト
-      servers:
-        - url: 'https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/fed/v1/'
       summary: サイトの取得
       description: |-
         アクセス先ベースURL: `https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/fed/v1/`
@@ -378,12 +376,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error404'
-  '/buckets/{name}':
+  '/fed/v1/buckets/{name}':
     put:
+      operationId: "CreateBucket"
       tags:
         - バケット
-      servers:
-        - url: 'https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/fed/v1/'
       summary: バケットの作成
       description: |-
         アクセス先ベースURL: `https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/fed/v1/`
@@ -432,6 +429,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error409'
     delete:
+      operationId: "DeleteBucket"
       tags:
         - バケット
       servers:
@@ -477,12 +475,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error409'
-  /account:
+  '/{site_name}/v2/account':
     get:
+      operationId: "ReadSiteAccount"
       tags:
         - サイトアカウント
-      servers:
-        - url: 'https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/{site_name}/v2/'
       summary: サイトアカウントの取得
       description: |-
         アクセス先ベースURL: `https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/（サイト名）/v2/`
@@ -493,6 +490,13 @@ paths:
         となります。
 
         なお、サイト名の取得方法は「利用例＞接続先サイト一覧の取得」をご参考下さい。
+      parameters:
+        - in: path
+          name: site_name
+          required: true
+          schema:
+            type: string
+          description: サイト名
       responses:
         '200':
           description: サイトアカウントの取得に成功しました
@@ -519,10 +523,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorDefault'
     post:
+      operationId: "CreateSiteAccount"
       tags:
         - サイトアカウント
-      servers:
-        - url: 'https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/{site_name}/v2/'
       summary: サイトアカウントの作成
       description: |-
         アクセス先ベースURL: `https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/（サイト名）/v2/`
@@ -533,6 +536,13 @@ paths:
         となります。
 
         なお、サイト名の取得方法は「利用例＞接続先サイト一覧の取得」をご参考下さい。
+      parameters:
+        - in: path
+          name: site_name
+          required: true
+          schema:
+            type: string
+          description: サイト名
       responses:
         '201':
           description: サイトアカウントの作成に成功しました
@@ -565,10 +575,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorDefault'
     delete:
+      operationId: "DeleteSiteAccount"
       tags:
         - サイトアカウント
-      servers:
-        - url: 'https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/{site_name}/v2/'
       summary: サイトアカウントの削除
       description: |-
         アクセス先ベースURL: `https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/（サイト名）/v2/`
@@ -579,6 +588,13 @@ paths:
         となります。
 
         なお、サイト名の取得方法は「利用例＞接続先サイト一覧の取得」をご参考下さい。
+      parameters:
+        - in: path
+          name: site_name
+          required: true
+          schema:
+            type: string
+          description: サイト名
       responses:
         '204':
           description: サイトアカウントの削除に成功しました
@@ -600,12 +616,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDefault'
-  /account/keys:
+  '/{site_name}/v2/account/keys':
     get:
+      operationId: "ListAccountAccessKeys"
       tags:
         - サイトアカウント
-      servers:
-        - url: 'https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/{site_name}/v2/'
       summary: サイトアカウントのアクセスキーの取得
       description: |-
         アクセス先ベースURL: `https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/（サイト名）/v2/`
@@ -616,6 +631,13 @@ paths:
         となります。
 
         なお、サイト名の取得方法は「利用例＞接続先サイト一覧の取得」をご参考下さい。
+      parameters:
+        - in: path
+          name: site_name
+          required: true
+          schema:
+            type: string
+          description: サイト名
       responses:
         '200':
           description: サイトアカウントのアクセスキーの取得に成功しました
@@ -642,6 +664,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorDefault'
     post:
+      operationId: "CreateAccountAccessKey"
       tags:
         - サイトアカウント
       servers:
@@ -656,6 +679,13 @@ paths:
         となります。
 
         なお、サイト名の取得方法は「利用例＞接続先サイト一覧の取得」をご参考下さい。
+      parameters:
+        - in: path
+          name: site_name
+          required: true
+          schema:
+            type: string
+          description: サイト名
       responses:
         '201':
           description: サイトアカウントのアクセスキーの発行に成功しました
@@ -687,12 +717,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDefault'
-  '/account/keys/{id}':
+  '/{site_name}/v2/account/keys/{id}':
     get:
+      operationId: "ReadAccountAccessKey"
       tags:
         - サイトアカウント
-      servers:
-        - url: 'https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/{site_name}/v2/'
       summary: サイトアカウントのアクセスキーの取得
       description: |-
         アクセス先ベースURL: `https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/（サイト名）/v2/`
@@ -704,6 +733,12 @@ paths:
 
         なお、サイト名の取得方法は「利用例＞接続先サイト一覧の取得」をご参考下さい。
       parameters:
+        - in: path
+          name: site_name
+          required: true
+          schema:
+            type: string
+          description: サイト名
         - in: path
           name: id
           schema:
@@ -736,10 +771,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorDefault'
     delete:
+      operationId: "DeleteAccountAccessKey"
       tags:
         - サイトアカウント
-      servers:
-        - url: 'https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/{site_name}/v2/'
       summary: サイトアカウントのアクセスキーの削除
       description: |-
         アクセス先ベースURL: `https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/（サイト名）/v2/`
@@ -751,6 +785,12 @@ paths:
 
         なお、サイト名の取得方法は「利用例＞接続先サイト一覧の取得」をご参考下さい。
       parameters:
+        - in: path
+          name: site_name
+          required: true
+          schema:
+            type: string
+          description: サイト名
         - in: path
           name: id
           schema:
@@ -772,12 +812,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDefault'
-  /permissions:
+  '/{site_name}/v2/permissions':
     get:
+      operationId: "ListPermissions"
       tags:
         - パーミッション
-      servers:
-        - url: 'https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/{site_name}/v2/'
       summary: パーミッション一覧の取得
       description: |-
         アクセス先ベースURL: `https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/（サイト名）/v2/`
@@ -788,6 +827,13 @@ paths:
         となります。
 
         なお、サイト名の取得方法は「利用例＞接続先サイト一覧の取得」をご参考下さい。
+      parameters:
+        - in: path
+          name: site_name
+          required: true
+          schema:
+            type: string
+          description: サイト名
       responses:
         '200':
           description: パーミッション一覧の取得に成功しました
@@ -808,10 +854,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorDefault'
     post:
+      operationId: "CreatePermission"
       tags:
         - パーミッション
-      servers:
-        - url: 'https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/{site_name}/v2/'
       summary: パーミッションの作成
       description: |-
         アクセス先ベースURL: `https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/（サイト名）/v2/`
@@ -822,7 +867,13 @@ paths:
         となります。
 
         なお、サイト名の取得方法は「利用例＞接続先サイト一覧の取得」をご参考下さい。
-      parameters: []
+      parameters:
+        - in: path
+          name: site_name
+          required: true
+          schema:
+            type: string
+          description: サイト名
       requestBody:
         description: どのバケットを制御するかを定義します。
         required: true
@@ -861,12 +912,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDefault'
-  '/permissions/{id}':
+  '/{site_name}/v2/permissions/{id}':
     get:
+      operationId: "ReadPermission"
       tags:
         - パーミッション
-      servers:
-        - url: 'https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/{site_name}/v2/'
       summary: パーミッションの取得
       description: |-
         アクセス先ベースURL: `https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/（サイト名）/v2/`
@@ -878,6 +928,12 @@ paths:
 
         なお、サイト名の取得方法は「利用例＞接続先サイト一覧の取得」をご参考下さい。
       parameters:
+        - in: path
+          name: site_name
+          required: true
+          schema:
+            type: string
+          description: サイト名
         - in: path
           name: id
           schema:
@@ -910,10 +966,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorDefault'
     put:
+      operationId: "UpdatePermission"
       tags:
         - パーミッション
-      servers:
-        - url: 'https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/{site_name}/v2/'
       summary: パーミッションの更新
       description: |-
         アクセス先ベースURL: `https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/（サイト名）/v2/`
@@ -982,6 +1037,12 @@ paths:
         ```
       parameters:
         - in: path
+          name: site_name
+          required: true
+          schema:
+            type: string
+          description: サイト名
+        - in: path
           name: id
           schema:
             type: string
@@ -1026,10 +1087,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorDefault'
     delete:
+      operationId: "DeletePermission"
       tags:
         - パーミッション
-      servers:
-        - url: 'https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/{site_name}/v2/'
       summary: パーミッションの削除
       description: |-
         アクセス先ベースURL: `https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/（サイト名）/v2/`
@@ -1041,6 +1101,12 @@ paths:
 
         なお、サイト名の取得方法は「利用例＞接続先サイト一覧の取得」をご参考下さい。
       parameters:
+        - in: path
+          name: site_name
+          required: true
+          schema:
+            type: string
+          description: サイト名
         - in: path
           name: id
           schema:
@@ -1062,12 +1128,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDefault'
-  '/permissions/{id}/keys':
+  '/{site_name}/v2/permissions/{id}/keys':
     get:
+      operationId: "ListPermissionAccessKeys"
       tags:
         - パーミッション
-      servers:
-        - url: 'https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/{site_name}/v2/'
       summary: パーミッションが保有するアクセスキー一覧の取得
       description: |-
         アクセス先ベースURL: `https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/（サイト名）/v2/`
@@ -1079,6 +1144,12 @@ paths:
 
         なお、サイト名の取得方法は「利用例＞接続先サイト一覧の取得」をご参考下さい。
       parameters:
+        - in: path
+          name: site_name
+          required: true
+          schema:
+            type: string
+          description: サイト名
         - in: path
           name: id
           schema:
@@ -1111,10 +1182,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorDefault'
     post:
+      operationId: "CreatePermissionAccessKey"
       tags:
         - パーミッション
-      servers:
-        - url: 'https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/{site_name}/v2/'
       summary: パーミッションのアクセスキーの発行
       description: |-
         アクセス先ベースURL: `https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/（サイト名）/v2/`
@@ -1126,6 +1196,12 @@ paths:
 
         なお、サイト名の取得方法は「利用例＞接続先サイト一覧の取得」をご参考下さい。
       parameters:
+        - in: path
+          name: site_name
+          required: true
+          schema:
+            type: string
+          description: サイト名
         - in: path
           name: id
           schema:
@@ -1163,12 +1239,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDefault'
-  '/permissions/{id}/keys/{key_id}':
+  '/{site_name}/v2/permissions/{id}/keys/{key_id}':
     get:
+      operationId: "ReadPermissionAccessKey"
       tags:
         - パーミッション
-      servers:
-        - url: 'https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/{site_name}/v2/'
       summary: パーミッションが保有するアクセスキーの取得
       description: |-
         アクセス先ベースURL: `https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/（サイト名）/v2/`
@@ -1180,6 +1255,12 @@ paths:
 
         なお、サイト名の取得方法は「利用例＞接続先サイト一覧の取得」をご参考下さい。
       parameters:
+        - in: path
+          name: site_name
+          required: true
+          schema:
+            type: string
+          description: サイト名
         - in: path
           name: id
           schema:
@@ -1218,10 +1299,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorDefault'
     delete:
+      operationId: "DeletePermissionAccessKey"
       tags:
         - パーミッション
-      servers:
-        - url: 'https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/{site_name}/v2/'
       summary: パーミッションが保有するアクセスキーの削除
       description: |-
         アクセス先ベースURL: `https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/（サイト名）/v2/`
@@ -1233,6 +1313,12 @@ paths:
 
         なお、サイト名の取得方法は「利用例＞接続先サイト一覧の取得」をご参考下さい。
       parameters:
+        - in: path
+          name: site_name
+          required: true
+          schema:
+            type: string
+          description: サイト名
         - in: path
           name: id
           schema:
@@ -1266,12 +1352,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDefault'
-  /status:
+  '/{site_name}/v2/status':
     get:
+      operationId: "ReadSiteStatus"
       tags:
         - ステータス
-      servers:
-        - url: 'https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/{site_name}/v2/'
       summary: サイトのステータスの取得
       description: |-
         アクセス先ベースURL: `https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/（サイト名）/v2/`
@@ -1282,6 +1367,13 @@ paths:
         となります。
 
         なお、サイト名の取得方法は「利用例＞接続先サイト一覧の取得」をご参考下さい。
+      parameters:
+        - in: path
+          name: site_name
+          required: true
+          schema:
+            type: string
+          description: サイト名
       responses:
         '200':
           description: サイトのステータスの取得に成功しました
@@ -1302,8 +1394,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorDefault'
 servers:
-  - url: /objectstorage/fed/api/v1
-  - url: '/objectstorage/1.0/{site_name}/v2/'
+  - url: 'https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0'
 components:
   securitySchemes:
     Account_api_key:
