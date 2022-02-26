@@ -22,5 +22,30 @@
     - 修正前: `HTTP`
     - 修正後: `http`
 - 正規表現パターンの指定誤り:
-  - 修正前:`^[\\w\\d-_]+$`
-  - 修正後:`^[\\w\\d_-]+$`
+  - 修正前:`^[\w\d-_]+$`
+  - 修正後:`^[\w\d_-]+$`
+  :bulb: `-`を指定する時は最初か最後に書く必要がある
+- `example`が`pettern`で指定した正規表現にマッチしない
+  - `components.schemas.Code`: pattern=`^\w+$`, examples=`abc01234@foo@isk01` (patternの誤り)
+    - 修正前:`^\w+$`
+    - 修正後:`^[\w@]+$`
+  - `components.schemas.DisplayName`: pattern=`^\w+$`, examples=`abc012345-` (patternの誤り)
+    - 修正前:`^\w+$`
+    - 修正後:`^.+$`
+    :warning: 入力パターンが不明なため`.`にしているが、API側で制御しているのであれば適切に指定するのが望ましい
+  - `components.schemas.AccessKeyID`: pattern=`^[\w\d\/]{40}$`, examples=`abcdefABCDEF0123456789` (patternの誤り)
+    - 修正前:`^[\w\d\/]{40}$`
+    - 修正後:`^[\w\d\/]{1,40}$`
+    :warning: 数量詞誤りと思われるが、出現パターンが不明なため広く設定している
+  - `components.schemas.SecretAccessKey`: pattern=`^[\w\d\/]{40}$`, examples=`NOTICE: EXISTS ONLY WHEN JUST CREATED` 
+    - 修正前: pattern=`^[\w\d\/]{40}$`, `examples=`NOTICE: EXISTS ONLY WHEN JUST CREATED`
+    - 修正後: pattern=`^[\w\d\/=]{40}$`, `examples=`==NOTICE==EXISTS/ONLY/WHEN/JUST/CREATED=`
+      :warning: パターン不明なため実際の値を数パターンみて判定
+  - `components.schemas.PermissionSecret`: pattern=`^[\w\d\/]{40}$`, examples=`NOTICE: EXISTS ONLY WHEN JUST CREATED`
+    - 修正前: pattern=`^[\w\d\/]{40}$`, `examples=`NOTICE: EXISTS ONLY WHEN JUST CREATED`
+    - 修正後: pattern=`^[\w\d\/=]{40}$`, `examples=`==NOTICE==EXISTS/ONLY/WHEN/JUST/CREATED=`
+      `components.schemas.SecretAccessKey`と同じ
+  - `components.schemas.Session.access_key_secret`: pattern=`^[\w\d\/]{40}$`, examples=`abcdefABCDEF0123456789` (patternの誤り)
+    - 修正前:`^[\w\d\/]{40}$`
+    - 修正後:`^[\w\d\/]{1,40}$`
+      `components.schemas.AccessKeyID`と同じ

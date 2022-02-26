@@ -1407,49 +1407,49 @@ components:
           example:
             - is1a
             - is1b
-    model.HTTPErr:
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/model.HTTPErrDoc'
-    model.HTTPErrDoc:
-      type: object
-      properties:
-        code:
-          type: integer
-          example: 429
-        errors:
-          type: array
-          items:
-            $ref: '#/components/schemas/model.InnerErr'
-        message:
-          type: string
-          example: Rate Limit Exceeded
-        trace_id:
-          description: X-Sakura-Internal-Serial-ID
-          type: string
-          example: 0f36837633984f3fc8871f515e8efa24
-    model.InnerErr:
-      type: object
-      properties:
-        domain:
-          description: 'global, usage,...'
-          type: string
-          example: usage
-        location:
-          description: 'Authorization, {paramName},...'
-          type: string
-        location_type:
-          description: 'header, parameter,...'
-          type: string
-        message:
-          description: '{description}'
-          type: string
-          example: Rate Limit Exceeded
-        reason:
-          description: 'invalidParameter, required,...'
-          type: string
-          example: rateLimitExceeded
+#    model.HTTPErr:
+#      type: object
+#      properties:
+#        error:
+#          $ref: '#/components/schemas/model.HTTPErrDoc'
+#    model.HTTPErrDoc:
+#      type: object
+#      properties:
+#        code:
+#          type: integer
+#          example: 429
+#        errors:
+#          type: array
+#          items:
+#            $ref: '#/components/schemas/model.InnerErr'
+#        message:
+#          type: string
+#          example: Rate Limit Exceeded
+#        trace_id:
+#          description: X-Sakura-Internal-Serial-ID
+#          type: string
+#          example: 0f36837633984f3fc8871f515e8efa24
+#    model.InnerErr:
+#      type: object
+#      properties:
+#        domain:
+#          description: 'global, usage,...'
+#          type: string
+#          example: usage
+#        location:
+#          description: 'Authorization, {paramName},...'
+#          type: string
+#        location_type:
+#          description: 'header, parameter,...'
+#          type: string
+#        message:
+#          description: '{description}'
+#          type: string
+#          example: Rate Limit Exceeded
+#        reason:
+#          description: 'invalidParameter, required,...'
+#          type: string
+#          example: rateLimitExceeded
     PermissionID:
       description: Permission ID
       type: integer
@@ -1463,7 +1463,7 @@ components:
     Code:
       description: Code
       type: string
-      pattern: ^\w+$
+      pattern: ^[\w@]+$
       example: abc01234@foo@isk01
     CreatedAt:
       description: Created at
@@ -1486,18 +1486,18 @@ components:
     DisplayName:
       description: Display name
       type: string
-      pattern: ^\w+$
+      pattern: ^.+$
       example: abc012345-
     AccessKeyID:
       description: Access key ID
       type: string
-      pattern: '^[\w\d\/]{40}$'
+      pattern: '^[\w\d\/]{1,40}$'
       example: abcdefABCDEF0123456789
     SecretAccessKey:
       description: Secret Access key
       type: string
-      pattern: '^[\w\d\/]{40}$'
-      example: 'NOTICE: EXISTS ONLY WHEN JUST CREATED'
+      pattern: '^[\w\d\/=]{40}$'
+      example: '==NOTICE==EXISTS/ONLY/WHEN/JUST/CREATED='
     accountKeys:
       description: Root user access keys
       type: object
@@ -1551,13 +1551,13 @@ components:
     PermissionSecret:
       description: Permission secret key
       type: string
-      pattern: '^[\w\d\/]{40}$'
-      example: 'NOTICE: EXISTS ONLY WHEN JUST CREATED'
-    BucketGrantFullControl:
-      description: Bucket Grant Full Control
-      type: string
-      pattern: '^[\w\d_-]+$'
-      example: grantfullControl
+      pattern: '^[\w\d\/=]{40}$'
+      example: '==NOTICE==EXISTS/ONLY/WHEN/JUST/CREATED='
+#    BucketGrantFullControl:
+#      description: Bucket Grant Full Control
+#      type: string
+#      pattern: '^[\w\d_-]+$'
+#      example: grantfullControl
     Account:
       description: Account info
       type: object
@@ -1575,113 +1575,113 @@ components:
             created_at:
               allOf:
                 - $ref: '#/components/schemas/CreatedAt'
-    BucketGrantRead:
-      description: Bucket Grant Read
-      type: boolean
-      example: true
-    BucketGrantReadAcp:
-      description: Bucket Grant Read ACP
-      type: string
-      example: Bucket Grant Read ACP
-    BucketGrantWrite:
-      description: Bcuket Grant Write
-      type: boolean
-      example: true
-    BucketGrantWriteAcp:
-      description: Bucket Grant Write ACP
-      type: string
-      example: Bucket Grant Write ACP
-    BucketBody:
-      description: Request body for bucket
-      type: object
-      properties:
-        acl:
-          type: string
-          example: |
-            {
-              "Owner": {
-                "DisplayName": "123456789012",
-                "ID": "abcdefABCDEF0123456789"
-              },
-              "Grants": [
-                {
-                  "Grantee": {
-                    "DisplayName": "113100030424",
-                    "ID": "abcedefABCDEF0123456789",
-                    "Type": "CanonicalUser"
-                  },
-                  "Permission": "FULL_CONTROL"
-                }
-              ]
-            }
-        grant_full_control:
-          allOf:
-            - $ref: '#/components/schemas/BucketGrantFullControl'
-        grant_read:
-          allOf:
-            - $ref: '#/components/schemas/BucketGrantRead'
-        grnat_read_acp:
-          allOf:
-            - $ref: '#/components/schemas/BucketGrantReadAcp'
-        grant_write:
-          allOf:
-            - $ref: '#/components/schemas/BucketGrantWrite'
-        grant_write_acp:
-          allOf:
-            - $ref: '#/components/schemas/BucketGrantWriteAcp'
-    Bucket:
-      description: Bucket
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            name:
-              allOf:
-                - $ref: '#/components/schemas/BucketName'
-            resource_id:
-              allOf:
-                - $ref: '#/components/schemas/ResourceID'
-    BucketForGetACL:
-      description: Bucket
-      type: object
-      properties:
-        data:
-          description: data type
-          type: object
-          properties:
-            owner:
-              type: object
-              properties:
-                id:
-                  type: string
-                  example: '123456789012'
-                display_name:
-                  type: string
-                  example: display_name
-            grants:
-              type: array
-              items:
-                type: object
-                properties:
-                  grantee:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                        example: abcedefABCDEF0123456789
-                      display_name:
-                        type: string
-                        example: '113100030424'
-                      type:
-                        type: string
-                        example: CanonicalUser
-                      uri:
-                        type: string
-                        example: uri
-                  permission:
-                    type: string
-                    example: permission
+#    BucketGrantRead:
+#      description: Bucket Grant Read
+#      type: boolean
+#      example: true
+#    BucketGrantReadAcp:
+#      description: Bucket Grant Read ACP
+#      type: string
+#      example: Bucket Grant Read ACP
+#    BucketGrantWrite:
+#      description: Bcuket Grant Write
+#      type: boolean
+#      example: true
+#    BucketGrantWriteAcp:
+#      description: Bucket Grant Write ACP
+#      type: string
+#      example: Bucket Grant Write ACP
+#    BucketBody:
+#      description: Request body for bucket
+#      type: object
+#      properties:
+#        acl:
+#          type: string
+#          example: |
+#            {
+#              "Owner": {
+#                "DisplayName": "123456789012",
+#                "ID": "abcdefABCDEF0123456789"
+#              },
+#              "Grants": [
+#                {
+#                  "Grantee": {
+#                    "DisplayName": "113100030424",
+#                    "ID": "abcedefABCDEF0123456789",
+#                    "Type": "CanonicalUser"
+#                  },
+#                  "Permission": "FULL_CONTROL"
+#                }
+#              ]
+#            }
+#        grant_full_control:
+#          allOf:
+#            - $ref: '#/components/schemas/BucketGrantFullControl'
+#        grant_read:
+#          allOf:
+#            - $ref: '#/components/schemas/BucketGrantRead'
+#        grnat_read_acp:
+#          allOf:
+#            - $ref: '#/components/schemas/BucketGrantReadAcp'
+#        grant_write:
+#          allOf:
+#            - $ref: '#/components/schemas/BucketGrantWrite'
+#        grant_write_acp:
+#          allOf:
+#            - $ref: '#/components/schemas/BucketGrantWriteAcp'
+#    Bucket:
+#      description: Bucket
+#      type: object
+#      properties:
+#        data:
+#          type: object
+#          properties:
+#            name:
+#              allOf:
+#                - $ref: '#/components/schemas/BucketName'
+#            resource_id:
+#              allOf:
+#                - $ref: '#/components/schemas/ResourceID'
+#    BucketForGetACL:
+#      description: Bucket
+#      type: object
+#      properties:
+#        data:
+#          description: data type
+#          type: object
+#          properties:
+#            owner:
+#              type: object
+#              properties:
+#                id:
+#                  type: string
+#                  example: '123456789012'
+#                display_name:
+#                  type: string
+#                  example: display_name
+#            grants:
+#              type: array
+#              items:
+#                type: object
+#                properties:
+#                  grantee:
+#                    type: object
+#                    properties:
+#                      id:
+#                        type: string
+#                        example: abcedefABCDEF0123456789
+#                      display_name:
+#                        type: string
+#                        example: '113100030424'
+#                      type:
+#                        type: string
+#                        example: CanonicalUser
+#                      uri:
+#                        type: string
+#                        example: uri
+#                  permission:
+#                    type: string
+#                    example: permission
     Permission:
       description: Permission
       type: object
@@ -1731,44 +1731,44 @@ components:
             created_at:
               allOf:
                 - $ref: '#/components/schemas/CreatedAt'
-    Session:
-      description: Session
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            access_key_id:
-              type: string
-              example: abcdefABCDEF0123456789
-            access_key_secret:
-              type: string
-              pattern: '^[\w\d\/]{40}$'
-              example: abcdefABCDEF0123456789
-            user:
-              type: string
-              example: user_name
-            created_at:
-              allOf:
-                - $ref: '#/components/schemas/CreatedAt'
-            expired_at:
-              type: string
-              format: date-time
-              example: '2021-01-11T01:11:23.123456+09:00'
-    SessionBody:
-      description: Session body
-      type: object
-      properties:
-        expires_at:
-          type: string
-          format: date-time
-          example: '2020-01-11T01:11:23.123456+09:00'
-        token:
-          type: string
-          example: abcdefABCDEF0123456789
-        user:
-          type: string
-          example: user_name
+#    Session:
+#      description: Session
+#      type: object
+#      properties:
+#        data:
+#          type: object
+#          properties:
+#            access_key_id:
+#              type: string
+#              example: abcdefABCDEF0123456789
+#            access_key_secret:
+#              type: string
+#              pattern: '^[\w\d\/]{1,40}$'
+#              example: abcdefABCDEF0123456789
+#            user:
+#              type: string
+#              example: user_name
+#            created_at:
+#              allOf:
+#                - $ref: '#/components/schemas/CreatedAt'
+#            expired_at:
+#              type: string
+#              format: date-time
+#              example: '2021-01-11T01:11:23.123456+09:00'
+#    SessionBody:
+#      description: Session body
+#      type: object
+#      properties:
+#        expires_at:
+#          type: string
+#          format: date-time
+#          example: '2020-01-11T01:11:23.123456+09:00'
+#        token:
+#          type: string
+#          example: abcdefABCDEF0123456789
+#        user:
+#          type: string
+#          example: user_name
     Status:
       description: Status
       type: object
