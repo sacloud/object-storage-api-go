@@ -76,119 +76,59 @@ type CreatedAt time.Time
 // Display name
 type DisplayName string
 
+// Error defines model for Error.
+type Error struct {
+	// どのサービスで発生したエラーかを判別する。
+	// マイクロサービス名に加えてクラスター名を含む文字列が入ることを想定している。
+	Domain ErrorsDomain `json:"domain"`
+
+	// エラー発生箇所。
+	// どのリソースなのか（どのリソースを操作した時に発生したものなのか）、
+	// どのパラメータなのかといった情報。
+	Location ErrorsLocation `json:"location"`
+
+	// エラーの発生箇所の種類。
+	// HTTPヘッダなのかHTTPパラメータなのか、
+	// S3バケットなのかといったlocationの種別情報。
+	LocationType ErrorsLocationType `json:"location_type"`
+
+	// エラー発生時のメッセージ内容。
+	// このメッセージはエラーを発生させたアプリケーションのメッセージをそのまま含む場合がある。
+	Message ErrorsMessage `json:"message"`
+
+	// なぜそのエラーが発生したかがわかる情報。
+	// エラーメッセージの原因やエラー解決のためのヒントも含む場合がある。
+	Reason ErrorsReason `json:"reason"`
+}
+
 // Error400 defines model for Error400.
 type Error400 struct {
-	// error 400
-	Error *struct {
-		Code *struct {
-			// Embedded struct due to allOf(#/components/schemas/ErrorCode)
-			ErrorCode `yaml:",inline"`
-		} `json:"code,omitempty"`
-		Errors *struct {
-			// Embedded struct due to allOf(#/components/schemas/Errors)
-			Errors `yaml:",inline"`
-		} `json:"errors,omitempty"`
-		Message *struct {
-			// Embedded struct due to allOf(#/components/schemas/ErrorMessage)
-			ErrorMessage `yaml:",inline"`
-		} `json:"message,omitempty"`
-		TraceId *struct {
-			// Embedded struct due to allOf(#/components/schemas/ErrorTraceId)
-			ErrorTraceId `yaml:",inline"`
-		} `json:"trace_id,omitempty"`
-	} `json:"error,omitempty"`
+	// error
+	Error ErrorDetail `json:"error"`
 }
 
 // Error401 defines model for Error401.
 type Error401 struct {
-	// error 401
-	Error *struct {
-		Code *struct {
-			// Embedded struct due to allOf(#/components/schemas/ErrorCode)
-			ErrorCode `yaml:",inline"`
-		} `json:"code,omitempty"`
-		Errors *struct {
-			// Embedded struct due to allOf(#/components/schemas/Errors)
-			Errors `yaml:",inline"`
-		} `json:"errors,omitempty"`
-		Message *struct {
-			// Embedded struct due to allOf(#/components/schemas/ErrorMessage)
-			ErrorMessage `yaml:",inline"`
-		} `json:"message,omitempty"`
-		TraceId *struct {
-			// Embedded struct due to allOf(#/components/schemas/ErrorTraceId)
-			ErrorTraceId `yaml:",inline"`
-		} `json:"trace_id,omitempty"`
-	} `json:"error,omitempty"`
+	// error
+	Error ErrorDetail `json:"error"`
 }
 
 // Error403 defines model for Error403.
 type Error403 struct {
-	// error 403
-	Error *struct {
-		Code *struct {
-			// Embedded struct due to allOf(#/components/schemas/ErrorCode)
-			ErrorCode `yaml:",inline"`
-		} `json:"code,omitempty"`
-		Errors *struct {
-			// Embedded struct due to allOf(#/components/schemas/Errors)
-			Errors `yaml:",inline"`
-		} `json:"errors,omitempty"`
-		Message *struct {
-			// Embedded struct due to allOf(#/components/schemas/ErrorMessage)
-			ErrorMessage `yaml:",inline"`
-		} `json:"message,omitempty"`
-		TraceId *struct {
-			// Embedded struct due to allOf(#/components/schemas/ErrorTraceId)
-			ErrorTraceId `yaml:",inline"`
-		} `json:"trace_id,omitempty"`
-	} `json:"error,omitempty"`
+	// error
+	Error ErrorDetail `json:"error"`
 }
 
 // Error404 defines model for Error404.
 type Error404 struct {
-	// error 404
-	Error *struct {
-		Code *struct {
-			// Embedded struct due to allOf(#/components/schemas/ErrorCode)
-			ErrorCode `yaml:",inline"`
-		} `json:"code,omitempty"`
-		Errors *struct {
-			// Embedded struct due to allOf(#/components/schemas/Errors)
-			Errors `yaml:",inline"`
-		} `json:"errors,omitempty"`
-		Message *struct {
-			// Embedded struct due to allOf(#/components/schemas/ErrorMessage)
-			ErrorMessage `yaml:",inline"`
-		} `json:"message,omitempty"`
-		TraceId *struct {
-			// Embedded struct due to allOf(#/components/schemas/ErrorTraceId)
-			ErrorTraceId `yaml:",inline"`
-		} `json:"trace_id,omitempty"`
-	} `json:"error,omitempty"`
+	// error
+	Error ErrorDetail `json:"error"`
 }
 
 // Error409 defines model for Error409.
 type Error409 struct {
-	// error 409
-	Error *struct {
-		Code *struct {
-			// Embedded struct due to allOf(#/components/schemas/ErrorCode)
-			ErrorCode `yaml:",inline"`
-		} `json:"code,omitempty"`
-		Errors *struct {
-			// Embedded struct due to allOf(#/components/schemas/Errors)
-			Errors `yaml:",inline"`
-		} `json:"errors,omitempty"`
-		Message *struct {
-			// Embedded struct due to allOf(#/components/schemas/ErrorMessage)
-			ErrorMessage `yaml:",inline"`
-		} `json:"message,omitempty"`
-		TraceId *struct {
-			// Embedded struct due to allOf(#/components/schemas/ErrorTraceId)
-			ErrorTraceId `yaml:",inline"`
-		} `json:"trace_id,omitempty"`
-	} `json:"error,omitempty"`
+	// error
+	Error ErrorDetail `json:"error"`
 }
 
 // エラーコード。
@@ -196,25 +136,24 @@ type ErrorCode int32
 
 // ErrorDefault defines model for ErrorDefault.
 type ErrorDefault struct {
-	// error 500
-	Error *struct {
-		Code *struct {
-			// Embedded struct due to allOf(#/components/schemas/ErrorCode)
-			ErrorCode `yaml:",inline"`
-		} `json:"code,omitempty"`
-		Errors *struct {
-			// Embedded struct due to allOf(#/components/schemas/Errors)
-			Errors `yaml:",inline"`
-		} `json:"errors,omitempty"`
-		Message *struct {
-			// Embedded struct due to allOf(#/components/schemas/ErrorMessage)
-			ErrorMessage `yaml:",inline"`
-		} `json:"message,omitempty"`
-		TraceId *struct {
-			// Embedded struct due to allOf(#/components/schemas/ErrorTraceId)
-			ErrorTraceId `yaml:",inline"`
-		} `json:"trace_id,omitempty"`
-	} `json:"error,omitempty"`
+	// error
+	Error ErrorDetail `json:"error"`
+}
+
+// error
+type ErrorDetail struct {
+	// エラーコード。
+	Code ErrorCode `json:"code"`
+
+	// 認証に関するエラーについて詳細なエラー内容を表示する。
+	Errors Errors `json:"errors"`
+
+	// エラー発生時のメッセージ内容。
+	// このメッセージはエラーを発生させたアプリケーションのメッセージをそのまま含む場合がある。
+	Message ErrorMessage `json:"message"`
+
+	// X-Sakura-Internal-Serial-ID
+	TraceId ErrorTraceId `json:"trace_id"`
 }
 
 // エラー発生時のメッセージ内容。
@@ -225,28 +164,7 @@ type ErrorMessage string
 type ErrorTraceId string
 
 // 認証に関するエラーについて詳細なエラー内容を表示する。
-type Errors []struct {
-	Domain *struct {
-		// Embedded struct due to allOf(#/components/schemas/ErrorsDomain)
-		ErrorsDomain `yaml:",inline"`
-	} `json:"domain,omitempty"`
-	Location *struct {
-		// Embedded struct due to allOf(#/components/schemas/ErrorsLocation)
-		ErrorsLocation `yaml:",inline"`
-	} `json:"location,omitempty"`
-	LocationType *struct {
-		// Embedded struct due to allOf(#/components/schemas/ErrorsLocationType)
-		ErrorsLocationType `yaml:",inline"`
-	} `json:"location_type,omitempty"`
-	Message *struct {
-		// Embedded struct due to allOf(#/components/schemas/ErrorsMessage)
-		ErrorsMessage `yaml:",inline"`
-	} `json:"message,omitempty"`
-	Reason *struct {
-		// Embedded struct due to allOf(#/components/schemas/ErrorsReason)
-		ErrorsReason `yaml:",inline"`
-	} `json:"reason,omitempty"`
-}
+type Errors []Error
 
 // どのサービスで発生したエラーかを判別する。
 // マイクロサービス名に加えてクラスター名を含む文字列が入ることを想定している。
