@@ -3,7 +3,7 @@
 オリジナルの定義ファイルは以下のサイトで公開されています。
 [https://manual.sakura.ad.jp/cloud/objectstorage/api/api-json.html](https://manual.sakura.ad.jp/cloud/objectstorage/api/api-json.html)
 
-公開されている定義ファイルのままではlintでエラーになる箇所があるため、手作業で修正しています。
+公開されている定義ファイルのままではlintでエラーになる箇所やoapi-codegenで扱いにくい箇所があるため手作業で修正しています。
 修正は以下のように行っています。
 
 - オリジナルの定義ファイルをダウンロード、`original-swagger.json`として保存
@@ -49,3 +49,8 @@
     - 修正前:`^[\w\d\/]{40}$`
     - 修正後:`^[\w\d\/]{1,40}$`
       `components.schemas.AccessKeyID`と同じ
+
+### その他の修正点
+
+- [サーバURLを`https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0`に統一](https://github.com/sacloud/object-storage-api-go/pull/9)
+- [各操作に`operationId`を付与](https://github.com/sacloud/object-storage-api-go/pull/9)

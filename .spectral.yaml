@@ -2,6 +2,5 @@ extends: spectral:oas
 rules:
   info-contact: false
   operation-tag-defined: false
-  operation-operationId: false
   path-keys-no-trailing-slash: false
   oas3-server-trailing-slash: false

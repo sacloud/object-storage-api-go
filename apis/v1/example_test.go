@@ -25,7 +25,7 @@ import (
 	v1 "github.com/sacloud/object-storage-api-go/apis/v1"
 )
 
-var serverURL = "https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/fed/v1/"
+var serverURL = "https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0"
 
 // Example API定義から生成されたコードを直接利用する例
 func Example() {
@@ -42,7 +42,7 @@ func Example() {
 		panic(err)
 	}
 
-	sites, err := client.GetClustersWithResponse(context.Background())
+	sites, err := client.ListClustersWithResponse(context.Background())
 	if err != nil {
 		panic(err)
 	}
