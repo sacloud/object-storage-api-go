@@ -16,18 +16,6 @@ package server
 
 import "github.com/gin-gonic/gin"
 
-// DeleteBucket バケットの削除
-// (DELETE /fed/v1/buckets/{name})
-func (s *Server) DeleteBucket(c *gin.Context, name string) {
-
-}
-
-// CreateBucket バケットの作成
-// (PUT /fed/v1/buckets/{name})
-func (s *Server) CreateBucket(c *gin.Context, name string) {
-
-}
-
 // DeleteSiteAccount サイトアカウントの削除
 // (DELETE /{site_name}/v2/account)
 func (s *Server) DeleteSiteAccount(c *gin.Context, siteName string) {}

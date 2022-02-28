@@ -330,7 +330,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResponseBodyClusters'
+                $ref: '#/components/schemas/ListClustersResponseBody'
         '401':
           description: 認証に失敗しました
           content:
@@ -363,7 +363,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResponseBodyCluster'
+                $ref: '#/components/schemas/ReadClusterResponseBody'
         '401':
           description: 認証に失敗しました
           content:
@@ -400,7 +400,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/handler.PutBucketReqBody'
+              $ref: '#/components/schemas/CreateBucketRequestBody'
         description: 作成したいバケット情報
         required: true
       responses:
@@ -409,7 +409,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/handler.putBucketRes'
+                $ref: '#/components/schemas/CreateBucketResponseBody'
         '400':
           description: バケット名が不正です
           content:
@@ -453,7 +453,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/handler.PutBucketReqBody'
+              $ref: '#/components/schemas/CreateBucketRequestBody'
         description: 作成したいバケット情報
         required: true
       responses:
@@ -462,7 +462,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/handler.putBucketRes'
+                $ref: '#/components/schemas/CreateBucketResponseBody'
         '400':
           description: バケット名が不正です
           content:
@@ -1405,7 +1405,8 @@ components:
 
          `アクセストークン(UUID)` を「ユーザーID」、`アクセストークンシークレット` を「パスワード」として指定します。
   schemas:
-    handler.PutBucketReqBody:
+    # Note: handler.PutBucketReqBodyからリネーム
+    CreateBucketRequestBody:
       type: object
       required:
         - cluster_id
@@ -1413,13 +1414,13 @@ components:
         cluster_id:
           type: string
     # Note: handler.getClusterResからリネーム
-    ResponseBodyCluster:
+    ReadClusterResponseBody:
       type: object
       properties:
         data:
           $ref: '#/components/schemas/Cluster'
     # Note: handler.listClustersResからリネーム
-    ResponseBodyClusters:
+    ListClustersResponseBody:
       type: object
       properties:
         data:
@@ -1429,18 +1430,25 @@ components:
             $ref: '#/components/schemas/Cluster'
       required:
         - data
-    handler.putBucketRes:
+    # Note: handler.putBucketRes:
+    CreateBucketResponseBody:
       type: object
       properties:
         data:
-          $ref: '#/components/schemas/model.Bucket'
-    model.Bucket:
+          $ref: '#/components/schemas/Bucket'
+      required:
+        - data
+    # Note: model.Bucketからリネーム
+    Bucket:
       type: object
       properties:
         cluster_id:
           type: string
         name:
           type: string
+      required:
+        - cluster_id
+        - name
     # Note: model.Clusterからリネーム
     Cluster:
       type: object

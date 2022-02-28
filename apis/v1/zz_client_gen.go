@@ -1430,7 +1430,7 @@ type ClientWithResponsesInterface interface {
 type DeleteBucketResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON201      *HandlerPutBucketRes
+	JSON201      *CreateBucketResponseBody
 	JSON400      *Error400
 	JSON409      *Error409
 }
@@ -1467,7 +1467,7 @@ func (r DeleteBucketResponse) UndefinedError() error {
 type CreateBucketResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON201      *HandlerPutBucketRes
+	JSON201      *CreateBucketResponseBody
 	JSON400      *Error400
 	JSON404      *Error404
 	JSON409      *Error409
@@ -1505,7 +1505,7 @@ func (r CreateBucketResponse) UndefinedError() error {
 type ListClustersResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *ResponseBodyClusters
+	JSON200      *ListClustersResponseBody
 	JSON401      *Error401
 }
 
@@ -1526,7 +1526,7 @@ func (r ListClustersResponse) StatusCode() int {
 }
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-func (r ListClustersResponse) Result() (*ResponseBodyClusters, error) {
+func (r ListClustersResponse) Result() (*ListClustersResponseBody, error) {
 	return r.JSON200, eCoalesce(r.JSON401, r.UndefinedError())
 }
 
@@ -1541,7 +1541,7 @@ func (r ListClustersResponse) UndefinedError() error {
 type ReadClusterResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *ResponseBodyCluster
+	JSON200      *ReadClusterResponseBody
 	JSON401      *Error401
 	JSON404      *Error404
 }
@@ -1563,7 +1563,7 @@ func (r ReadClusterResponse) StatusCode() int {
 }
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-func (r ReadClusterResponse) Result() (*ResponseBodyCluster, error) {
+func (r ReadClusterResponse) Result() (*ReadClusterResponseBody, error) {
 	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.UndefinedError())
 }
 
@@ -2454,7 +2454,7 @@ func ParseDeleteBucketResponse(rsp *http.Response) (*DeleteBucketResponse, error
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
-		var dest HandlerPutBucketRes
+		var dest CreateBucketResponseBody
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -2494,7 +2494,7 @@ func ParseCreateBucketResponse(rsp *http.Response) (*CreateBucketResponse, error
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
-		var dest HandlerPutBucketRes
+		var dest CreateBucketResponseBody
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -2541,7 +2541,7 @@ func ParseListClustersResponse(rsp *http.Response) (*ListClustersResponse, error
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest ResponseBodyClusters
+		var dest ListClustersResponseBody
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -2574,7 +2574,7 @@ func ParseReadClusterResponse(rsp *http.Response) (*ReadClusterResponse, error) 
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest ResponseBodyCluster
+		var dest ReadClusterResponseBody
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}

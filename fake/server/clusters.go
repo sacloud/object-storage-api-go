@@ -30,7 +30,7 @@ func (s *Server) ListClusters(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, &v1.ResponseBodyClusters{
+	c.JSON(http.StatusOK, &v1.ListClustersResponseBody{
 		Data: clusters,
 	})
 }
@@ -43,7 +43,7 @@ func (s *Server) ReadCluster(c *gin.Context, id string) {
 		s.handleError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, &v1.ResponseBodyCluster{
+	c.JSON(http.StatusOK, &v1.ReadClusterResponseBody{
 		Data: cluster,
 	})
 }
