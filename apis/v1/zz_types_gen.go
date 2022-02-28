@@ -67,6 +67,46 @@ type CanRead bool
 // The flag to write bucket contents
 type CanWrite bool
 
+// Cluster defines model for Cluster.
+type Cluster struct {
+	// API Servers Zones
+	ApiZone []string `json:"api_zone"`
+
+	// URL of Control Panel
+	ControlPanelUrl string `json:"control_panel_url"`
+
+	// Display Name (en-us)
+	DislpayNameEnUs string `json:"dislpay_name_en_us"`
+
+	// Display Name (ja)
+	DislpayNameJa string `json:"dislpay_name_ja"`
+
+	// Display Name (Depending on Accept-Language)
+	DisplayName string `json:"display_name"`
+
+	// Display Order (Can be ignored)
+	DisplayOrder int `json:"display_order"`
+
+	// Endpoint Base of Cluster
+	EndpointBase string `json:"endpoint_base"`
+
+	// URL of IAM-compat API
+	IamEndpoint string `json:"iam_endpoint"`
+
+	// URL of IAM-compat API (w/ resigning)
+	IamEndpointForControlPanel string `json:"iam_endpoint_for_control_panel"`
+	Id                         string `json:"id"`
+
+	// URL of S3-compat API
+	S3Endpoint string `json:"s3_endpoint"`
+
+	// URL of S3-compat API (w/ resigning)
+	S3EndpointForControlPanel string `json:"s3_endpoint_for_control_panel"`
+
+	// Storage Servers Zones
+	StorageZone []string `json:"storage_zone"`
+}
+
 // Code
 type Code string
 
@@ -251,6 +291,17 @@ type PermissionSecret string
 // Resource ID
 type ResourceID string
 
+// ResponseBodyCluster defines model for ResponseBodyCluster.
+type ResponseBodyCluster struct {
+	Data *Cluster `json:"data,omitempty"`
+}
+
+// ResponseBodyClusters defines model for ResponseBodyClusters.
+type ResponseBodyClusters struct {
+	// If use a pointer type, braek output
+	Data []Cluster `json:"data"`
+}
+
 // Secret Access key
 type SecretAccessKey string
 
@@ -311,17 +362,6 @@ type HandlerPutBucketReqBody struct {
 	ClusterId string `json:"cluster_id"`
 }
 
-// HandlerGetClusterRes defines model for handler.getClusterRes.
-type HandlerGetClusterRes struct {
-	Data *ModelCluster `json:"data,omitempty"`
-}
-
-// HandlerListClustersRes defines model for handler.listClustersRes.
-type HandlerListClustersRes struct {
-	// If use a pointer type, braek output
-	Data *[]ModelCluster `json:"data,omitempty"`
-}
-
 // HandlerPutBucketRes defines model for handler.putBucketRes.
 type HandlerPutBucketRes struct {
 	Data *ModelBucket `json:"data,omitempty"`
@@ -331,46 +371,6 @@ type HandlerPutBucketRes struct {
 type ModelBucket struct {
 	ClusterId *string `json:"cluster_id,omitempty"`
 	Name      *string `json:"name,omitempty"`
-}
-
-// ModelCluster defines model for model.Cluster.
-type ModelCluster struct {
-	// API Servers Zones
-	ApiZone *[]string `json:"api_zone,omitempty"`
-
-	// URL of Control Panel
-	ControlPanelUrl *string `json:"control_panel_url,omitempty"`
-
-	// Display Name (en-us)
-	DislpayNameEnUs *string `json:"dislpay_name_en_us,omitempty"`
-
-	// Display Name (ja)
-	DislpayNameJa *string `json:"dislpay_name_ja,omitempty"`
-
-	// Display Name (Depending on Accept-Language)
-	DisplayName *string `json:"display_name,omitempty"`
-
-	// Display Order (Can be ignored)
-	DisplayOrder *int `json:"display_order,omitempty"`
-
-	// Endpoint Base of Cluster
-	EndpointBase *string `json:"endpoint_base,omitempty"`
-
-	// URL of IAM-compat API
-	IamEndpoint *string `json:"iam_endpoint,omitempty"`
-
-	// URL of IAM-compat API (w/ resigning)
-	IamEndpointForControlPanel *string `json:"iam_endpoint_for_control_panel,omitempty"`
-	Id                         *string `json:"id,omitempty"`
-
-	// URL of S3-compat API
-	S3Endpoint *string `json:"s3_endpoint,omitempty"`
-
-	// URL of S3-compat API (w/ resigning)
-	S3EndpointForControlPanel *string `json:"s3_endpoint_for_control_panel,omitempty"`
-
-	// Storage Servers Zones
-	StorageZone *[]string `json:"storage_zone,omitempty"`
 }
 
 // DeleteBucketJSONBody defines parameters for DeleteBucket.

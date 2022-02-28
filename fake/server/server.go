@@ -27,6 +27,7 @@ import (
 var _ v1.ServerInterface = (*Server)(nil)
 
 type Server struct {
+	Engine *fake.Engine
 }
 
 func (s *Server) Handler() http.Handler {

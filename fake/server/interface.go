@@ -28,16 +28,6 @@ func (s *Server) CreateBucket(c *gin.Context, name string) {
 
 }
 
-// ListClusters サイト一覧の取得
-// (GET /fed/v1/clusters)
-func (s *Server) ListClusters(c *gin.Context) {
-
-}
-
-// ReadCluster サイトの取得
-// (GET /fed/v1/clusters/{id})
-func (s *Server) ReadCluster(c *gin.Context, id string) {}
-
 // DeleteSiteAccount サイトアカウントの削除
 // (DELETE /{site_name}/v2/account)
 func (s *Server) DeleteSiteAccount(c *gin.Context, siteName string) {}
