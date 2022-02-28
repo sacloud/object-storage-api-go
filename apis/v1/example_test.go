@@ -42,12 +42,17 @@ func Example() {
 		panic(err)
 	}
 
-	sites, err := client.ListClustersWithResponse(context.Background())
+	resp, err := client.ListClustersWithResponse(context.Background())
 	if err != nil {
 		panic(err)
 	}
 
-	site := (*sites.JSON200.Data)[0]
+	sites, err := resp.Result()
+	if err != nil {
+		panic(err)
+	}
+
+	site := (*sites.Data)[0]
 	fmt.Println(*site.DisplayName)
 	// output:
 	// 石狩第1サイト

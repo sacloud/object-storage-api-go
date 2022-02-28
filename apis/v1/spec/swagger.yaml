@@ -1933,157 +1933,86 @@ components:
         認証に関するエラーについて詳細なエラー内容を表示する。
       type: array
       items:
-        type: object
-        properties:
-          domain:
-            allOf:
-              - $ref: '#/components/schemas/ErrorsDomain'
-            example: '{federaton,cluster}-api-objectstorage.sacloud'
-          location:
-            allOf:
-              - $ref: '#/components/schemas/ErrorsLocation'
-            example: String
-          location_type:
-            allOf:
-              - $ref: '#/components/schemas/ErrorsLocationType'
-            example: String
-          message:
-            allOf:
-              - $ref: '#/components/schemas/ErrorsMessage'
-            example: XXXX failed.
-          reason:
-            allOf:
-              - $ref: '#/components/schemas/ErrorsReason'
-            example: XXXX is wrong. Should set valid parameters.
+        $ref: "#/components/schemas/Error"
+
+    # Errorsから切り出し
+    Error:
+      type: object
+      properties:
+        domain:
+          $ref: '#/components/schemas/ErrorsDomain'
+        location:
+          $ref: '#/components/schemas/ErrorsLocation'
+        location_type:
+          $ref: '#/components/schemas/ErrorsLocationType'
+        message:
+          $ref: '#/components/schemas/ErrorsMessage'
+        reason:
+          $ref: '#/components/schemas/ErrorsReason'
+      required:
+        - domain
+        - location
+        - location_type
+        - message
+        - reason
     Error400:
       type: object
       properties:
         error:
-          description: error 400
-          type: object
-          properties:
-            code:
-              allOf:
-                - $ref: '#/components/schemas/ErrorCode'
-              example: 400
-            message:
-              allOf:
-                - $ref: '#/components/schemas/ErrorMessage'
-              example: Invalid parameters.
-            trace_id:
-              allOf:
-                - $ref: '#/components/schemas/ErrorTraceId'
-              example: 0f36837633984f3fc8871f515e8efa24
-            errors:
-              allOf:
-                - $ref: '#/components/schemas/Errors'
+          $ref: "#/components/schemas/ErrorDetail"
+      required:
+        - error
     Error401:
       type: object
       properties:
         error:
-          description: error 401
-          type: object
-          properties:
-            code:
-              allOf:
-                - $ref: '#/components/schemas/ErrorCode'
-              example: 401
-            message:
-              allOf:
-                - $ref: '#/components/schemas/ErrorMessage'
-              example: Authentication failed.
-            trace_id:
-              allOf:
-                - $ref: '#/components/schemas/ErrorTraceId'
-              example: 0f36837633984f3fc8871f515e8efa24
-            errors:
-              allOf:
-                - $ref: '#/components/schemas/Errors'
+          $ref: "#/components/schemas/ErrorDetail"
+      required:
+        - error
     Error403:
       type: object
       properties:
         error:
-          description: error 403
-          type: object
-          properties:
-            code:
-              allOf:
-                - $ref: '#/components/schemas/ErrorCode'
-              example: 403
-            message:
-              allOf:
-                - $ref: '#/components/schemas/ErrorMessage'
-              example: XXXX creation denied.
-            trace_id:
-              allOf:
-                - $ref: '#/components/schemas/ErrorTraceId'
-              example: 0f36837633984f3fc8871f515e8efa24
-            errors:
-              allOf:
-                - $ref: '#/components/schemas/Errors'
+          $ref: "#/components/schemas/ErrorDetail"
+      required:
+        - error
     Error404:
       type: object
       properties:
         error:
-          description: error 404
-          type: object
-          properties:
-            code:
-              allOf:
-                - $ref: '#/components/schemas/ErrorCode'
-              example: 404
-            message:
-              allOf:
-                - $ref: '#/components/schemas/ErrorMessage'
-              example: XXXX does not exist.
-            trace_id:
-              allOf:
-                - $ref: '#/components/schemas/ErrorTraceId'
-              example: 0f36837633984f3fc8871f515e8efa24
-            errors:
-              allOf:
-                - $ref: '#/components/schemas/Errors'
+          $ref: "#/components/schemas/ErrorDetail"
+      required:
+        - error
     Error409:
       type: object
       properties:
         error:
-          description: error 409
-          type: object
-          properties:
-            code:
-              allOf:
-                - $ref: '#/components/schemas/ErrorCode'
-              example: 409
-            message:
-              allOf:
-                - $ref: '#/components/schemas/ErrorMessage'
-              example: XXXX already created.
-            trace_id:
-              allOf:
-                - $ref: '#/components/schemas/ErrorTraceId'
-              example: 0f36837633984f3fc8871f515e8efa24
-            errors:
-              allOf:
-                - $ref: '#/components/schemas/Errors'
+          $ref: "#/components/schemas/ErrorDetail"
+      required:
+        - error
     ErrorDefault:
       type: object
       properties:
         error:
-          description: error 500
-          type: object
-          properties:
-            code:
-              allOf:
-                - $ref: '#/components/schemas/ErrorCode'
-              example: 500
-            message:
-              allOf:
-                - $ref: '#/components/schemas/ErrorMessage'
-              example: unknown error occurred.
-            trace_id:
-              allOf:
-                - $ref: '#/components/schemas/ErrorTraceId'
-              example: 0f36837633984f3fc8871f515e8efa24
-            errors:
-              allOf:
-                - $ref: '#/components/schemas/Errors'
+          $ref: "#/components/schemas/ErrorDetail"
+      required:
+        - error
+
+    # ErrorNNNから切り出し
+    ErrorDetail:
+      description: error
+      type: object
+      properties:
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          $ref: '#/components/schemas/ErrorMessage'
+        trace_id:
+          $ref: '#/components/schemas/ErrorTraceId'
+        errors:
+          $ref: '#/components/schemas/Errors'
+      required:
+        - code
+        - message
+        - trace_id
+        - errors

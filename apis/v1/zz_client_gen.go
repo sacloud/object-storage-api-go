@@ -1451,19 +1451,18 @@ func (r DeleteBucketResponse) StatusCode() int {
 	return 0
 }
 
-// TODO 後で検討
-// // // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-// func (r DeleteBucketResponse) Result() (error) {
-//     return eCoalesce(r.JSON201,r.JSON400,r.JSON409,r.UndefinedError())
-// }
-//
-// // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-// func (r DeleteBucketResponse) UndefinedError() error {
-//     if !isOKStatus(r.HTTPResponse.StatusCode){
-//         return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
-//     }
-//     return nil
-// }
+// Result JSON200の結果、もしくは発生したエラーのいずれかを返す
+func (r DeleteBucketResponse) Result() error {
+	return eCoalesce(r.JSON201, r.JSON400, r.JSON409, r.UndefinedError())
+}
+
+// UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
+func (r DeleteBucketResponse) UndefinedError() error {
+	if !isOKStatus(r.HTTPResponse.StatusCode) {
+		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
+	}
+	return nil
+}
 
 type CreateBucketResponse struct {
 	Body         []byte
@@ -1490,19 +1489,18 @@ func (r CreateBucketResponse) StatusCode() int {
 	return 0
 }
 
-// TODO 後で検討
-// // // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-// func (r CreateBucketResponse) Result() (error) {
-//     return eCoalesce(r.JSON201,r.JSON400,r.JSON404,r.JSON409,r.UndefinedError())
-// }
-//
-// // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-// func (r CreateBucketResponse) UndefinedError() error {
-//     if !isOKStatus(r.HTTPResponse.StatusCode){
-//         return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
-//     }
-//     return nil
-// }
+// Result JSON200の結果、もしくは発生したエラーのいずれかを返す
+func (r CreateBucketResponse) Result() error {
+	return eCoalesce(r.JSON201, r.JSON400, r.JSON404, r.JSON409, r.UndefinedError())
+}
+
+// UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
+func (r CreateBucketResponse) UndefinedError() error {
+	if !isOKStatus(r.HTTPResponse.StatusCode) {
+		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
+	}
+	return nil
+}
 
 type ListClustersResponse struct {
 	Body         []byte
@@ -1527,19 +1525,18 @@ func (r ListClustersResponse) StatusCode() int {
 	return 0
 }
 
-// TODO 後で検討
-// // // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-// func (r ListClustersResponse) Result() (*HandlerListClustersRes,error) {
-//     return r.JSON200, eCoalesce(r.JSON401,r.UndefinedError())
-// }
-//
-// // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-// func (r ListClustersResponse) UndefinedError() error {
-//     if !isOKStatus(r.HTTPResponse.StatusCode){
-//         return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
-//     }
-//     return nil
-// }
+// Result JSON200の結果、もしくは発生したエラーのいずれかを返す
+func (r ListClustersResponse) Result() (*HandlerListClustersRes, error) {
+	return r.JSON200, eCoalesce(r.JSON401, r.UndefinedError())
+}
+
+// UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
+func (r ListClustersResponse) UndefinedError() error {
+	if !isOKStatus(r.HTTPResponse.StatusCode) {
+		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
+	}
+	return nil
+}
 
 type ReadClusterResponse struct {
 	Body         []byte
@@ -1565,19 +1562,18 @@ func (r ReadClusterResponse) StatusCode() int {
 	return 0
 }
 
-// TODO 後で検討
-// // // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-// func (r ReadClusterResponse) Result() (*HandlerGetClusterRes,error) {
-//     return r.JSON200, eCoalesce(r.JSON401,r.JSON404,r.UndefinedError())
-// }
-//
-// // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-// func (r ReadClusterResponse) UndefinedError() error {
-//     if !isOKStatus(r.HTTPResponse.StatusCode){
-//         return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
-//     }
-//     return nil
-// }
+// Result JSON200の結果、もしくは発生したエラーのいずれかを返す
+func (r ReadClusterResponse) Result() (*HandlerGetClusterRes, error) {
+	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.UndefinedError())
+}
+
+// UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
+func (r ReadClusterResponse) UndefinedError() error {
+	if !isOKStatus(r.HTTPResponse.StatusCode) {
+		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
+	}
+	return nil
+}
 
 type DeleteSiteAccountResponse struct {
 	Body         []byte
@@ -1603,19 +1599,18 @@ func (r DeleteSiteAccountResponse) StatusCode() int {
 	return 0
 }
 
-// TODO 後で検討
-// // // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-// func (r DeleteSiteAccountResponse) Result() (error) {
-//     return eCoalesce(r.JSON401,r.JSON409,r.JSONDefault,r.UndefinedError())
-// }
-//
-// // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-// func (r DeleteSiteAccountResponse) UndefinedError() error {
-//     if !isOKStatus(r.HTTPResponse.StatusCode){
-//         return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
-//     }
-//     return nil
-// }
+// Result JSON200の結果、もしくは発生したエラーのいずれかを返す
+func (r DeleteSiteAccountResponse) Result() error {
+	return eCoalesce(r.JSON401, r.JSON409, r.JSONDefault, r.UndefinedError())
+}
+
+// UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
+func (r DeleteSiteAccountResponse) UndefinedError() error {
+	if !isOKStatus(r.HTTPResponse.StatusCode) {
+		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
+	}
+	return nil
+}
 
 type ReadSiteAccountResponse struct {
 	Body         []byte
@@ -1642,19 +1637,18 @@ func (r ReadSiteAccountResponse) StatusCode() int {
 	return 0
 }
 
-// TODO 後で検討
-// // // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-// func (r ReadSiteAccountResponse) Result() (*Account,error) {
-//     return r.JSON200, eCoalesce(r.JSON401,r.JSON404,r.JSONDefault,r.UndefinedError())
-// }
-//
-// // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-// func (r ReadSiteAccountResponse) UndefinedError() error {
-//     if !isOKStatus(r.HTTPResponse.StatusCode){
-//         return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
-//     }
-//     return nil
-// }
+// Result JSON200の結果、もしくは発生したエラーのいずれかを返す
+func (r ReadSiteAccountResponse) Result() (*Account, error) {
+	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSONDefault, r.UndefinedError())
+}
+
+// UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
+func (r ReadSiteAccountResponse) UndefinedError() error {
+	if !isOKStatus(r.HTTPResponse.StatusCode) {
+		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
+	}
+	return nil
+}
 
 type CreateSiteAccountResponse struct {
 	Body         []byte
@@ -1682,19 +1676,18 @@ func (r CreateSiteAccountResponse) StatusCode() int {
 	return 0
 }
 
-// TODO 後で検討
-// // // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-// func (r CreateSiteAccountResponse) Result() (error) {
-//     return eCoalesce(r.JSON201,r.JSON401,r.JSON403,r.JSON409,r.JSONDefault,r.UndefinedError())
-// }
-//
-// // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-// func (r CreateSiteAccountResponse) UndefinedError() error {
-//     if !isOKStatus(r.HTTPResponse.StatusCode){
-//         return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
-//     }
-//     return nil
-// }
+// Result JSON200の結果、もしくは発生したエラーのいずれかを返す
+func (r CreateSiteAccountResponse) Result() error {
+	return eCoalesce(r.JSON201, r.JSON401, r.JSON403, r.JSON409, r.JSONDefault, r.UndefinedError())
+}
+
+// UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
+func (r CreateSiteAccountResponse) UndefinedError() error {
+	if !isOKStatus(r.HTTPResponse.StatusCode) {
+		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
+	}
+	return nil
+}
 
 type ListAccountAccessKeysResponse struct {
 	Body         []byte
@@ -1721,19 +1714,18 @@ func (r ListAccountAccessKeysResponse) StatusCode() int {
 	return 0
 }
 
-// TODO 後で検討
-// // // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-// func (r ListAccountAccessKeysResponse) Result() (*AccountKeys,error) {
-//     return r.JSON200, eCoalesce(r.JSON401,r.JSON404,r.JSONDefault,r.UndefinedError())
-// }
-//
-// // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-// func (r ListAccountAccessKeysResponse) UndefinedError() error {
-//     if !isOKStatus(r.HTTPResponse.StatusCode){
-//         return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
-//     }
-//     return nil
-// }
+// Result JSON200の結果、もしくは発生したエラーのいずれかを返す
+func (r ListAccountAccessKeysResponse) Result() (*AccountKeys, error) {
+	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSONDefault, r.UndefinedError())
+}
+
+// UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
+func (r ListAccountAccessKeysResponse) UndefinedError() error {
+	if !isOKStatus(r.HTTPResponse.StatusCode) {
+		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
+	}
+	return nil
+}
 
 type CreateAccountAccessKeyResponse struct {
 	Body         []byte
@@ -1761,19 +1753,18 @@ func (r CreateAccountAccessKeyResponse) StatusCode() int {
 	return 0
 }
 
-// TODO 後で検討
-// // // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-// func (r CreateAccountAccessKeyResponse) Result() (error) {
-//     return eCoalesce(r.JSON201,r.JSON401,r.JSON404,r.JSON409,r.JSONDefault,r.UndefinedError())
-// }
-//
-// // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-// func (r CreateAccountAccessKeyResponse) UndefinedError() error {
-//     if !isOKStatus(r.HTTPResponse.StatusCode){
-//         return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
-//     }
-//     return nil
-// }
+// Result JSON200の結果、もしくは発生したエラーのいずれかを返す
+func (r CreateAccountAccessKeyResponse) Result() error {
+	return eCoalesce(r.JSON201, r.JSON401, r.JSON404, r.JSON409, r.JSONDefault, r.UndefinedError())
+}
+
+// UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
+func (r CreateAccountAccessKeyResponse) UndefinedError() error {
+	if !isOKStatus(r.HTTPResponse.StatusCode) {
+		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
+	}
+	return nil
+}
 
 type DeleteAccountAccessKeyResponse struct {
 	Body         []byte
@@ -1798,19 +1789,18 @@ func (r DeleteAccountAccessKeyResponse) StatusCode() int {
 	return 0
 }
 
-// TODO 後で検討
-// // // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-// func (r DeleteAccountAccessKeyResponse) Result() (error) {
-//     return eCoalesce(r.JSON401,r.JSONDefault,r.UndefinedError())
-// }
-//
-// // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-// func (r DeleteAccountAccessKeyResponse) UndefinedError() error {
-//     if !isOKStatus(r.HTTPResponse.StatusCode){
-//         return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
-//     }
-//     return nil
-// }
+// Result JSON200の結果、もしくは発生したエラーのいずれかを返す
+func (r DeleteAccountAccessKeyResponse) Result() error {
+	return eCoalesce(r.JSON401, r.JSONDefault, r.UndefinedError())
+}
+
+// UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
+func (r DeleteAccountAccessKeyResponse) UndefinedError() error {
+	if !isOKStatus(r.HTTPResponse.StatusCode) {
+		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
+	}
+	return nil
+}
 
 type ReadAccountAccessKeyResponse struct {
 	Body         []byte
@@ -1837,19 +1827,18 @@ func (r ReadAccountAccessKeyResponse) StatusCode() int {
 	return 0
 }
 
-// TODO 後で検討
-// // // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-// func (r ReadAccountAccessKeyResponse) Result() (*AccountKey,error) {
-//     return r.JSON200, eCoalesce(r.JSON401,r.JSON404,r.JSONDefault,r.UndefinedError())
-// }
-//
-// // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-// func (r ReadAccountAccessKeyResponse) UndefinedError() error {
-//     if !isOKStatus(r.HTTPResponse.StatusCode){
-//         return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
-//     }
-//     return nil
-// }
+// Result JSON200の結果、もしくは発生したエラーのいずれかを返す
+func (r ReadAccountAccessKeyResponse) Result() (*AccountKey, error) {
+	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSONDefault, r.UndefinedError())
+}
+
+// UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
+func (r ReadAccountAccessKeyResponse) UndefinedError() error {
+	if !isOKStatus(r.HTTPResponse.StatusCode) {
+		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
+	}
+	return nil
+}
 
 type ListPermissionsResponse struct {
 	Body         []byte
@@ -1875,19 +1864,18 @@ func (r ListPermissionsResponse) StatusCode() int {
 	return 0
 }
 
-// TODO 後で検討
-// // // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-// func (r ListPermissionsResponse) Result() (*Permission,error) {
-//     return r.JSON200, eCoalesce(r.JSON401,r.JSONDefault,r.UndefinedError())
-// }
-//
-// // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-// func (r ListPermissionsResponse) UndefinedError() error {
-//     if !isOKStatus(r.HTTPResponse.StatusCode){
-//         return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
-//     }
-//     return nil
-// }
+// Result JSON200の結果、もしくは発生したエラーのいずれかを返す
+func (r ListPermissionsResponse) Result() (*Permission, error) {
+	return r.JSON200, eCoalesce(r.JSON401, r.JSONDefault, r.UndefinedError())
+}
+
+// UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
+func (r ListPermissionsResponse) UndefinedError() error {
+	if !isOKStatus(r.HTTPResponse.StatusCode) {
+		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
+	}
+	return nil
+}
 
 type CreatePermissionResponse struct {
 	Body         []byte
@@ -1915,19 +1903,18 @@ func (r CreatePermissionResponse) StatusCode() int {
 	return 0
 }
 
-// TODO 後で検討
-// // // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-// func (r CreatePermissionResponse) Result() (error) {
-//     return eCoalesce(r.JSON201,r.JSON401,r.JSON404,r.JSON409,r.JSONDefault,r.UndefinedError())
-// }
-//
-// // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-// func (r CreatePermissionResponse) UndefinedError() error {
-//     if !isOKStatus(r.HTTPResponse.StatusCode){
-//         return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
-//     }
-//     return nil
-// }
+// Result JSON200の結果、もしくは発生したエラーのいずれかを返す
+func (r CreatePermissionResponse) Result() error {
+	return eCoalesce(r.JSON201, r.JSON401, r.JSON404, r.JSON409, r.JSONDefault, r.UndefinedError())
+}
+
+// UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
+func (r CreatePermissionResponse) UndefinedError() error {
+	if !isOKStatus(r.HTTPResponse.StatusCode) {
+		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
+	}
+	return nil
+}
 
 type DeletePermissionResponse struct {
 	Body         []byte
@@ -1952,19 +1939,18 @@ func (r DeletePermissionResponse) StatusCode() int {
 	return 0
 }
 
-// TODO 後で検討
-// // // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-// func (r DeletePermissionResponse) Result() (error) {
-//     return eCoalesce(r.JSON401,r.JSONDefault,r.UndefinedError())
-// }
-//
-// // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-// func (r DeletePermissionResponse) UndefinedError() error {
-//     if !isOKStatus(r.HTTPResponse.StatusCode){
-//         return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
-//     }
-//     return nil
-// }
+// Result JSON200の結果、もしくは発生したエラーのいずれかを返す
+func (r DeletePermissionResponse) Result() error {
+	return eCoalesce(r.JSON401, r.JSONDefault, r.UndefinedError())
+}
+
+// UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
+func (r DeletePermissionResponse) UndefinedError() error {
+	if !isOKStatus(r.HTTPResponse.StatusCode) {
+		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
+	}
+	return nil
+}
 
 type ReadPermissionResponse struct {
 	Body         []byte
@@ -1991,19 +1977,18 @@ func (r ReadPermissionResponse) StatusCode() int {
 	return 0
 }
 
-// TODO 後で検討
-// // // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-// func (r ReadPermissionResponse) Result() (*Permission,error) {
-//     return r.JSON200, eCoalesce(r.JSON401,r.JSON404,r.JSONDefault,r.UndefinedError())
-// }
-//
-// // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-// func (r ReadPermissionResponse) UndefinedError() error {
-//     if !isOKStatus(r.HTTPResponse.StatusCode){
-//         return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
-//     }
-//     return nil
-// }
+// Result JSON200の結果、もしくは発生したエラーのいずれかを返す
+func (r ReadPermissionResponse) Result() (*Permission, error) {
+	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSONDefault, r.UndefinedError())
+}
+
+// UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
+func (r ReadPermissionResponse) UndefinedError() error {
+	if !isOKStatus(r.HTTPResponse.StatusCode) {
+		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
+	}
+	return nil
+}
 
 type UpdatePermissionResponse struct {
 	Body         []byte
@@ -2031,19 +2016,18 @@ func (r UpdatePermissionResponse) StatusCode() int {
 	return 0
 }
 
-// TODO 後で検討
-// // // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-// func (r UpdatePermissionResponse) Result() (*Permission,error) {
-//     return r.JSON200, eCoalesce(r.JSON401,r.JSON404,r.JSON409,r.JSONDefault,r.UndefinedError())
-// }
-//
-// // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-// func (r UpdatePermissionResponse) UndefinedError() error {
-//     if !isOKStatus(r.HTTPResponse.StatusCode){
-//         return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
-//     }
-//     return nil
-// }
+// Result JSON200の結果、もしくは発生したエラーのいずれかを返す
+func (r UpdatePermissionResponse) Result() (*Permission, error) {
+	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSON409, r.JSONDefault, r.UndefinedError())
+}
+
+// UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
+func (r UpdatePermissionResponse) UndefinedError() error {
+	if !isOKStatus(r.HTTPResponse.StatusCode) {
+		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
+	}
+	return nil
+}
 
 type ListPermissionAccessKeysResponse struct {
 	Body         []byte
@@ -2070,19 +2054,18 @@ func (r ListPermissionAccessKeysResponse) StatusCode() int {
 	return 0
 }
 
-// TODO 後で検討
-// // // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-// func (r ListPermissionAccessKeysResponse) Result() (*PermissionKey,error) {
-//     return r.JSON200, eCoalesce(r.JSON401,r.JSON404,r.JSONDefault,r.UndefinedError())
-// }
-//
-// // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-// func (r ListPermissionAccessKeysResponse) UndefinedError() error {
-//     if !isOKStatus(r.HTTPResponse.StatusCode){
-//         return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
-//     }
-//     return nil
-// }
+// Result JSON200の結果、もしくは発生したエラーのいずれかを返す
+func (r ListPermissionAccessKeysResponse) Result() (*PermissionKey, error) {
+	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSONDefault, r.UndefinedError())
+}
+
+// UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
+func (r ListPermissionAccessKeysResponse) UndefinedError() error {
+	if !isOKStatus(r.HTTPResponse.StatusCode) {
+		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
+	}
+	return nil
+}
 
 type CreatePermissionAccessKeyResponse struct {
 	Body         []byte
@@ -2110,19 +2093,18 @@ func (r CreatePermissionAccessKeyResponse) StatusCode() int {
 	return 0
 }
 
-// TODO 後で検討
-// // // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-// func (r CreatePermissionAccessKeyResponse) Result() (error) {
-//     return eCoalesce(r.JSON201,r.JSON401,r.JSON404,r.JSON409,r.JSONDefault,r.UndefinedError())
-// }
-//
-// // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-// func (r CreatePermissionAccessKeyResponse) UndefinedError() error {
-//     if !isOKStatus(r.HTTPResponse.StatusCode){
-//         return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
-//     }
-//     return nil
-// }
+// Result JSON200の結果、もしくは発生したエラーのいずれかを返す
+func (r CreatePermissionAccessKeyResponse) Result() error {
+	return eCoalesce(r.JSON201, r.JSON401, r.JSON404, r.JSON409, r.JSONDefault, r.UndefinedError())
+}
+
+// UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
+func (r CreatePermissionAccessKeyResponse) UndefinedError() error {
+	if !isOKStatus(r.HTTPResponse.StatusCode) {
+		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
+	}
+	return nil
+}
 
 type DeletePermissionAccessKeyResponse struct {
 	Body         []byte
@@ -2148,19 +2130,18 @@ func (r DeletePermissionAccessKeyResponse) StatusCode() int {
 	return 0
 }
 
-// TODO 後で検討
-// // // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-// func (r DeletePermissionAccessKeyResponse) Result() (error) {
-//     return eCoalesce(r.JSON401,r.JSON404,r.JSONDefault,r.UndefinedError())
-// }
-//
-// // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-// func (r DeletePermissionAccessKeyResponse) UndefinedError() error {
-//     if !isOKStatus(r.HTTPResponse.StatusCode){
-//         return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
-//     }
-//     return nil
-// }
+// Result JSON200の結果、もしくは発生したエラーのいずれかを返す
+func (r DeletePermissionAccessKeyResponse) Result() error {
+	return eCoalesce(r.JSON401, r.JSON404, r.JSONDefault, r.UndefinedError())
+}
+
+// UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
+func (r DeletePermissionAccessKeyResponse) UndefinedError() error {
+	if !isOKStatus(r.HTTPResponse.StatusCode) {
+		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
+	}
+	return nil
+}
 
 type ReadPermissionAccessKeyResponse struct {
 	Body         []byte
@@ -2187,19 +2168,18 @@ func (r ReadPermissionAccessKeyResponse) StatusCode() int {
 	return 0
 }
 
-// TODO 後で検討
-// // // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-// func (r ReadPermissionAccessKeyResponse) Result() (*PermissionKey,error) {
-//     return r.JSON200, eCoalesce(r.JSON401,r.JSON404,r.JSONDefault,r.UndefinedError())
-// }
-//
-// // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-// func (r ReadPermissionAccessKeyResponse) UndefinedError() error {
-//     if !isOKStatus(r.HTTPResponse.StatusCode){
-//         return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
-//     }
-//     return nil
-// }
+// Result JSON200の結果、もしくは発生したエラーのいずれかを返す
+func (r ReadPermissionAccessKeyResponse) Result() (*PermissionKey, error) {
+	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSONDefault, r.UndefinedError())
+}
+
+// UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
+func (r ReadPermissionAccessKeyResponse) UndefinedError() error {
+	if !isOKStatus(r.HTTPResponse.StatusCode) {
+		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
+	}
+	return nil
+}
 
 type ReadSiteStatusResponse struct {
 	Body         []byte
@@ -2225,19 +2205,18 @@ func (r ReadSiteStatusResponse) StatusCode() int {
 	return 0
 }
 
-// TODO 後で検討
-// // // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-// func (r ReadSiteStatusResponse) Result() (*Status,error) {
-//     return r.JSON200, eCoalesce(r.JSON401,r.JSONDefault,r.UndefinedError())
-// }
-//
-// // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-// func (r ReadSiteStatusResponse) UndefinedError() error {
-//     if !isOKStatus(r.HTTPResponse.StatusCode){
-//         return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
-//     }
-//     return nil
-// }
+// Result JSON200の結果、もしくは発生したエラーのいずれかを返す
+func (r ReadSiteStatusResponse) Result() (*Status, error) {
+	return r.JSON200, eCoalesce(r.JSON401, r.JSONDefault, r.UndefinedError())
+}
+
+// UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
+func (r ReadSiteStatusResponse) UndefinedError() error {
+	if !isOKStatus(r.HTTPResponse.StatusCode) {
+		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
+	}
+	return nil
+}
 
 // DeleteBucketWithBodyWithResponse request with arbitrary body returning *DeleteBucketResponse
 func (c *ClientWithResponses) DeleteBucketWithBodyWithResponse(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*DeleteBucketResponse, error) {

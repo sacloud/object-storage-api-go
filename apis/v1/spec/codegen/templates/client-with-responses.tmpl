@@ -64,20 +64,19 @@ return r.HTTPResponse.StatusCode
 return 0
 }
 
-// TODO 後で検討
-// {{ $json200Type := "" }}{{ range getResponseTypeDefinitions . }}{{ if eq .TypeName "JSON200" }}{{ $json200Type = .Schema.TypeDecl }}{{ end }}{{ end -}}
-// // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-// func (r {{$opid | ucFirst}}Response) Result() ({{if $json200Type}}*{{ $json200Type}},{{end}}error) {
-//     return {{if $json200Type}}r.JSON200, {{end}}eCoalesce({{range getResponseTypeDefinitions .}}{{ if ne .TypeName "JSON200" }}r.{{.TypeName}},{{end}}{{end}}r.UndefinedError())
-// }
-//
-// // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-// func (r {{$opid | ucFirst}}Response) UndefinedError() error {
-//     if !isOKStatus(r.HTTPResponse.StatusCode){
-//         return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
-//     }
-//     return nil
-// }
+{{ $json200Type := "" }}{{ range getResponseTypeDefinitions . }}{{ if eq .TypeName "JSON200" }}{{ $json200Type = .Schema.TypeDecl }}{{ end }}{{ end -}}
+// Result JSON200の結果、もしくは発生したエラーのいずれかを返す
+func (r {{$opid | ucFirst}}Response) Result() ({{if $json200Type}}*{{ $json200Type}},{{end}}error) {
+    return {{if $json200Type}}r.JSON200, {{end}}eCoalesce({{range getResponseTypeDefinitions .}}{{ if ne .TypeName "JSON200" }}r.{{.TypeName}},{{end}}{{end}}r.UndefinedError())
+}
+
+// UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
+func (r {{$opid | ucFirst}}Response) UndefinedError() error {
+    if !isOKStatus(r.HTTPResponse.StatusCode){
+        return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
+    }
+    return nil
+}
 {{end}}
 
 
