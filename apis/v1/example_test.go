@@ -12,9 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//go:build testacc
-// +build testacc
-
 package v1_test
 
 import (
@@ -52,8 +49,8 @@ func Example() {
 		panic(err)
 	}
 
-	site := (*sites.Data)[0]
-	fmt.Println(*site.DisplayName)
+	site := sites.Data[0]
+	fmt.Println(site.DisplayName)
 	// output:
 	// 石狩第1サイト
 }

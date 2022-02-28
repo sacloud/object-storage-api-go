@@ -330,7 +330,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/handler.listClustersRes'
+                $ref: '#/components/schemas/ResponseBodyClusters'
         '401':
           description: 認証に失敗しました
           content:
@@ -363,7 +363,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/handler.getClusterRes'
+                $ref: '#/components/schemas/ResponseBodyCluster'
         '401':
           description: 認証に失敗しました
           content:
@@ -1412,19 +1412,23 @@ components:
       properties:
         cluster_id:
           type: string
-    handler.getClusterRes:
+    # Note: handler.getClusterResからリネーム
+    ResponseBodyCluster:
       type: object
       properties:
         data:
-          $ref: '#/components/schemas/model.Cluster'
-    handler.listClustersRes:
+          $ref: '#/components/schemas/Cluster'
+    # Note: handler.listClustersResからリネーム
+    ResponseBodyClusters:
       type: object
       properties:
         data:
           description: 'If use a pointer type, braek output'
           type: array
           items:
-            $ref: '#/components/schemas/model.Cluster'
+            $ref: '#/components/schemas/Cluster'
+      required:
+        - data
     handler.putBucketRes:
       type: object
       properties:
@@ -1437,7 +1441,8 @@ components:
           type: string
         name:
           type: string
-    model.Cluster:
+    # Note: model.Clusterからリネーム
+    Cluster:
       type: object
       properties:
         api_zone:
@@ -1498,7 +1503,21 @@ components:
           example:
             - is1a
             - is1b
-#    model.HTTPErr:
+      required:
+        - api_zone
+        - control_panel_url
+        - dislpay_name_en_us
+        - dislpay_name_ja
+        - display_name
+        - display_order
+        - endpoint_base
+        - iam_endpoint
+        - iam_endpoint_for_control_panel
+        - id
+        - s3_endpoint
+        - s3_endpoint_for_control_panel
+        - storage_zone
+    #    model.HTTPErr:
 #      type: object
 #      properties:
 #        error:
