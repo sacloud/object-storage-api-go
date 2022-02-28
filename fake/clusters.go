@@ -15,6 +15,8 @@
 package fake
 
 import (
+	"fmt"
+
 	"github.com/getlantern/deepcopy"
 	v1 "github.com/sacloud/object-storage-api-go/apis/v1"
 )
@@ -34,11 +36,7 @@ func (engine *Engine) ReadCluster(id string) (*v1.Cluster, error) {
 
 	c := engine.getClusterById(id)
 	if c != nil {
-		var cluster v1.Cluster
-		if err := deepcopy.Copy(&cluster, c); err != nil {
-			return nil, err
-		}
-		return &cluster, nil
+		return engine.copyCluster(c)
 	}
 	return nil, NewError(ErrorTypeNotFound, "cluster", id)
 }
@@ -62,4 +60,15 @@ func (engine *Engine) getClusterById(id string) *v1.Cluster {
 		}
 	}
 	return nil
+}
+
+func (engine *Engine) copyCluster(source *v1.Cluster) (*v1.Cluster, error) {
+	if source == nil {
+		return nil, fmt.Errorf("source is nil")
+	}
+	var cluster v1.Cluster
+	if err := deepcopy.Copy(&cluster, source); err != nil {
+		return nil, err
+	}
+	return &cluster, nil
 }

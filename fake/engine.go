@@ -30,6 +30,9 @@ type Engine struct {
 	// Clusters サイト(クラスター)
 	Clusters []*v1.Cluster
 
+	// Buckets バケット
+	Buckets []*v1.Bucket
+
 	// ActionInterval バックグラウンドでリソースの状態を変化させるアクションの実行間隔
 	ActionInterval time.Duration
 
@@ -41,7 +44,7 @@ type Engine struct {
 	mu sync.RWMutex
 }
 
-func (engine *Engine) lock() func() { // nolint TODO 一時的な処置、後でnolintを消す
+func (engine *Engine) lock() func() {
 	engine.mu.Lock()
 	return engine.mu.Unlock
 }

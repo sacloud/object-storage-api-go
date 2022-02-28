@@ -43,6 +43,12 @@ type Account struct {
 	} `json:"data,omitempty"`
 }
 
+// Bucket defines model for Bucket.
+type Bucket struct {
+	ClusterId string `json:"cluster_id"`
+	Name      string `json:"name"`
+}
+
 // Bucket controls
 type BucketControls []struct {
 	// Bucket name
@@ -109,6 +115,16 @@ type Cluster struct {
 
 // Code
 type Code string
+
+// CreateBucketRequestBody defines model for CreateBucketRequestBody.
+type CreateBucketRequestBody struct {
+	ClusterId string `json:"cluster_id"`
+}
+
+// CreateBucketResponseBody defines model for CreateBucketResponseBody.
+type CreateBucketResponseBody struct {
+	Data Bucket `json:"data"`
+}
 
 // Created at
 type CreatedAt time.Time
@@ -228,6 +244,12 @@ type ErrorsMessage string
 // エラーメッセージの原因やエラー解決のためのヒントも含む場合がある。
 type ErrorsReason string
 
+// ListClustersResponseBody defines model for ListClustersResponseBody.
+type ListClustersResponseBody struct {
+	// If use a pointer type, braek output
+	Data []Cluster `json:"data"`
+}
+
 // Permission
 type Permission struct {
 	// data type
@@ -288,19 +310,13 @@ type PermissionKey struct {
 // Permission secret key
 type PermissionSecret string
 
-// Resource ID
-type ResourceID string
-
-// ResponseBodyCluster defines model for ResponseBodyCluster.
-type ResponseBodyCluster struct {
+// ReadClusterResponseBody defines model for ReadClusterResponseBody.
+type ReadClusterResponseBody struct {
 	Data *Cluster `json:"data,omitempty"`
 }
 
-// ResponseBodyClusters defines model for ResponseBodyClusters.
-type ResponseBodyClusters struct {
-	// If use a pointer type, braek output
-	Data []Cluster `json:"data"`
-}
+// Resource ID
+type ResourceID string
 
 // Secret Access key
 type SecretAccessKey string
@@ -357,27 +373,11 @@ type AccountKeys struct {
 	} `json:"data,omitempty"`
 }
 
-// HandlerPutBucketReqBody defines model for handler.PutBucketReqBody.
-type HandlerPutBucketReqBody struct {
-	ClusterId string `json:"cluster_id"`
-}
-
-// HandlerPutBucketRes defines model for handler.putBucketRes.
-type HandlerPutBucketRes struct {
-	Data *ModelBucket `json:"data,omitempty"`
-}
-
-// ModelBucket defines model for model.Bucket.
-type ModelBucket struct {
-	ClusterId *string `json:"cluster_id,omitempty"`
-	Name      *string `json:"name,omitempty"`
-}
-
 // DeleteBucketJSONBody defines parameters for DeleteBucket.
-type DeleteBucketJSONBody HandlerPutBucketReqBody
+type DeleteBucketJSONBody CreateBucketRequestBody
 
 // CreateBucketJSONBody defines parameters for CreateBucket.
-type CreateBucketJSONBody HandlerPutBucketReqBody
+type CreateBucketJSONBody CreateBucketRequestBody
 
 // CreatePermissionJSONBody defines parameters for CreatePermission.
 type CreatePermissionJSONBody PermissionBucketControlsBody
