@@ -1,0 +1,108 @@
+// Copyright 2022 The sacloud/object-storage-api-go authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package server
+
+import "github.com/gin-gonic/gin"
+
+// DeleteBucket バケットの削除
+// (DELETE /fed/v1/buckets/{name})
+func (s *Server) DeleteBucket(c *gin.Context, name string) {
+
+}
+
+// CreateBucket バケットの作成
+// (PUT /fed/v1/buckets/{name})
+func (s *Server) CreateBucket(c *gin.Context, name string) {
+
+}
+
+// ListClusters サイト一覧の取得
+// (GET /fed/v1/clusters)
+func (s *Server) ListClusters(c *gin.Context) {
+
+}
+
+// ReadCluster サイトの取得
+// (GET /fed/v1/clusters/{id})
+func (s *Server) ReadCluster(c *gin.Context, id string) {}
+
+// DeleteSiteAccount サイトアカウントの削除
+// (DELETE /{site_name}/v2/account)
+func (s *Server) DeleteSiteAccount(c *gin.Context, siteName string) {}
+
+// ReadSiteAccount サイトアカウントの取得
+// (GET /{site_name}/v2/account)
+func (s *Server) ReadSiteAccount(c *gin.Context, siteName string) {}
+
+// CreateSiteAccount サイトアカウントの作成
+// (POST /{site_name}/v2/account)
+func (s *Server) CreateSiteAccount(c *gin.Context, siteName string) {}
+
+// ListAccountAccessKeys サイトアカウントのアクセスキーの取得
+// (GET /{site_name}/v2/account/keys)
+func (s *Server) ListAccountAccessKeys(c *gin.Context, siteName string) {}
+
+// CreateAccountAccessKey サイトアカウントのアクセスキーの発行
+// (POST /{site_name}/v2/account/keys)
+func (s *Server) CreateAccountAccessKey(c *gin.Context, siteName string) {}
+
+// DeleteAccountAccessKey サイトアカウントのアクセスキーの削除
+// (DELETE /{site_name}/v2/account/keys/{id})
+func (s *Server) DeleteAccountAccessKey(c *gin.Context, siteName string, id string) {}
+
+// ReadAccountAccessKey サイトアカウントのアクセスキーの取得
+// (GET /{site_name}/v2/account/keys/{id})
+func (s *Server) ReadAccountAccessKey(c *gin.Context, siteName string, id string) {}
+
+// ListPermissions パーミッション一覧の取得
+// (GET /{site_name}/v2/permissions)
+func (s *Server) ListPermissions(c *gin.Context, siteName string) {}
+
+// CreatePermission パーミッションの作成
+// (POST /{site_name}/v2/permissions)
+func (s *Server) CreatePermission(c *gin.Context, siteName string) {}
+
+// DeletePermission パーミッションの削除
+// (DELETE /{site_name}/v2/permissions/{id})
+func (s *Server) DeletePermission(c *gin.Context, siteName string, id string) {}
+
+// ReadPermission パーミッションの取得
+// (GET /{site_name}/v2/permissions/{id})
+func (s *Server) ReadPermission(c *gin.Context, siteName string, id string) {}
+
+// UpdatePermission パーミッションの更新
+// (PUT /{site_name}/v2/permissions/{id})
+func (s *Server) UpdatePermission(c *gin.Context, siteName string, id string) {}
+
+// ListPermissionAccessKeys パーミッションが保有するアクセスキー一覧の取得
+// (GET /{site_name}/v2/permissions/{id}/keys)
+func (s *Server) ListPermissionAccessKeys(c *gin.Context, siteName string, id string) {}
+
+// CreatePermissionAccessKey パーミッションのアクセスキーの発行
+// (POST /{site_name}/v2/permissions/{id}/keys)
+func (s *Server) CreatePermissionAccessKey(c *gin.Context, siteName string, id string) {}
+
+// DeletePermissionAccessKey パーミッションが保有するアクセスキーの削除
+// (DELETE /{site_name}/v2/permissions/{id}/keys/{key_id})
+func (s *Server) DeletePermissionAccessKey(c *gin.Context, siteName string, id string, keyId string) {
+}
+
+// ReadPermissionAccessKey パーミッションが保有するアクセスキーの取得
+// (GET /{site_name}/v2/permissions/{id}/keys/{key_id})
+func (s *Server) ReadPermissionAccessKey(c *gin.Context, siteName string, id string, keyId string) {}
+
+// ReadSiteStatus サイトのステータスの取得
+// (GET /{site_name}/v2/status)
+func (s *Server) ReadSiteStatus(c *gin.Context, siteName string) {}
