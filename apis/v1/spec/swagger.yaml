@@ -644,7 +644,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/accountKeys'
+                $ref: '#/components/schemas/AccountKeysResponseBody'
         '401':
           description: 認証に失敗しました
           content:
@@ -692,7 +692,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/accountKey'
+                $ref: '#/components/schemas/AccountKeyResponseBody'
         '401':
           description: 認証に失敗しました
           content:
@@ -751,7 +751,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/accountKey'
+                $ref: '#/components/schemas/AccountKeyResponseBody'
         '401':
           description: 認証に失敗しました
           content:
@@ -1447,6 +1447,29 @@ components:
           $ref: '#/components/schemas/Account'
       required:
         - data
+
+    # Note: accountKeysからリネーム
+    AccountKeysResponseBody:
+      description: Root user access keys
+      type: object
+      properties:
+        data:
+          description: data type
+          type: array
+          items:
+            $ref: "#/components/schemas/AccountKey"
+      required:
+        - data
+    # Note: accountKeyからリネーム
+    AccountKeyResponseBody:
+      description: Root user access key
+      type: object
+      properties:
+        data:
+          $ref: "#/components/schemas/AccountKey"
+      required:
+        - data
+
     # Note: model.Bucketからリネーム
     Bucket:
       type: object
@@ -1625,42 +1648,20 @@ components:
       type: string
       pattern: '^[\w\d\/=]{40}$'
       example: '==NOTICE==EXISTS/ONLY/WHEN/JUST/CREATED='
-    accountKeys:
-      description: Root user access keys
-      type: object
-      properties:
-        data:
-          description: data type
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                allOf:
-                  - $ref: '#/components/schemas/AccessKeyID'
-              secret:
-                allOf:
-                  - $ref: '#/components/schemas/SecretAccessKey'
-              created_at:
-                allOf:
-                  - $ref: '#/components/schemas/CreatedAt'
-    accountKey:
+    AccountKey:
       description: Root user access key
       type: object
       properties:
-        data:
-          description: data type
-          type: object
-          properties:
-            id:
-              allOf:
-                - $ref: '#/components/schemas/AccessKeyID'
-            secret:
-              allOf:
-                - $ref: '#/components/schemas/SecretAccessKey'
-            created_at:
-              allOf:
-                - $ref: '#/components/schemas/CreatedAt'
+        id:
+          $ref: '#/components/schemas/AccessKeyID'
+        secret:
+          $ref: '#/components/schemas/SecretAccessKey'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+      required:
+        - id
+        - secret
+        - created_at
     BucketControls:
       description: Bucket controls
       type: array

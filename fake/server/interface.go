@@ -16,22 +16,6 @@ package server
 
 import "github.com/gin-gonic/gin"
 
-// ListAccountAccessKeys サイトアカウントのアクセスキーの取得
-// (GET /{site_name}/v2/account/keys)
-func (s *Server) ListAccountAccessKeys(c *gin.Context, siteName string) {}
-
-// CreateAccountAccessKey サイトアカウントのアクセスキーの発行
-// (POST /{site_name}/v2/account/keys)
-func (s *Server) CreateAccountAccessKey(c *gin.Context, siteName string) {}
-
-// DeleteAccountAccessKey サイトアカウントのアクセスキーの削除
-// (DELETE /{site_name}/v2/account/keys/{id})
-func (s *Server) DeleteAccountAccessKey(c *gin.Context, siteName string, id string) {}
-
-// ReadAccountAccessKey サイトアカウントのアクセスキーの取得
-// (GET /{site_name}/v2/account/keys/{id})
-func (s *Server) ReadAccountAccessKey(c *gin.Context, siteName string, id string) {}
-
 // ListPermissions パーミッション一覧の取得
 // (GET /{site_name}/v2/permissions)
 func (s *Server) ListPermissions(c *gin.Context, siteName string) {}

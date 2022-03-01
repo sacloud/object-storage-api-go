@@ -1692,7 +1692,7 @@ func (r CreateSiteAccountResponse) UndefinedError() error {
 type ListAccountAccessKeysResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *AccountKeys
+	JSON200      *AccountKeysResponseBody
 	JSON401      *Error401
 	JSON404      *Error404
 	JSONDefault  *ErrorDefault
@@ -1715,7 +1715,7 @@ func (r ListAccountAccessKeysResponse) StatusCode() int {
 }
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-func (r ListAccountAccessKeysResponse) Result() (*AccountKeys, error) {
+func (r ListAccountAccessKeysResponse) Result() (*AccountKeysResponseBody, error) {
 	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSONDefault, r.UndefinedError())
 }
 
@@ -1730,7 +1730,7 @@ func (r ListAccountAccessKeysResponse) UndefinedError() error {
 type CreateAccountAccessKeyResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON201      *AccountKey
+	JSON201      *AccountKeyResponseBody
 	JSON401      *Error401
 	JSON404      *Error404
 	JSON409      *Error409
@@ -1805,7 +1805,7 @@ func (r DeleteAccountAccessKeyResponse) UndefinedError() error {
 type ReadAccountAccessKeyResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *AccountKey
+	JSON200      *AccountKeyResponseBody
 	JSON401      *Error401
 	JSON404      *Error404
 	JSONDefault  *ErrorDefault
@@ -1828,7 +1828,7 @@ func (r ReadAccountAccessKeyResponse) StatusCode() int {
 }
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-func (r ReadAccountAccessKeyResponse) Result() (*AccountKey, error) {
+func (r ReadAccountAccessKeyResponse) Result() (*AccountKeyResponseBody, error) {
 	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSONDefault, r.UndefinedError())
 }
 
@@ -2755,7 +2755,7 @@ func ParseListAccountAccessKeysResponse(rsp *http.Response) (*ListAccountAccessK
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest AccountKeys
+		var dest AccountKeysResponseBody
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -2802,7 +2802,7 @@ func ParseCreateAccountAccessKeyResponse(rsp *http.Response) (*CreateAccountAcce
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
-		var dest AccountKey
+		var dest AccountKeyResponseBody
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -2889,7 +2889,7 @@ func ParseReadAccountAccessKeyResponse(rsp *http.Response) (*ReadAccountAccessKe
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest AccountKey
+		var dest AccountKeyResponseBody
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
