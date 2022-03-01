@@ -33,6 +33,9 @@ type Engine struct {
 	// Buckets バケット
 	Buckets []*v1.Bucket
 
+	// Account アカウント
+	Account *v1.Account
+
 	// ActionInterval バックグラウンドでリソースの状態を変化させるアクションの実行間隔
 	ActionInterval time.Duration
 

@@ -21,10 +21,10 @@ import (
 	v1 "github.com/sacloud/object-storage-api-go/apis/v1"
 )
 
-// DeleteBucket バケットの削除
-// (DELETE /fed/v1/buckets/{name})
-func (s *Server) DeleteBucket(c *gin.Context, name string) {
-	if err := s.Engine.DeleteBucket(name); err != nil {
+// DeleteSiteAccount サイトアカウントの削除
+// (DELETE /{site_name}/v2/account)
+func (s *Server) DeleteSiteAccount(c *gin.Context, siteName string) {
+	if err := s.Engine.DeleteSiteAccount(siteName); err != nil {
 		s.handleError(c, err)
 		return
 	}
@@ -32,16 +32,30 @@ func (s *Server) DeleteBucket(c *gin.Context, name string) {
 	c.Status(http.StatusNoContent)
 }
 
-// CreateBucket バケットの作成
-// (PUT /fed/v1/buckets/{name})
-func (s *Server) CreateBucket(c *gin.Context, name string) {
-	bucket, err := s.Engine.CreateBucket(name)
+// ReadSiteAccount サイトアカウントの取得
+// (GET /{site_name}/v2/account)
+func (s *Server) ReadSiteAccount(c *gin.Context, siteName string) {
+	account, err := s.Engine.ReadSiteAccount(siteName)
 	if err != nil {
 		s.handleError(c, err)
 		return
 	}
 
-	c.JSON(http.StatusCreated, &v1.CreateBucketResponseBody{
-		Data: *bucket,
+	c.JSON(http.StatusOK, &v1.AccountResponseBody{
+		Data: *account,
+	})
+}
+
+// CreateSiteAccount サイトアカウントの作成
+// (POST /{site_name}/v2/account)
+func (s *Server) CreateSiteAccount(c *gin.Context, siteName string) {
+	account, err := s.Engine.CreateSiteAccount(siteName)
+	if err != nil {
+		s.handleError(c, err)
+		return
+	}
+
+	c.JSON(http.StatusCreated, &v1.AccountResponseBody{
+		Data: *account,
 	})
 }

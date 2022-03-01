@@ -16,18 +16,6 @@ package server
 
 import "github.com/gin-gonic/gin"
 
-// DeleteSiteAccount サイトアカウントの削除
-// (DELETE /{site_name}/v2/account)
-func (s *Server) DeleteSiteAccount(c *gin.Context, siteName string) {}
-
-// ReadSiteAccount サイトアカウントの取得
-// (GET /{site_name}/v2/account)
-func (s *Server) ReadSiteAccount(c *gin.Context, siteName string) {}
-
-// CreateSiteAccount サイトアカウントの作成
-// (POST /{site_name}/v2/account)
-func (s *Server) CreateSiteAccount(c *gin.Context, siteName string) {}
-
 // ListAccountAccessKeys サイトアカウントのアクセスキーの取得
 // (GET /{site_name}/v2/account/keys)
 func (s *Server) ListAccountAccessKeys(c *gin.Context, siteName string) {}

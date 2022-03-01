@@ -26,21 +26,20 @@ type AccessKeyID string
 
 // Account info
 type Account struct {
-	// data type
-	Data *struct {
-		Code *struct {
-			// Embedded struct due to allOf(#/components/schemas/Code)
-			Code `yaml:",inline"`
-		} `json:"code,omitempty"`
-		CreatedAt *struct {
-			// Embedded struct due to allOf(#/components/schemas/CreatedAt)
-			CreatedAt `yaml:",inline"`
-		} `json:"created_at,omitempty"`
-		ResourceId *struct {
-			// Embedded struct due to allOf(#/components/schemas/ResourceID)
-			ResourceID `yaml:",inline"`
-		} `json:"resource_id,omitempty"`
-	} `json:"data,omitempty"`
+	// Code
+	Code Code `json:"code"`
+
+	// Created at
+	CreatedAt CreatedAt `json:"created_at"`
+
+	// Resource ID
+	ResourceId ResourceID `json:"resource_id"`
+}
+
+// Account info
+type AccountResponseBody struct {
+	// Account info
+	Data Account `json:"data"`
 }
 
 // Bucket defines model for Bucket.
