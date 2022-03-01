@@ -1490,8 +1490,8 @@ func (r CreateBucketResponse) StatusCode() int {
 }
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-func (r CreateBucketResponse) Result() error {
-	return eCoalesce(r.JSON201, r.JSON400, r.JSON404, r.JSON409, r.UndefinedError())
+func (r CreateBucketResponse) Result() (*CreateBucketResponseBody, error) {
+	return r.JSON201, eCoalesce(r.JSON400, r.JSON404, r.JSON409, r.UndefinedError())
 }
 
 // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
@@ -1677,8 +1677,8 @@ func (r CreateSiteAccountResponse) StatusCode() int {
 }
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-func (r CreateSiteAccountResponse) Result() error {
-	return eCoalesce(r.JSON201, r.JSON401, r.JSON403, r.JSON409, r.JSONDefault, r.UndefinedError())
+func (r CreateSiteAccountResponse) Result() (*AccountResponseBody, error) {
+	return r.JSON201, eCoalesce(r.JSON401, r.JSON403, r.JSON409, r.JSONDefault, r.UndefinedError())
 }
 
 // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
@@ -1754,8 +1754,8 @@ func (r CreateAccountAccessKeyResponse) StatusCode() int {
 }
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-func (r CreateAccountAccessKeyResponse) Result() error {
-	return eCoalesce(r.JSON201, r.JSON401, r.JSON404, r.JSON409, r.JSONDefault, r.UndefinedError())
+func (r CreateAccountAccessKeyResponse) Result() (*AccountKeyResponseBody, error) {
+	return r.JSON201, eCoalesce(r.JSON401, r.JSON404, r.JSON409, r.JSONDefault, r.UndefinedError())
 }
 
 // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
@@ -1904,8 +1904,8 @@ func (r CreatePermissionResponse) StatusCode() int {
 }
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-func (r CreatePermissionResponse) Result() error {
-	return eCoalesce(r.JSON201, r.JSON401, r.JSON404, r.JSON409, r.JSONDefault, r.UndefinedError())
+func (r CreatePermissionResponse) Result() (*Permission, error) {
+	return r.JSON201, eCoalesce(r.JSON401, r.JSON404, r.JSON409, r.JSONDefault, r.UndefinedError())
 }
 
 // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
@@ -2094,8 +2094,8 @@ func (r CreatePermissionAccessKeyResponse) StatusCode() int {
 }
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-func (r CreatePermissionAccessKeyResponse) Result() error {
-	return eCoalesce(r.JSON201, r.JSON401, r.JSON404, r.JSON409, r.JSONDefault, r.UndefinedError())
+func (r CreatePermissionAccessKeyResponse) Result() (*PermissionKey, error) {
+	return r.JSON201, eCoalesce(r.JSON401, r.JSON404, r.JSON409, r.JSONDefault, r.UndefinedError())
 }
 
 // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
