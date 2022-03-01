@@ -1430,7 +1430,7 @@ type ClientWithResponsesInterface interface {
 type DeleteBucketResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON201      *CreateBucketResponseBody
+	JSON204      *CreateBucketResponseBody
 	JSON400      *Error400
 	JSON409      *Error409
 }
@@ -1453,7 +1453,7 @@ func (r DeleteBucketResponse) StatusCode() int {
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
 func (r DeleteBucketResponse) Result() error {
-	return eCoalesce(r.JSON201, r.JSON400, r.JSON409, r.UndefinedError())
+	return eCoalesce(r.JSON204, r.JSON400, r.JSON409, r.UndefinedError())
 }
 
 // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
@@ -1615,7 +1615,7 @@ func (r DeleteSiteAccountResponse) UndefinedError() error {
 type ReadSiteAccountResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *Account
+	JSON200      *AccountResponseBody
 	JSON401      *Error401
 	JSON404      *Error404
 	JSONDefault  *ErrorDefault
@@ -1638,7 +1638,7 @@ func (r ReadSiteAccountResponse) StatusCode() int {
 }
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-func (r ReadSiteAccountResponse) Result() (*Account, error) {
+func (r ReadSiteAccountResponse) Result() (*AccountResponseBody, error) {
 	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSONDefault, r.UndefinedError())
 }
 
@@ -1653,7 +1653,7 @@ func (r ReadSiteAccountResponse) UndefinedError() error {
 type CreateSiteAccountResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON201      *Account
+	JSON201      *AccountResponseBody
 	JSON401      *Error401
 	JSON403      *Error403
 	JSON409      *Error409
@@ -2453,12 +2453,12 @@ func ParseDeleteBucketResponse(rsp *http.Response) (*DeleteBucketResponse, error
 	}
 
 	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 204:
 		var dest CreateBucketResponseBody
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
-		response.JSON201 = &dest
+		response.JSON204 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
 		var dest Error400
@@ -2654,7 +2654,7 @@ func ParseReadSiteAccountResponse(rsp *http.Response) (*ReadSiteAccountResponse,
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest Account
+		var dest AccountResponseBody
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -2701,7 +2701,7 @@ func ParseCreateSiteAccountResponse(rsp *http.Response) (*CreateSiteAccountRespo
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
-		var dest Account
+		var dest AccountResponseBody
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}

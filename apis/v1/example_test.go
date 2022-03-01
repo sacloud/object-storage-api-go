@@ -25,7 +25,7 @@ import (
 var serverURL = "https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0"
 
 // Example API定義から生成されたコードを直接利用する例
-func Example() {
+func Example_basic() {
 	token := os.Getenv("SAKURACLOUD_ACCESS_TOKEN")
 	secret := os.Getenv("SAKURACLOUD_ACCESS_TOKEN_SECRET")
 
@@ -53,4 +53,47 @@ func Example() {
 	fmt.Println(site.DisplayName)
 	// output:
 	// 石狩第1サイト
+}
+
+// Example_readSiteAccount サイトアカウントの参照の例
+func Example_readSiteAccount() {
+	token := os.Getenv("SAKURACLOUD_ACCESS_TOKEN")
+	secret := os.Getenv("SAKURACLOUD_ACCESS_TOKEN_SECRET")
+
+	client, err := v1.NewClientWithResponses(serverURL, func(c *v1.Client) error {
+		c.RequestEditors = []v1.RequestEditorFn{
+			v1.OjsAuthInterceptor(token, secret),
+		}
+		return nil
+	})
+	if err != nil {
+		panic(err)
+	}
+
+	// サイトIDが必要になるためまずサイト一覧を取得
+	sitesResp, err := client.ListClustersWithResponse(context.Background())
+	if err != nil {
+		panic(err)
+	}
+
+	sites, err := sitesResp.Result()
+	if err != nil {
+		panic(err)
+	}
+	siteId := sites.Data[0].Id
+
+	// サイトアカウントの参照
+	accountResp, err := client.ReadSiteAccountWithResponse(context.Background(), siteId)
+	if err != nil {
+		panic(err)
+	}
+
+	account, err := accountResp.Result()
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println(account.Data.Code)
+	// output:
+	// member@account@isk01
 }

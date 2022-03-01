@@ -21,11 +21,12 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestEngine_Buckets(t *testing.T) {
+func TestEngine_Accounts(t *testing.T) {
+	siteId := "isk01"
 	engine := &Engine{
 		Clusters: []*v1.Cluster{
 			{
-				Id: "isk01",
+				Id: siteId,
 
 				ControlPanelUrl: "https://secure.sakura.ad.jp/objectstorage/",
 				DislpayNameEnUs: "Ishikari Site #1",
@@ -35,30 +36,33 @@ func TestEngine_Buckets(t *testing.T) {
 				EndpointBase:    "isk01.sakurastorage.jp",
 			},
 		},
-		Buckets: []*v1.Bucket{
-			{
-				ClusterId: "isk01",
-				Name:      "bucket1",
-			},
-			{
-				ClusterId: "isk01",
-				Name:      "bucket2",
-			},
-		},
+		Account: nil,
 	}
 
-	t.Run("create bucket", func(t *testing.T) {
-		bucket, err := engine.CreateBucket("foobar")
+	t.Run("create account", func(t *testing.T) {
+		account, err := engine.CreateSiteAccount(siteId)
 		require.NoError(t, err)
-		require.Equal(t, &v1.Bucket{ClusterId: "isk01", Name: "foobar"}, bucket)
-		require.Len(t, engine.Buckets, 3)
+		require.NotNil(t, account)
+		require.NotNil(t, engine.Account)
+		require.Equal(t, v1.Code("member@account@"+siteId), account.Code)
 	})
 
-	t.Run("delete bucket", func(t *testing.T) {
-		err := engine.DeleteBucket("foobar")
+	t.Run("read account", func(t *testing.T) {
+		account, err := engine.ReadSiteAccount(siteId)
 		require.NoError(t, err)
-		require.Len(t, engine.Buckets, 2)
-		require.Equal(t, engine.Buckets[0].Name, "bucket1")
-		require.Equal(t, engine.Buckets[1].Name, "bucket2")
+		require.NotNil(t, account)
+		require.Equal(t, v1.Code("member@account@"+siteId), account.Code)
 	})
+
+	t.Run("delete account with invalid siteId", func(t *testing.T) {
+		err := engine.DeleteSiteAccount("invalid")
+		require.Error(t, err)
+	})
+
+	t.Run("delete account", func(t *testing.T) {
+		err := engine.DeleteSiteAccount(siteId)
+		require.NoError(t, err)
+		require.Nil(t, engine.Account)
+	})
+
 }

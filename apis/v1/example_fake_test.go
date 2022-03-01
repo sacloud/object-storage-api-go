@@ -16,6 +16,7 @@ package v1_test
 
 import (
 	"net/http/httptest"
+	"time"
 
 	v1 "github.com/sacloud/object-storage-api-go/apis/v1"
 	"github.com/sacloud/object-storage-api-go/fake"
@@ -40,6 +41,11 @@ func initFakeServer() {
 					DisplayOrder:    1,
 					EndpointBase:    "isk01.sakurastorage.jp",
 				},
+			},
+			Account: &v1.Account{
+				Code:       "member@account@isk01",
+				CreatedAt:  v1.CreatedAt(time.Now()),
+				ResourceId: "100000000001",
 			},
 		},
 	}

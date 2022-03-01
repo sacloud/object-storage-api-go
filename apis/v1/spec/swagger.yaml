@@ -457,8 +457,8 @@ paths:
         description: 作成したいバケット情報
         required: true
       responses:
-        '201':
-          description: バケット作成に成功しました
+        '204':
+          description: バケット削除に成功しました
           content:
             application/json:
               schema:
@@ -503,7 +503,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Account'
+                $ref: '#/components/schemas/AccountResponseBody'
         '401':
           description: 認証に失敗しました
           content:
@@ -549,7 +549,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Account'
+                $ref: '#/components/schemas/AccountResponseBody'
         '401':
           description: 認証に失敗しました
           content:
@@ -1438,6 +1438,15 @@ components:
           $ref: '#/components/schemas/Bucket'
       required:
         - data
+    # Note: Accountからの分離
+    AccountResponseBody:
+      description: Account info
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/Account'
+      required:
+        - data
     # Note: model.Bucketからリネーム
     Bucket:
       type: object
@@ -1676,23 +1685,21 @@ components:
 #      type: string
 #      pattern: '^[\w\d_-]+$'
 #      example: grantfullControl
+    # Note: ResponseBody+Accountに分離させた
     Account:
       description: Account info
       type: object
       properties:
-        data:
-          description: data type
-          type: object
-          properties:
-            resource_id:
-              allOf:
-                - $ref: '#/components/schemas/ResourceID'
-            code:
-              allOf:
-                - $ref: '#/components/schemas/Code'
-            created_at:
-              allOf:
-                - $ref: '#/components/schemas/CreatedAt'
+        resource_id:
+          $ref: '#/components/schemas/ResourceID'
+        code:
+          $ref: '#/components/schemas/Code'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+      required:
+        - resource_id
+        - code
+        - created_at
 #    BucketGrantRead:
 #      description: Bucket Grant Read
 #      type: boolean
