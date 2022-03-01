@@ -1490,8 +1490,8 @@ func (r CreateBucketResponse) StatusCode() int {
 }
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-func (r CreateBucketResponse) Result() error {
-	return eCoalesce(r.JSON201, r.JSON400, r.JSON404, r.JSON409, r.UndefinedError())
+func (r CreateBucketResponse) Result() (*CreateBucketResponseBody, error) {
+	return r.JSON201, eCoalesce(r.JSON400, r.JSON404, r.JSON409, r.UndefinedError())
 }
 
 // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
@@ -1677,8 +1677,8 @@ func (r CreateSiteAccountResponse) StatusCode() int {
 }
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-func (r CreateSiteAccountResponse) Result() error {
-	return eCoalesce(r.JSON201, r.JSON401, r.JSON403, r.JSON409, r.JSONDefault, r.UndefinedError())
+func (r CreateSiteAccountResponse) Result() (*AccountResponseBody, error) {
+	return r.JSON201, eCoalesce(r.JSON401, r.JSON403, r.JSON409, r.JSONDefault, r.UndefinedError())
 }
 
 // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
@@ -1692,7 +1692,7 @@ func (r CreateSiteAccountResponse) UndefinedError() error {
 type ListAccountAccessKeysResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *AccountKeys
+	JSON200      *AccountKeysResponseBody
 	JSON401      *Error401
 	JSON404      *Error404
 	JSONDefault  *ErrorDefault
@@ -1715,7 +1715,7 @@ func (r ListAccountAccessKeysResponse) StatusCode() int {
 }
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-func (r ListAccountAccessKeysResponse) Result() (*AccountKeys, error) {
+func (r ListAccountAccessKeysResponse) Result() (*AccountKeysResponseBody, error) {
 	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSONDefault, r.UndefinedError())
 }
 
@@ -1730,7 +1730,7 @@ func (r ListAccountAccessKeysResponse) UndefinedError() error {
 type CreateAccountAccessKeyResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON201      *AccountKey
+	JSON201      *AccountKeyResponseBody
 	JSON401      *Error401
 	JSON404      *Error404
 	JSON409      *Error409
@@ -1754,8 +1754,8 @@ func (r CreateAccountAccessKeyResponse) StatusCode() int {
 }
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-func (r CreateAccountAccessKeyResponse) Result() error {
-	return eCoalesce(r.JSON201, r.JSON401, r.JSON404, r.JSON409, r.JSONDefault, r.UndefinedError())
+func (r CreateAccountAccessKeyResponse) Result() (*AccountKeyResponseBody, error) {
+	return r.JSON201, eCoalesce(r.JSON401, r.JSON404, r.JSON409, r.JSONDefault, r.UndefinedError())
 }
 
 // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
@@ -1805,7 +1805,7 @@ func (r DeleteAccountAccessKeyResponse) UndefinedError() error {
 type ReadAccountAccessKeyResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *AccountKey
+	JSON200      *AccountKeyResponseBody
 	JSON401      *Error401
 	JSON404      *Error404
 	JSONDefault  *ErrorDefault
@@ -1828,7 +1828,7 @@ func (r ReadAccountAccessKeyResponse) StatusCode() int {
 }
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-func (r ReadAccountAccessKeyResponse) Result() (*AccountKey, error) {
+func (r ReadAccountAccessKeyResponse) Result() (*AccountKeyResponseBody, error) {
 	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSONDefault, r.UndefinedError())
 }
 
@@ -1904,8 +1904,8 @@ func (r CreatePermissionResponse) StatusCode() int {
 }
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-func (r CreatePermissionResponse) Result() error {
-	return eCoalesce(r.JSON201, r.JSON401, r.JSON404, r.JSON409, r.JSONDefault, r.UndefinedError())
+func (r CreatePermissionResponse) Result() (*Permission, error) {
+	return r.JSON201, eCoalesce(r.JSON401, r.JSON404, r.JSON409, r.JSONDefault, r.UndefinedError())
 }
 
 // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
@@ -2094,8 +2094,8 @@ func (r CreatePermissionAccessKeyResponse) StatusCode() int {
 }
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-func (r CreatePermissionAccessKeyResponse) Result() error {
-	return eCoalesce(r.JSON201, r.JSON401, r.JSON404, r.JSON409, r.JSONDefault, r.UndefinedError())
+func (r CreatePermissionAccessKeyResponse) Result() (*PermissionKey, error) {
+	return r.JSON201, eCoalesce(r.JSON401, r.JSON404, r.JSON409, r.JSONDefault, r.UndefinedError())
 }
 
 // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
@@ -2755,7 +2755,7 @@ func ParseListAccountAccessKeysResponse(rsp *http.Response) (*ListAccountAccessK
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest AccountKeys
+		var dest AccountKeysResponseBody
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -2802,7 +2802,7 @@ func ParseCreateAccountAccessKeyResponse(rsp *http.Response) (*CreateAccountAcce
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
-		var dest AccountKey
+		var dest AccountKeyResponseBody
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -2889,7 +2889,7 @@ func ParseReadAccountAccessKeyResponse(rsp *http.Response) (*ReadAccountAccessKe
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest AccountKey
+		var dest AccountKeyResponseBody
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}

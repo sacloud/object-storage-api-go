@@ -64,10 +64,10 @@ return r.HTTPResponse.StatusCode
 return 0
 }
 
-{{ $json200Type := "" }}{{ range getResponseTypeDefinitions . }}{{ if eq .TypeName "JSON200" }}{{ $json200Type = .Schema.TypeDecl }}{{ end }}{{ end -}}
+{{ $json20xType := "" }}{{ $json20xTypeName := "" }}{{ range getResponseTypeDefinitions . }}{{ if or (eq .TypeName "JSON200") (eq .TypeName "JSON201") }}{{ $json20xType = .Schema.TypeDecl }}{{ $json20xTypeName = .TypeName }}{{ end }}{{ end -}}
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-func (r {{$opid | ucFirst}}Response) Result() ({{if $json200Type}}*{{ $json200Type}},{{end}}error) {
-    return {{if $json200Type}}r.JSON200, {{end}}eCoalesce({{range getResponseTypeDefinitions .}}{{ if ne .TypeName "JSON200" }}r.{{.TypeName}},{{end}}{{end}}r.UndefinedError())
+func (r {{$opid | ucFirst}}Response) Result() ({{if $json20xType}}*{{ $json20xType}},{{end}}error) {
+    return {{if $json20xType}}r.{{ $json20xTypeName }}, {{end}}eCoalesce({{range getResponseTypeDefinitions .}}{{ if and (ne .TypeName "JSON200") (ne .TypeName "JSON201") }}r.{{.TypeName}},{{end}}{{end}}r.UndefinedError())
 }
 
 // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す

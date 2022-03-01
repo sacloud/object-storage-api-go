@@ -97,3 +97,46 @@ func Example_readSiteAccount() {
 	// output:
 	// member@account@isk01
 }
+
+// Example_siteAccountKeys サイトアカウントのキー操作の例
+func Example_siteAccountKeys() {
+	token := os.Getenv("SAKURACLOUD_ACCESS_TOKEN")
+	secret := os.Getenv("SAKURACLOUD_ACCESS_TOKEN_SECRET")
+
+	client, err := v1.NewClientWithResponses(serverURL, func(c *v1.Client) error {
+		c.RequestEditors = []v1.RequestEditorFn{
+			v1.OjsAuthInterceptor(token, secret),
+		}
+		return nil
+	})
+	if err != nil {
+		panic(err)
+	}
+
+	// サイトIDが必要になるためまずサイト一覧を取得
+	sitesResp, err := client.ListClustersWithResponse(context.Background())
+	if err != nil {
+		panic(err)
+	}
+
+	sites, err := sitesResp.Result()
+	if err != nil {
+		panic(err)
+	}
+	siteId := sites.Data[0].Id
+
+	// サイトアカウントのキーを作成
+	keyResp, err := client.CreateAccountAccessKeyWithResponse(context.Background(), siteId)
+	if err != nil {
+		panic(err)
+	}
+
+	key, err := keyResp.Result()
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println(key.Data.Secret)
+	// output:
+	// secret
+}

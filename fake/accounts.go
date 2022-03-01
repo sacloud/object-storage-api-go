@@ -47,17 +47,9 @@ func (engine *Engine) DeleteSiteAccount(siteName string) error {
 func (engine *Engine) ReadSiteAccount(siteName string) (*v1.Account, error) {
 	defer engine.rLock()()
 
-	// Note: API定義上は定義されていないがサイトがないケースでは404が返される
-	if cluster := engine.getClusterById(siteName); cluster == nil {
-		return nil, NewError(ErrorTypeNotFound, "account", "",
-			"指定のサイトは存在しません。site_name: %s", siteName)
+	if err := engine.siteAndAccountExist(siteName); err != nil {
+		return nil, err
 	}
-
-	if engine.Account == nil {
-		return nil, NewError(ErrorTypeNotFound, "account", "",
-			"サイトにアカウントが存在しません。site_name: %s", siteName)
-	}
-
 	return engine.copyAccount(engine.Account)
 }
 
@@ -96,4 +88,19 @@ func (engine *Engine) copyAccount(source *v1.Account) (*v1.Account, error) {
 		return nil, err
 	}
 	return &account, nil
+}
+
+func (engine *Engine) siteAndAccountExist(siteName string) error {
+	// Note: API定義上は定義されていないがサイトがないケースでは404が返される
+	if cluster := engine.getClusterById(siteName); cluster == nil {
+		return NewError(ErrorTypeNotFound, "account", "",
+			"指定のサイトは存在しません。site_name: %s", siteName)
+	}
+
+	if engine.Account == nil {
+		return NewError(ErrorTypeNotFound, "account", "",
+			"サイトにアカウントが存在しません。site_name: %s", siteName)
+	}
+
+	return nil
 }

@@ -36,6 +36,30 @@ type Account struct {
 	ResourceId ResourceID `json:"resource_id"`
 }
 
+// Root user access key
+type AccountKey struct {
+	// Created at
+	CreatedAt CreatedAt `json:"created_at"`
+
+	// Access key ID
+	Id AccessKeyID `json:"id"`
+
+	// Secret Access key
+	Secret SecretAccessKey `json:"secret"`
+}
+
+// Root user access key
+type AccountKeyResponseBody struct {
+	// Root user access key
+	Data AccountKey `json:"data"`
+}
+
+// Root user access keys
+type AccountKeysResponseBody struct {
+	// data type
+	Data []AccountKey `json:"data"`
+}
+
 // Account info
 type AccountResponseBody struct {
 	// Account info
@@ -331,44 +355,6 @@ type Status struct {
 			Id     *int    `json:"id,omitempty"`
 			Status *string `json:"status,omitempty"`
 		} `json:"status_code,omitempty"`
-	} `json:"data,omitempty"`
-}
-
-// Root user access key
-type AccountKey struct {
-	// data type
-	Data *struct {
-		CreatedAt *struct {
-			// Embedded struct due to allOf(#/components/schemas/CreatedAt)
-			CreatedAt `yaml:",inline"`
-		} `json:"created_at,omitempty"`
-		Id *struct {
-			// Embedded struct due to allOf(#/components/schemas/AccessKeyID)
-			AccessKeyID `yaml:",inline"`
-		} `json:"id,omitempty"`
-		Secret *struct {
-			// Embedded struct due to allOf(#/components/schemas/SecretAccessKey)
-			SecretAccessKey `yaml:",inline"`
-		} `json:"secret,omitempty"`
-	} `json:"data,omitempty"`
-}
-
-// Root user access keys
-type AccountKeys struct {
-	// data type
-	Data *[]struct {
-		CreatedAt *struct {
-			// Embedded struct due to allOf(#/components/schemas/CreatedAt)
-			CreatedAt `yaml:",inline"`
-		} `json:"created_at,omitempty"`
-		Id *struct {
-			// Embedded struct due to allOf(#/components/schemas/AccessKeyID)
-			AccessKeyID `yaml:",inline"`
-		} `json:"id,omitempty"`
-		Secret *struct {
-			// Embedded struct due to allOf(#/components/schemas/SecretAccessKey)
-			SecretAccessKey `yaml:",inline"`
-		} `json:"secret,omitempty"`
 	} `json:"data,omitempty"`
 }
 
