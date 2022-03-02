@@ -23,8 +23,8 @@ import (
 
 // DeleteBucket バケットの削除
 // (DELETE /fed/v1/buckets/{name})
-func (s *Server) DeleteBucket(c *gin.Context, name string) {
-	if err := s.Engine.DeleteBucket(name); err != nil {
+func (s *Server) DeleteBucket(c *gin.Context, bucketName v1.BucketName) {
+	if err := s.Engine.DeleteBucket(bucketName.String()); err != nil {
 		s.handleError(c, err)
 		return
 	}
@@ -34,8 +34,8 @@ func (s *Server) DeleteBucket(c *gin.Context, name string) {
 
 // CreateBucket バケットの作成
 // (PUT /fed/v1/buckets/{name})
-func (s *Server) CreateBucket(c *gin.Context, name string) {
-	bucket, err := s.Engine.CreateBucket(name)
+func (s *Server) CreateBucket(c *gin.Context, bucketName v1.BucketName) {
+	bucket, err := s.Engine.CreateBucket(bucketName.String())
 	if err != nil {
 		s.handleError(c, err)
 		return

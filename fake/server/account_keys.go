@@ -23,8 +23,8 @@ import (
 
 // ListAccountAccessKeys サイトアカウントのアクセスキーの取得
 // (GET /{site_name}/v2/account/keys)
-func (s *Server) ListAccountAccessKeys(c *gin.Context, siteName string) {
-	keys, err := s.Engine.ListAccountAccessKeys(siteName)
+func (s *Server) ListAccountAccessKeys(c *gin.Context, siteId string) {
+	keys, err := s.Engine.ListAccountAccessKeys(siteId)
 	if err != nil {
 		s.handleError(c, err)
 		return
@@ -37,8 +37,8 @@ func (s *Server) ListAccountAccessKeys(c *gin.Context, siteName string) {
 
 // CreateAccountAccessKey サイトアカウントのアクセスキーの発行
 // (POST /{site_name}/v2/account/keys)
-func (s *Server) CreateAccountAccessKey(c *gin.Context, siteName string) {
-	key, err := s.Engine.CreateAccountAccessKey(siteName)
+func (s *Server) CreateAccountAccessKey(c *gin.Context, siteId string) {
+	key, err := s.Engine.CreateAccountAccessKey(siteId)
 	if err != nil {
 		s.handleError(c, err)
 		return
@@ -51,8 +51,8 @@ func (s *Server) CreateAccountAccessKey(c *gin.Context, siteName string) {
 
 // DeleteAccountAccessKey サイトアカウントのアクセスキーの削除
 // (DELETE /{site_name}/v2/account/keys/{id})
-func (s *Server) DeleteAccountAccessKey(c *gin.Context, siteName string, id string) {
-	if err := s.Engine.DeleteAccountAccessKey(siteName, id); err != nil {
+func (s *Server) DeleteAccountAccessKey(c *gin.Context, siteId string, accountKeyId v1.AccessKeyID) {
+	if err := s.Engine.DeleteAccountAccessKey(siteId, accountKeyId.String()); err != nil {
 		s.handleError(c, err)
 		return
 	}
@@ -62,8 +62,8 @@ func (s *Server) DeleteAccountAccessKey(c *gin.Context, siteName string, id stri
 
 // ReadAccountAccessKey サイトアカウントのアクセスキーの取得
 // (GET /{site_name}/v2/account/keys/{id})
-func (s *Server) ReadAccountAccessKey(c *gin.Context, siteName string, id string) {
-	key, err := s.Engine.ReadAccountAccessKey(siteName, id)
+func (s *Server) ReadAccountAccessKey(c *gin.Context, siteId string, accountKeyId v1.AccessKeyID) {
+	key, err := s.Engine.ReadAccountAccessKey(siteId, accountKeyId.String())
 	if err != nil {
 		s.handleError(c, err)
 		return

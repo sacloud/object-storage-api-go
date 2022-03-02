@@ -249,7 +249,7 @@ func Example_permissions() {
 	}
 
 	defer func() {
-		resp, err := client.DeletePermissionWithResponse(context.Background(), siteId, permission.Data.Id.String())
+		resp, err := client.DeletePermissionWithResponse(context.Background(), siteId, permission.Data.Id)
 		if err != nil {
 			panic(err)
 		}

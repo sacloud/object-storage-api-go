@@ -28,68 +28,68 @@ import (
 // ServerInterface represents all server handlers.
 type ServerInterface interface {
 	// バケットの削除
-	// (DELETE /fed/v1/buckets/{name})
-	DeleteBucket(c *gin.Context, name string)
+	// (DELETE /fed/v1/buckets/{bucket_name})
+	DeleteBucket(c *gin.Context, bucketName BucketName)
 	// バケットの作成
-	// (PUT /fed/v1/buckets/{name})
-	CreateBucket(c *gin.Context, name string)
+	// (PUT /fed/v1/buckets/{bucket_name})
+	CreateBucket(c *gin.Context, bucketName BucketName)
 	// サイト一覧の取得
 	// (GET /fed/v1/clusters)
 	ListClusters(c *gin.Context)
 	// サイトの取得
-	// (GET /fed/v1/clusters/{id})
-	ReadCluster(c *gin.Context, id string)
+	// (GET /fed/v1/clusters/{site_id})
+	ReadCluster(c *gin.Context, siteId string)
 	// サイトアカウントの削除
-	// (DELETE /{site_name}/v2/account)
-	DeleteSiteAccount(c *gin.Context, siteName string)
+	// (DELETE /{site_id}/v2/account)
+	DeleteSiteAccount(c *gin.Context, siteId string)
 	// サイトアカウントの取得
-	// (GET /{site_name}/v2/account)
-	ReadSiteAccount(c *gin.Context, siteName string)
+	// (GET /{site_id}/v2/account)
+	ReadSiteAccount(c *gin.Context, siteId string)
 	// サイトアカウントの作成
-	// (POST /{site_name}/v2/account)
-	CreateSiteAccount(c *gin.Context, siteName string)
+	// (POST /{site_id}/v2/account)
+	CreateSiteAccount(c *gin.Context, siteId string)
 	// サイトアカウントのアクセスキーの取得
-	// (GET /{site_name}/v2/account/keys)
-	ListAccountAccessKeys(c *gin.Context, siteName string)
+	// (GET /{site_id}/v2/account/keys)
+	ListAccountAccessKeys(c *gin.Context, siteId string)
 	// サイトアカウントのアクセスキーの発行
-	// (POST /{site_name}/v2/account/keys)
-	CreateAccountAccessKey(c *gin.Context, siteName string)
+	// (POST /{site_id}/v2/account/keys)
+	CreateAccountAccessKey(c *gin.Context, siteId string)
 	// サイトアカウントのアクセスキーの削除
-	// (DELETE /{site_name}/v2/account/keys/{id})
-	DeleteAccountAccessKey(c *gin.Context, siteName string, id string)
+	// (DELETE /{site_id}/v2/account/keys/{account_key_id})
+	DeleteAccountAccessKey(c *gin.Context, siteId string, accountKeyId AccessKeyID)
 	// サイトアカウントのアクセスキーの取得
-	// (GET /{site_name}/v2/account/keys/{id})
-	ReadAccountAccessKey(c *gin.Context, siteName string, id string)
+	// (GET /{site_id}/v2/account/keys/{account_key_id})
+	ReadAccountAccessKey(c *gin.Context, siteId string, accountKeyId AccessKeyID)
 	// パーミッション一覧の取得
-	// (GET /{site_name}/v2/permissions)
-	ListPermissions(c *gin.Context, siteName string)
+	// (GET /{site_id}/v2/permissions)
+	ListPermissions(c *gin.Context, siteId string)
 	// パーミッションの作成
-	// (POST /{site_name}/v2/permissions)
-	CreatePermission(c *gin.Context, siteName string)
+	// (POST /{site_id}/v2/permissions)
+	CreatePermission(c *gin.Context, siteId string)
 	// パーミッションの削除
-	// (DELETE /{site_name}/v2/permissions/{id})
-	DeletePermission(c *gin.Context, siteName string, id string)
+	// (DELETE /{site_id}/v2/permissions/{permission_id})
+	DeletePermission(c *gin.Context, siteId string, permissionId PermissionID)
 	// パーミッションの取得
-	// (GET /{site_name}/v2/permissions/{id})
-	ReadPermission(c *gin.Context, siteName string, id string)
+	// (GET /{site_id}/v2/permissions/{permission_id})
+	ReadPermission(c *gin.Context, siteId string, permissionId PermissionID)
 	// パーミッションの更新
-	// (PUT /{site_name}/v2/permissions/{id})
-	UpdatePermission(c *gin.Context, siteName string, id string)
+	// (PUT /{site_id}/v2/permissions/{permission_id})
+	UpdatePermission(c *gin.Context, siteId string, permissionId PermissionID)
 	// パーミッションが保有するアクセスキー一覧の取得
-	// (GET /{site_name}/v2/permissions/{id}/keys)
-	ListPermissionAccessKeys(c *gin.Context, siteName string, id string)
+	// (GET /{site_id}/v2/permissions/{permission_id}/keys)
+	ListPermissionAccessKeys(c *gin.Context, siteId string, permissionId PermissionID)
 	// パーミッションのアクセスキーの発行
-	// (POST /{site_name}/v2/permissions/{id}/keys)
-	CreatePermissionAccessKey(c *gin.Context, siteName string, id string)
+	// (POST /{site_id}/v2/permissions/{permission_id}/keys)
+	CreatePermissionAccessKey(c *gin.Context, siteId string, permissionId PermissionID)
 	// パーミッションが保有するアクセスキーの削除
-	// (DELETE /{site_name}/v2/permissions/{id}/keys/{key_id})
-	DeletePermissionAccessKey(c *gin.Context, siteName string, id string, keyId string)
+	// (DELETE /{site_id}/v2/permissions/{permission_id}/keys/{permission_key_id})
+	DeletePermissionAccessKey(c *gin.Context, siteId string, permissionId PermissionID, permissionKeyId AccessKeyID)
 	// パーミッションが保有するアクセスキーの取得
-	// (GET /{site_name}/v2/permissions/{id}/keys/{key_id})
-	ReadPermissionAccessKey(c *gin.Context, siteName string, id string, keyId string)
+	// (GET /{site_id}/v2/permissions/{permission_id}/keys/{permission_key_id})
+	ReadPermissionAccessKey(c *gin.Context, siteId string, permissionId PermissionID, permissionKeyId AccessKeyID)
 	// サイトのステータスの取得
-	// (GET /{site_name}/v2/status)
-	ReadSiteStatus(c *gin.Context, siteName string)
+	// (GET /{site_id}/v2/status)
+	ReadSiteStatus(c *gin.Context, siteId string)
 }
 
 // ServerInterfaceWrapper converts contexts to parameters.
@@ -105,12 +105,12 @@ func (siw *ServerInterfaceWrapper) DeleteBucket(c *gin.Context) {
 
 	var err error
 
-	// ------------- Path parameter "name" -------------
-	var name string
+	// ------------- Path parameter "bucket_name" -------------
+	var bucketName BucketName
 
-	err = runtime.BindStyledParameter("simple", false, "name", c.Param("name"), &name)
+	err = runtime.BindStyledParameter("simple", false, "bucket_name", c.Param("bucket_name"), &bucketName)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter name: %s", err)})
+		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter bucket_name: %s", err)})
 		return
 	}
 
@@ -118,7 +118,7 @@ func (siw *ServerInterfaceWrapper) DeleteBucket(c *gin.Context) {
 		middleware(c)
 	}
 
-	siw.Handler.DeleteBucket(c, name)
+	siw.Handler.DeleteBucket(c, bucketName)
 }
 
 // CreateBucket operation middleware
@@ -126,12 +126,12 @@ func (siw *ServerInterfaceWrapper) CreateBucket(c *gin.Context) {
 
 	var err error
 
-	// ------------- Path parameter "name" -------------
-	var name string
+	// ------------- Path parameter "bucket_name" -------------
+	var bucketName BucketName
 
-	err = runtime.BindStyledParameter("simple", false, "name", c.Param("name"), &name)
+	err = runtime.BindStyledParameter("simple", false, "bucket_name", c.Param("bucket_name"), &bucketName)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter name: %s", err)})
+		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter bucket_name: %s", err)})
 		return
 	}
 
@@ -139,7 +139,7 @@ func (siw *ServerInterfaceWrapper) CreateBucket(c *gin.Context) {
 		middleware(c)
 	}
 
-	siw.Handler.CreateBucket(c, name)
+	siw.Handler.CreateBucket(c, bucketName)
 }
 
 // ListClusters operation middleware
@@ -157,12 +157,12 @@ func (siw *ServerInterfaceWrapper) ReadCluster(c *gin.Context) {
 
 	var err error
 
-	// ------------- Path parameter "id" -------------
-	var id string
+	// ------------- Path parameter "site_id" -------------
+	var siteId string
 
-	err = runtime.BindStyledParameter("simple", false, "id", c.Param("id"), &id)
+	err = runtime.BindStyledParameter("simple", false, "site_id", c.Param("site_id"), &siteId)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter id: %s", err)})
+		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter site_id: %s", err)})
 		return
 	}
 
@@ -170,7 +170,7 @@ func (siw *ServerInterfaceWrapper) ReadCluster(c *gin.Context) {
 		middleware(c)
 	}
 
-	siw.Handler.ReadCluster(c, id)
+	siw.Handler.ReadCluster(c, siteId)
 }
 
 // DeleteSiteAccount operation middleware
@@ -178,12 +178,12 @@ func (siw *ServerInterfaceWrapper) DeleteSiteAccount(c *gin.Context) {
 
 	var err error
 
-	// ------------- Path parameter "site_name" -------------
-	var siteName string
+	// ------------- Path parameter "site_id" -------------
+	var siteId string
 
-	err = runtime.BindStyledParameter("simple", false, "site_name", c.Param("site_name"), &siteName)
+	err = runtime.BindStyledParameter("simple", false, "site_id", c.Param("site_id"), &siteId)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter site_name: %s", err)})
+		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter site_id: %s", err)})
 		return
 	}
 
@@ -191,7 +191,7 @@ func (siw *ServerInterfaceWrapper) DeleteSiteAccount(c *gin.Context) {
 		middleware(c)
 	}
 
-	siw.Handler.DeleteSiteAccount(c, siteName)
+	siw.Handler.DeleteSiteAccount(c, siteId)
 }
 
 // ReadSiteAccount operation middleware
@@ -199,12 +199,12 @@ func (siw *ServerInterfaceWrapper) ReadSiteAccount(c *gin.Context) {
 
 	var err error
 
-	// ------------- Path parameter "site_name" -------------
-	var siteName string
+	// ------------- Path parameter "site_id" -------------
+	var siteId string
 
-	err = runtime.BindStyledParameter("simple", false, "site_name", c.Param("site_name"), &siteName)
+	err = runtime.BindStyledParameter("simple", false, "site_id", c.Param("site_id"), &siteId)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter site_name: %s", err)})
+		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter site_id: %s", err)})
 		return
 	}
 
@@ -212,7 +212,7 @@ func (siw *ServerInterfaceWrapper) ReadSiteAccount(c *gin.Context) {
 		middleware(c)
 	}
 
-	siw.Handler.ReadSiteAccount(c, siteName)
+	siw.Handler.ReadSiteAccount(c, siteId)
 }
 
 // CreateSiteAccount operation middleware
@@ -220,12 +220,12 @@ func (siw *ServerInterfaceWrapper) CreateSiteAccount(c *gin.Context) {
 
 	var err error
 
-	// ------------- Path parameter "site_name" -------------
-	var siteName string
+	// ------------- Path parameter "site_id" -------------
+	var siteId string
 
-	err = runtime.BindStyledParameter("simple", false, "site_name", c.Param("site_name"), &siteName)
+	err = runtime.BindStyledParameter("simple", false, "site_id", c.Param("site_id"), &siteId)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter site_name: %s", err)})
+		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter site_id: %s", err)})
 		return
 	}
 
@@ -233,7 +233,7 @@ func (siw *ServerInterfaceWrapper) CreateSiteAccount(c *gin.Context) {
 		middleware(c)
 	}
 
-	siw.Handler.CreateSiteAccount(c, siteName)
+	siw.Handler.CreateSiteAccount(c, siteId)
 }
 
 // ListAccountAccessKeys operation middleware
@@ -241,12 +241,12 @@ func (siw *ServerInterfaceWrapper) ListAccountAccessKeys(c *gin.Context) {
 
 	var err error
 
-	// ------------- Path parameter "site_name" -------------
-	var siteName string
+	// ------------- Path parameter "site_id" -------------
+	var siteId string
 
-	err = runtime.BindStyledParameter("simple", false, "site_name", c.Param("site_name"), &siteName)
+	err = runtime.BindStyledParameter("simple", false, "site_id", c.Param("site_id"), &siteId)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter site_name: %s", err)})
+		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter site_id: %s", err)})
 		return
 	}
 
@@ -254,7 +254,7 @@ func (siw *ServerInterfaceWrapper) ListAccountAccessKeys(c *gin.Context) {
 		middleware(c)
 	}
 
-	siw.Handler.ListAccountAccessKeys(c, siteName)
+	siw.Handler.ListAccountAccessKeys(c, siteId)
 }
 
 // CreateAccountAccessKey operation middleware
@@ -262,12 +262,12 @@ func (siw *ServerInterfaceWrapper) CreateAccountAccessKey(c *gin.Context) {
 
 	var err error
 
-	// ------------- Path parameter "site_name" -------------
-	var siteName string
+	// ------------- Path parameter "site_id" -------------
+	var siteId string
 
-	err = runtime.BindStyledParameter("simple", false, "site_name", c.Param("site_name"), &siteName)
+	err = runtime.BindStyledParameter("simple", false, "site_id", c.Param("site_id"), &siteId)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter site_name: %s", err)})
+		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter site_id: %s", err)})
 		return
 	}
 
@@ -275,7 +275,7 @@ func (siw *ServerInterfaceWrapper) CreateAccountAccessKey(c *gin.Context) {
 		middleware(c)
 	}
 
-	siw.Handler.CreateAccountAccessKey(c, siteName)
+	siw.Handler.CreateAccountAccessKey(c, siteId)
 }
 
 // DeleteAccountAccessKey operation middleware
@@ -283,21 +283,21 @@ func (siw *ServerInterfaceWrapper) DeleteAccountAccessKey(c *gin.Context) {
 
 	var err error
 
-	// ------------- Path parameter "site_name" -------------
-	var siteName string
+	// ------------- Path parameter "site_id" -------------
+	var siteId string
 
-	err = runtime.BindStyledParameter("simple", false, "site_name", c.Param("site_name"), &siteName)
+	err = runtime.BindStyledParameter("simple", false, "site_id", c.Param("site_id"), &siteId)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter site_name: %s", err)})
+		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter site_id: %s", err)})
 		return
 	}
 
-	// ------------- Path parameter "id" -------------
-	var id string
+	// ------------- Path parameter "account_key_id" -------------
+	var accountKeyId AccessKeyID
 
-	err = runtime.BindStyledParameter("simple", false, "id", c.Param("id"), &id)
+	err = runtime.BindStyledParameter("simple", false, "account_key_id", c.Param("account_key_id"), &accountKeyId)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter id: %s", err)})
+		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter account_key_id: %s", err)})
 		return
 	}
 
@@ -305,7 +305,7 @@ func (siw *ServerInterfaceWrapper) DeleteAccountAccessKey(c *gin.Context) {
 		middleware(c)
 	}
 
-	siw.Handler.DeleteAccountAccessKey(c, siteName, id)
+	siw.Handler.DeleteAccountAccessKey(c, siteId, accountKeyId)
 }
 
 // ReadAccountAccessKey operation middleware
@@ -313,21 +313,21 @@ func (siw *ServerInterfaceWrapper) ReadAccountAccessKey(c *gin.Context) {
 
 	var err error
 
-	// ------------- Path parameter "site_name" -------------
-	var siteName string
+	// ------------- Path parameter "site_id" -------------
+	var siteId string
 
-	err = runtime.BindStyledParameter("simple", false, "site_name", c.Param("site_name"), &siteName)
+	err = runtime.BindStyledParameter("simple", false, "site_id", c.Param("site_id"), &siteId)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter site_name: %s", err)})
+		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter site_id: %s", err)})
 		return
 	}
 
-	// ------------- Path parameter "id" -------------
-	var id string
+	// ------------- Path parameter "account_key_id" -------------
+	var accountKeyId AccessKeyID
 
-	err = runtime.BindStyledParameter("simple", false, "id", c.Param("id"), &id)
+	err = runtime.BindStyledParameter("simple", false, "account_key_id", c.Param("account_key_id"), &accountKeyId)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter id: %s", err)})
+		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter account_key_id: %s", err)})
 		return
 	}
 
@@ -335,7 +335,7 @@ func (siw *ServerInterfaceWrapper) ReadAccountAccessKey(c *gin.Context) {
 		middleware(c)
 	}
 
-	siw.Handler.ReadAccountAccessKey(c, siteName, id)
+	siw.Handler.ReadAccountAccessKey(c, siteId, accountKeyId)
 }
 
 // ListPermissions operation middleware
@@ -343,12 +343,12 @@ func (siw *ServerInterfaceWrapper) ListPermissions(c *gin.Context) {
 
 	var err error
 
-	// ------------- Path parameter "site_name" -------------
-	var siteName string
+	// ------------- Path parameter "site_id" -------------
+	var siteId string
 
-	err = runtime.BindStyledParameter("simple", false, "site_name", c.Param("site_name"), &siteName)
+	err = runtime.BindStyledParameter("simple", false, "site_id", c.Param("site_id"), &siteId)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter site_name: %s", err)})
+		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter site_id: %s", err)})
 		return
 	}
 
@@ -356,7 +356,7 @@ func (siw *ServerInterfaceWrapper) ListPermissions(c *gin.Context) {
 		middleware(c)
 	}
 
-	siw.Handler.ListPermissions(c, siteName)
+	siw.Handler.ListPermissions(c, siteId)
 }
 
 // CreatePermission operation middleware
@@ -364,12 +364,12 @@ func (siw *ServerInterfaceWrapper) CreatePermission(c *gin.Context) {
 
 	var err error
 
-	// ------------- Path parameter "site_name" -------------
-	var siteName string
+	// ------------- Path parameter "site_id" -------------
+	var siteId string
 
-	err = runtime.BindStyledParameter("simple", false, "site_name", c.Param("site_name"), &siteName)
+	err = runtime.BindStyledParameter("simple", false, "site_id", c.Param("site_id"), &siteId)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter site_name: %s", err)})
+		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter site_id: %s", err)})
 		return
 	}
 
@@ -377,7 +377,7 @@ func (siw *ServerInterfaceWrapper) CreatePermission(c *gin.Context) {
 		middleware(c)
 	}
 
-	siw.Handler.CreatePermission(c, siteName)
+	siw.Handler.CreatePermission(c, siteId)
 }
 
 // DeletePermission operation middleware
@@ -385,21 +385,21 @@ func (siw *ServerInterfaceWrapper) DeletePermission(c *gin.Context) {
 
 	var err error
 
-	// ------------- Path parameter "site_name" -------------
-	var siteName string
+	// ------------- Path parameter "site_id" -------------
+	var siteId string
 
-	err = runtime.BindStyledParameter("simple", false, "site_name", c.Param("site_name"), &siteName)
+	err = runtime.BindStyledParameter("simple", false, "site_id", c.Param("site_id"), &siteId)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter site_name: %s", err)})
+		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter site_id: %s", err)})
 		return
 	}
 
-	// ------------- Path parameter "id" -------------
-	var id string
+	// ------------- Path parameter "permission_id" -------------
+	var permissionId PermissionID
 
-	err = runtime.BindStyledParameter("simple", false, "id", c.Param("id"), &id)
+	err = runtime.BindStyledParameter("simple", false, "permission_id", c.Param("permission_id"), &permissionId)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter id: %s", err)})
+		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter permission_id: %s", err)})
 		return
 	}
 
@@ -407,7 +407,7 @@ func (siw *ServerInterfaceWrapper) DeletePermission(c *gin.Context) {
 		middleware(c)
 	}
 
-	siw.Handler.DeletePermission(c, siteName, id)
+	siw.Handler.DeletePermission(c, siteId, permissionId)
 }
 
 // ReadPermission operation middleware
@@ -415,21 +415,21 @@ func (siw *ServerInterfaceWrapper) ReadPermission(c *gin.Context) {
 
 	var err error
 
-	// ------------- Path parameter "site_name" -------------
-	var siteName string
+	// ------------- Path parameter "site_id" -------------
+	var siteId string
 
-	err = runtime.BindStyledParameter("simple", false, "site_name", c.Param("site_name"), &siteName)
+	err = runtime.BindStyledParameter("simple", false, "site_id", c.Param("site_id"), &siteId)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter site_name: %s", err)})
+		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter site_id: %s", err)})
 		return
 	}
 
-	// ------------- Path parameter "id" -------------
-	var id string
+	// ------------- Path parameter "permission_id" -------------
+	var permissionId PermissionID
 
-	err = runtime.BindStyledParameter("simple", false, "id", c.Param("id"), &id)
+	err = runtime.BindStyledParameter("simple", false, "permission_id", c.Param("permission_id"), &permissionId)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter id: %s", err)})
+		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter permission_id: %s", err)})
 		return
 	}
 
@@ -437,7 +437,7 @@ func (siw *ServerInterfaceWrapper) ReadPermission(c *gin.Context) {
 		middleware(c)
 	}
 
-	siw.Handler.ReadPermission(c, siteName, id)
+	siw.Handler.ReadPermission(c, siteId, permissionId)
 }
 
 // UpdatePermission operation middleware
@@ -445,21 +445,21 @@ func (siw *ServerInterfaceWrapper) UpdatePermission(c *gin.Context) {
 
 	var err error
 
-	// ------------- Path parameter "site_name" -------------
-	var siteName string
+	// ------------- Path parameter "site_id" -------------
+	var siteId string
 
-	err = runtime.BindStyledParameter("simple", false, "site_name", c.Param("site_name"), &siteName)
+	err = runtime.BindStyledParameter("simple", false, "site_id", c.Param("site_id"), &siteId)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter site_name: %s", err)})
+		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter site_id: %s", err)})
 		return
 	}
 
-	// ------------- Path parameter "id" -------------
-	var id string
+	// ------------- Path parameter "permission_id" -------------
+	var permissionId PermissionID
 
-	err = runtime.BindStyledParameter("simple", false, "id", c.Param("id"), &id)
+	err = runtime.BindStyledParameter("simple", false, "permission_id", c.Param("permission_id"), &permissionId)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter id: %s", err)})
+		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter permission_id: %s", err)})
 		return
 	}
 
@@ -467,7 +467,7 @@ func (siw *ServerInterfaceWrapper) UpdatePermission(c *gin.Context) {
 		middleware(c)
 	}
 
-	siw.Handler.UpdatePermission(c, siteName, id)
+	siw.Handler.UpdatePermission(c, siteId, permissionId)
 }
 
 // ListPermissionAccessKeys operation middleware
@@ -475,21 +475,21 @@ func (siw *ServerInterfaceWrapper) ListPermissionAccessKeys(c *gin.Context) {
 
 	var err error
 
-	// ------------- Path parameter "site_name" -------------
-	var siteName string
+	// ------------- Path parameter "site_id" -------------
+	var siteId string
 
-	err = runtime.BindStyledParameter("simple", false, "site_name", c.Param("site_name"), &siteName)
+	err = runtime.BindStyledParameter("simple", false, "site_id", c.Param("site_id"), &siteId)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter site_name: %s", err)})
+		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter site_id: %s", err)})
 		return
 	}
 
-	// ------------- Path parameter "id" -------------
-	var id string
+	// ------------- Path parameter "permission_id" -------------
+	var permissionId PermissionID
 
-	err = runtime.BindStyledParameter("simple", false, "id", c.Param("id"), &id)
+	err = runtime.BindStyledParameter("simple", false, "permission_id", c.Param("permission_id"), &permissionId)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter id: %s", err)})
+		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter permission_id: %s", err)})
 		return
 	}
 
@@ -497,7 +497,7 @@ func (siw *ServerInterfaceWrapper) ListPermissionAccessKeys(c *gin.Context) {
 		middleware(c)
 	}
 
-	siw.Handler.ListPermissionAccessKeys(c, siteName, id)
+	siw.Handler.ListPermissionAccessKeys(c, siteId, permissionId)
 }
 
 // CreatePermissionAccessKey operation middleware
@@ -505,21 +505,21 @@ func (siw *ServerInterfaceWrapper) CreatePermissionAccessKey(c *gin.Context) {
 
 	var err error
 
-	// ------------- Path parameter "site_name" -------------
-	var siteName string
+	// ------------- Path parameter "site_id" -------------
+	var siteId string
 
-	err = runtime.BindStyledParameter("simple", false, "site_name", c.Param("site_name"), &siteName)
+	err = runtime.BindStyledParameter("simple", false, "site_id", c.Param("site_id"), &siteId)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter site_name: %s", err)})
+		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter site_id: %s", err)})
 		return
 	}
 
-	// ------------- Path parameter "id" -------------
-	var id string
+	// ------------- Path parameter "permission_id" -------------
+	var permissionId PermissionID
 
-	err = runtime.BindStyledParameter("simple", false, "id", c.Param("id"), &id)
+	err = runtime.BindStyledParameter("simple", false, "permission_id", c.Param("permission_id"), &permissionId)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter id: %s", err)})
+		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter permission_id: %s", err)})
 		return
 	}
 
@@ -527,7 +527,7 @@ func (siw *ServerInterfaceWrapper) CreatePermissionAccessKey(c *gin.Context) {
 		middleware(c)
 	}
 
-	siw.Handler.CreatePermissionAccessKey(c, siteName, id)
+	siw.Handler.CreatePermissionAccessKey(c, siteId, permissionId)
 }
 
 // DeletePermissionAccessKey operation middleware
@@ -535,30 +535,30 @@ func (siw *ServerInterfaceWrapper) DeletePermissionAccessKey(c *gin.Context) {
 
 	var err error
 
-	// ------------- Path parameter "site_name" -------------
-	var siteName string
+	// ------------- Path parameter "site_id" -------------
+	var siteId string
 
-	err = runtime.BindStyledParameter("simple", false, "site_name", c.Param("site_name"), &siteName)
+	err = runtime.BindStyledParameter("simple", false, "site_id", c.Param("site_id"), &siteId)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter site_name: %s", err)})
+		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter site_id: %s", err)})
 		return
 	}
 
-	// ------------- Path parameter "id" -------------
-	var id string
+	// ------------- Path parameter "permission_id" -------------
+	var permissionId PermissionID
 
-	err = runtime.BindStyledParameter("simple", false, "id", c.Param("id"), &id)
+	err = runtime.BindStyledParameter("simple", false, "permission_id", c.Param("permission_id"), &permissionId)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter id: %s", err)})
+		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter permission_id: %s", err)})
 		return
 	}
 
-	// ------------- Path parameter "key_id" -------------
-	var keyId string
+	// ------------- Path parameter "permission_key_id" -------------
+	var permissionKeyId AccessKeyID
 
-	err = runtime.BindStyledParameter("simple", false, "key_id", c.Param("key_id"), &keyId)
+	err = runtime.BindStyledParameter("simple", false, "permission_key_id", c.Param("permission_key_id"), &permissionKeyId)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter key_id: %s", err)})
+		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter permission_key_id: %s", err)})
 		return
 	}
 
@@ -566,7 +566,7 @@ func (siw *ServerInterfaceWrapper) DeletePermissionAccessKey(c *gin.Context) {
 		middleware(c)
 	}
 
-	siw.Handler.DeletePermissionAccessKey(c, siteName, id, keyId)
+	siw.Handler.DeletePermissionAccessKey(c, siteId, permissionId, permissionKeyId)
 }
 
 // ReadPermissionAccessKey operation middleware
@@ -574,30 +574,30 @@ func (siw *ServerInterfaceWrapper) ReadPermissionAccessKey(c *gin.Context) {
 
 	var err error
 
-	// ------------- Path parameter "site_name" -------------
-	var siteName string
+	// ------------- Path parameter "site_id" -------------
+	var siteId string
 
-	err = runtime.BindStyledParameter("simple", false, "site_name", c.Param("site_name"), &siteName)
+	err = runtime.BindStyledParameter("simple", false, "site_id", c.Param("site_id"), &siteId)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter site_name: %s", err)})
+		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter site_id: %s", err)})
 		return
 	}
 
-	// ------------- Path parameter "id" -------------
-	var id string
+	// ------------- Path parameter "permission_id" -------------
+	var permissionId PermissionID
 
-	err = runtime.BindStyledParameter("simple", false, "id", c.Param("id"), &id)
+	err = runtime.BindStyledParameter("simple", false, "permission_id", c.Param("permission_id"), &permissionId)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter id: %s", err)})
+		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter permission_id: %s", err)})
 		return
 	}
 
-	// ------------- Path parameter "key_id" -------------
-	var keyId string
+	// ------------- Path parameter "permission_key_id" -------------
+	var permissionKeyId AccessKeyID
 
-	err = runtime.BindStyledParameter("simple", false, "key_id", c.Param("key_id"), &keyId)
+	err = runtime.BindStyledParameter("simple", false, "permission_key_id", c.Param("permission_key_id"), &permissionKeyId)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter key_id: %s", err)})
+		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter permission_key_id: %s", err)})
 		return
 	}
 
@@ -605,7 +605,7 @@ func (siw *ServerInterfaceWrapper) ReadPermissionAccessKey(c *gin.Context) {
 		middleware(c)
 	}
 
-	siw.Handler.ReadPermissionAccessKey(c, siteName, id, keyId)
+	siw.Handler.ReadPermissionAccessKey(c, siteId, permissionId, permissionKeyId)
 }
 
 // ReadSiteStatus operation middleware
@@ -613,12 +613,12 @@ func (siw *ServerInterfaceWrapper) ReadSiteStatus(c *gin.Context) {
 
 	var err error
 
-	// ------------- Path parameter "site_name" -------------
-	var siteName string
+	// ------------- Path parameter "site_id" -------------
+	var siteId string
 
-	err = runtime.BindStyledParameter("simple", false, "site_name", c.Param("site_name"), &siteName)
+	err = runtime.BindStyledParameter("simple", false, "site_id", c.Param("site_id"), &siteId)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter site_name: %s", err)})
+		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter site_id: %s", err)})
 		return
 	}
 
@@ -626,7 +626,7 @@ func (siw *ServerInterfaceWrapper) ReadSiteStatus(c *gin.Context) {
 		middleware(c)
 	}
 
-	siw.Handler.ReadSiteStatus(c, siteName)
+	siw.Handler.ReadSiteStatus(c, siteId)
 }
 
 // GinServerOptions provides options for the Gin server.
@@ -647,47 +647,47 @@ func RegisterHandlersWithOptions(router *gin.Engine, si ServerInterface, options
 		HandlerMiddlewares: options.Middlewares,
 	}
 
-	router.DELETE(options.BaseURL+"/fed/v1/buckets/:name", wrapper.DeleteBucket)
+	router.DELETE(options.BaseURL+"/fed/v1/buckets/:bucket_name", wrapper.DeleteBucket)
 
-	router.PUT(options.BaseURL+"/fed/v1/buckets/:name", wrapper.CreateBucket)
+	router.PUT(options.BaseURL+"/fed/v1/buckets/:bucket_name", wrapper.CreateBucket)
 
 	router.GET(options.BaseURL+"/fed/v1/clusters", wrapper.ListClusters)
 
-	router.GET(options.BaseURL+"/fed/v1/clusters/:id", wrapper.ReadCluster)
+	router.GET(options.BaseURL+"/fed/v1/clusters/:site_id", wrapper.ReadCluster)
 
-	router.DELETE(options.BaseURL+"/:site_name/v2/account", wrapper.DeleteSiteAccount)
+	router.DELETE(options.BaseURL+"/:site_id/v2/account", wrapper.DeleteSiteAccount)
 
-	router.GET(options.BaseURL+"/:site_name/v2/account", wrapper.ReadSiteAccount)
+	router.GET(options.BaseURL+"/:site_id/v2/account", wrapper.ReadSiteAccount)
 
-	router.POST(options.BaseURL+"/:site_name/v2/account", wrapper.CreateSiteAccount)
+	router.POST(options.BaseURL+"/:site_id/v2/account", wrapper.CreateSiteAccount)
 
-	router.GET(options.BaseURL+"/:site_name/v2/account/keys", wrapper.ListAccountAccessKeys)
+	router.GET(options.BaseURL+"/:site_id/v2/account/keys", wrapper.ListAccountAccessKeys)
 
-	router.POST(options.BaseURL+"/:site_name/v2/account/keys", wrapper.CreateAccountAccessKey)
+	router.POST(options.BaseURL+"/:site_id/v2/account/keys", wrapper.CreateAccountAccessKey)
 
-	router.DELETE(options.BaseURL+"/:site_name/v2/account/keys/:id", wrapper.DeleteAccountAccessKey)
+	router.DELETE(options.BaseURL+"/:site_id/v2/account/keys/:account_key_id", wrapper.DeleteAccountAccessKey)
 
-	router.GET(options.BaseURL+"/:site_name/v2/account/keys/:id", wrapper.ReadAccountAccessKey)
+	router.GET(options.BaseURL+"/:site_id/v2/account/keys/:account_key_id", wrapper.ReadAccountAccessKey)
 
-	router.GET(options.BaseURL+"/:site_name/v2/permissions", wrapper.ListPermissions)
+	router.GET(options.BaseURL+"/:site_id/v2/permissions", wrapper.ListPermissions)
 
-	router.POST(options.BaseURL+"/:site_name/v2/permissions", wrapper.CreatePermission)
+	router.POST(options.BaseURL+"/:site_id/v2/permissions", wrapper.CreatePermission)
 
-	router.DELETE(options.BaseURL+"/:site_name/v2/permissions/:id", wrapper.DeletePermission)
+	router.DELETE(options.BaseURL+"/:site_id/v2/permissions/:permission_id", wrapper.DeletePermission)
 
-	router.GET(options.BaseURL+"/:site_name/v2/permissions/:id", wrapper.ReadPermission)
+	router.GET(options.BaseURL+"/:site_id/v2/permissions/:permission_id", wrapper.ReadPermission)
 
-	router.PUT(options.BaseURL+"/:site_name/v2/permissions/:id", wrapper.UpdatePermission)
+	router.PUT(options.BaseURL+"/:site_id/v2/permissions/:permission_id", wrapper.UpdatePermission)
 
-	router.GET(options.BaseURL+"/:site_name/v2/permissions/:id/keys", wrapper.ListPermissionAccessKeys)
+	router.GET(options.BaseURL+"/:site_id/v2/permissions/:permission_id/keys", wrapper.ListPermissionAccessKeys)
 
-	router.POST(options.BaseURL+"/:site_name/v2/permissions/:id/keys", wrapper.CreatePermissionAccessKey)
+	router.POST(options.BaseURL+"/:site_id/v2/permissions/:permission_id/keys", wrapper.CreatePermissionAccessKey)
 
-	router.DELETE(options.BaseURL+"/:site_name/v2/permissions/:id/keys/:key_id", wrapper.DeletePermissionAccessKey)
+	router.DELETE(options.BaseURL+"/:site_id/v2/permissions/:permission_id/keys/:permission_key_id", wrapper.DeletePermissionAccessKey)
 
-	router.GET(options.BaseURL+"/:site_name/v2/permissions/:id/keys/:key_id", wrapper.ReadPermissionAccessKey)
+	router.GET(options.BaseURL+"/:site_id/v2/permissions/:permission_id/keys/:permission_key_id", wrapper.ReadPermissionAccessKey)
 
-	router.GET(options.BaseURL+"/:site_name/v2/status", wrapper.ReadSiteStatus)
+	router.GET(options.BaseURL+"/:site_id/v2/status", wrapper.ReadSiteStatus)
 
 	return router
 }

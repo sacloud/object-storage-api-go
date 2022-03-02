@@ -37,8 +37,8 @@ func (s *Server) ListClusters(c *gin.Context) {
 
 // ReadCluster サイトの取得
 // (GET /fed/v1/clusters/{id})
-func (s *Server) ReadCluster(c *gin.Context, id string) {
-	cluster, err := s.Engine.ReadCluster(id)
+func (s *Server) ReadCluster(c *gin.Context, siteId string) {
+	cluster, err := s.Engine.ReadCluster(siteId)
 	if err != nil {
 		s.handleError(c, err)
 		return

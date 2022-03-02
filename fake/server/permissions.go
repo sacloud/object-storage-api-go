@@ -23,8 +23,8 @@ import (
 
 // ListPermissions パーミッション一覧の取得
 // (GET /{site_name}/v2/permissions)
-func (s *Server) ListPermissions(c *gin.Context, siteName string) {
-	permissions, err := s.Engine.ListPermissions(siteName)
+func (s *Server) ListPermissions(c *gin.Context, siteId string) {
+	permissions, err := s.Engine.ListPermissions(siteId)
 	if err != nil {
 		s.handleError(c, err)
 		return
@@ -37,14 +37,14 @@ func (s *Server) ListPermissions(c *gin.Context, siteName string) {
 
 // CreatePermission パーミッションの作成
 // (POST /{site_name}/v2/permissions)
-func (s *Server) CreatePermission(c *gin.Context, siteName string) {
+func (s *Server) CreatePermission(c *gin.Context, siteId string) {
 	var paramJSON v1.PermissionRequestBody
 	if err := c.ShouldBindJSON(&paramJSON); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	permission, err := s.Engine.CreatePermission(siteName, &paramJSON)
+	permission, err := s.Engine.CreatePermission(siteId, &paramJSON)
 	if err != nil {
 		s.handleError(c, err)
 		return
@@ -56,8 +56,8 @@ func (s *Server) CreatePermission(c *gin.Context, siteName string) {
 
 // DeletePermission パーミッションの削除
 // (DELETE /{site_name}/v2/permissions/{id})
-func (s *Server) DeletePermission(c *gin.Context, siteName string, id string) {
-	if err := s.Engine.DeletePermission(siteName, id); err != nil {
+func (s *Server) DeletePermission(c *gin.Context, siteId string, permissionId v1.PermissionID) {
+	if err := s.Engine.DeletePermission(siteId, permissionId.String()); err != nil {
 		s.handleError(c, err)
 		return
 	}
@@ -66,8 +66,8 @@ func (s *Server) DeletePermission(c *gin.Context, siteName string, id string) {
 
 // ReadPermission パーミッションの取得
 // (GET /{site_name}/v2/permissions/{id})
-func (s *Server) ReadPermission(c *gin.Context, siteName string, id string) {
-	permission, err := s.Engine.ReadPermission(siteName, id)
+func (s *Server) ReadPermission(c *gin.Context, siteId string, permissionId v1.PermissionID) {
+	permission, err := s.Engine.ReadPermission(siteId, permissionId.String())
 	if err != nil {
 		s.handleError(c, err)
 		return
@@ -79,14 +79,14 @@ func (s *Server) ReadPermission(c *gin.Context, siteName string, id string) {
 
 // UpdatePermission パーミッションの更新
 // (PUT /{site_name}/v2/permissions/{id})
-func (s *Server) UpdatePermission(c *gin.Context, siteName string, id string) {
+func (s *Server) UpdatePermission(c *gin.Context, siteId string, permissionId v1.PermissionID) {
 	var paramJSON v1.PermissionRequestBody
 	if err := c.ShouldBindJSON(&paramJSON); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	permission, err := s.Engine.UpdatePermission(siteName, id, &paramJSON)
+	permission, err := s.Engine.UpdatePermission(siteId, permissionId.String(), &paramJSON)
 	if err != nil {
 		s.handleError(c, err)
 		return

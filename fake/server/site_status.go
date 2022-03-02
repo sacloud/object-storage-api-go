@@ -14,8 +14,10 @@
 
 package server
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+)
 
 // ReadSiteStatus サイトのステータスの取得
 // (GET /{site_name}/v2/status)
-func (s *Server) ReadSiteStatus(c *gin.Context, siteName string) {}
+func (s *Server) ReadSiteStatus(c *gin.Context, siteId string) {}
