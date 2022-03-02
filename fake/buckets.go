@@ -20,16 +20,20 @@ import (
 
 // DeleteBucket バケットの削除
 // (DELETE /fed/v1/buckets/{name})
-func (engine *Engine) DeleteBucket(name string) error {
+func (engine *Engine) DeleteBucket(siteId, name string) error {
 	defer engine.lock()()
+
+	if err := engine.siteExist(siteId); err != nil {
+		return err
+	}
 
 	bucket := engine.getBucketByName(name)
 	if bucket == nil {
 		// TODO: 実際は存在しないバケット名を指定した場合204 NoContentが返っているが、API定義には記載がない。
 		// このためここではUnknownErrorとしておく
 		return NewError(
-			ErrorTypeUnknown, name, bucket.Name,
-			"バケットが存在しません: cluster: %s, bucket: %s", bucket.ClusterId, bucket.Name)
+			ErrorTypeUnknown, "bucket", name,
+			"バケットが存在しません: cluster: %s, bucket: %s", siteId, name)
 	}
 
 	engine.deleteBucketByName(name)
@@ -38,14 +42,18 @@ func (engine *Engine) DeleteBucket(name string) error {
 
 // CreateBucket バケットの作成
 // (PUT /fed/v1/buckets/{name})
-func (engine *Engine) CreateBucket(name string) (*v1.Bucket, error) {
+func (engine *Engine) CreateBucket(siteId, name string) (*v1.Bucket, error) {
 	defer engine.lock()()
+
+	if err := engine.siteExist(siteId); err != nil {
+		return nil, err
+	}
 
 	bucket := engine.getBucketByName(name)
 	if bucket != nil {
 		return nil, NewError(
-			ErrorTypeConflict, name, "bucket",
-			"同名バケットがすでに存在します: cluster: %s, bucket: %s", bucket.ClusterId, bucket.Name)
+			ErrorTypeConflict, "bucket", name,
+			"同名バケットがすでに存在します: cluster: %s, bucket: %s", siteId, name)
 	}
 
 	// Note: バケットのclusterIdはどこからくるのか不明。
