@@ -20,6 +20,7 @@ import (
 	v1 "github.com/sacloud/object-storage-api-go/apis/v1"
 )
 
+// PermissionAPI パーミッション関連API
 type PermissionAPI interface {
 	List(ctx context.Context, siteId string) ([]*v1.Permission, error)
 	// Create パーミッションの作成
@@ -51,6 +52,7 @@ type permissionOp struct {
 	client *Client
 }
 
+// NewPermissionOp パーミッション関連API
 func NewPermissionOp(client *Client) PermissionAPI {
 	return &permissionOp{client: client}
 }

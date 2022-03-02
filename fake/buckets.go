@@ -29,9 +29,9 @@ func (engine *Engine) DeleteBucket(siteId, name string) error {
 
 	bucket := engine.getBucketByName(name)
 	if bucket == nil {
-		// TODO: 実際は存在しないバケット名を指定した場合204 NoContentが返っているが、API定義には記載がない。
+		// Note: 実際は存在しないバケット名を指定した場合204 NoContentが返っているが、API定義には記載がない。
 		// このためここではUnknownErrorとしておく
-		return NewError(
+		return newError(
 			ErrorTypeUnknown, "bucket", name,
 			"バケットが存在しません: cluster: %s, bucket: %s", siteId, name)
 	}
@@ -51,7 +51,7 @@ func (engine *Engine) CreateBucket(siteId, name string) (*v1.Bucket, error) {
 
 	bucket := engine.getBucketByName(name)
 	if bucket != nil {
-		return nil, NewError(
+		return nil, newError(
 			ErrorTypeConflict, "bucket", name,
 			"同名バケットがすでに存在します: cluster: %s, bucket: %s", siteId, name)
 	}
@@ -60,7 +60,7 @@ func (engine *Engine) CreateBucket(siteId, name string) (*v1.Bucket, error) {
 	// このためこの実装ではサイト(cluster)の先頭を用いることにする。
 	// もしサイトが1つもなければエラーとする。
 	if len(engine.Clusters) == 0 {
-		return nil, NewError(
+		return nil, newError(
 			ErrorTypeUnknown, "bucket", "",
 			"バケットの属するサイトが存在しません")
 	}

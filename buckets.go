@@ -34,6 +34,7 @@ type bucketOp struct {
 	client *Client
 }
 
+// NewBucketOp バケット操作関連API
 func NewBucketOp(client *Client) BucketAPI {
 	return &bucketOp{client: client}
 }

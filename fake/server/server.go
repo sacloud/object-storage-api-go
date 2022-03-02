@@ -26,10 +26,13 @@ import (
 
 var _ v1.ServerInterface = (*Server)(nil)
 
+// Server オブジェクトストレージAPIのためのFake HTTPサーバ
 type Server struct {
+	// Engine fakeサーバの処理を担当するエンジンのインスタンス
 	Engine *fake.Engine
 }
 
+// Handler http.Handlerを返す
 func (s *Server) Handler() http.Handler {
 	gin.SetMode(gin.ReleaseMode)
 	if os.Getenv("OJS_SERVER_DEBUG") != "" {
@@ -47,7 +50,7 @@ func (s *Server) Handler() http.Handler {
 	return v1.RegisterHandlers(engine, s)
 }
 
-func (s *Server) handleError(c *gin.Context, err error) { // nolint TODO fake実装を進めた後でnolintを消す
+func (s *Server) handleError(c *gin.Context, err error) {
 	if c == nil || err == nil {
 		panic("invalid arguments")
 	}

@@ -32,6 +32,7 @@ type siteStatusOp struct {
 	client *Client
 }
 
+// NewSiteStatusOp サイトステータスAPI
 func NewSiteStatusOp(client *Client) SiteStatusAPI {
 	return &siteStatusOp{client: client}
 }

@@ -38,7 +38,7 @@ func (engine *Engine) ReadCluster(id string) (*v1.Cluster, error) {
 	if c != nil {
 		return engine.copyCluster(c)
 	}
-	return nil, NewError(ErrorTypeNotFound, "cluster", id)
+	return nil, newError(ErrorTypeNotFound, "cluster", id)
 }
 
 // clusters engine.Clustersを非ポインタ型にして返す
@@ -76,7 +76,7 @@ func (engine *Engine) copyCluster(source *v1.Cluster) (*v1.Cluster, error) {
 func (engine *Engine) siteExist(siteName string) error {
 	// Note: API定義上は定義されていないがサイトがないケースでは404が返される
 	if cluster := engine.getClusterById(siteName); cluster == nil {
-		return NewError(ErrorTypeNotFound, "cluster", "",
+		return newError(ErrorTypeNotFound, "cluster", "",
 			"指定のサイトは存在しません。site_name: %s", siteName)
 	}
 	return nil

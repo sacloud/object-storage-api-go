@@ -65,7 +65,7 @@ func (engine *Engine) DeletePermissionAccessKey(siteId string, permissionId int6
 
 	var key *v1.PermissionKey
 	if key = engine.getPermissionKeyById(permissionKeyId); key == nil {
-		return NewError(ErrorTypeNotFound, "permission_key", permissionKeyId,
+		return newError(ErrorTypeNotFound, "permission_key", permissionKeyId,
 			"パーミッションキーが存在しません site_id: %s, permission_id: %d, permission_key_id: %s",
 			siteId, permissionId, permissionKeyId)
 	}
@@ -91,7 +91,7 @@ func (engine *Engine) ReadPermissionAccessKey(siteId string, permissionId int64,
 
 	var key *v1.PermissionKey
 	if key = engine.getPermissionKeyById(permissionKeyId); key == nil {
-		return nil, NewError(ErrorTypeNotFound, "permission_key", permissionKeyId,
+		return nil, newError(ErrorTypeNotFound, "permission_key", permissionKeyId,
 			"パーミッションキーが存在しません site_id: %s, permission_id: %d, permission_key_id: %s",
 			siteId, permissionId, permissionKeyId)
 	}

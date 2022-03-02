@@ -26,6 +26,7 @@ import (
 //       各エラー型にはswagger.yamlでErrorというフィールドが定義されているため実装できない。
 //       このため別途errorを返すためのインターフェースとしてerrorResponserを用いている。
 type errorResponser interface {
+	// ActualError ErrorNNNが示すerrorを組み立てて返す
 	ActualError() error
 }
 
@@ -40,26 +41,32 @@ var (
 
 var commonErrorFormat = "status: %d, message: %s, trace: %s, inner_error: %s"
 
+// ActualError ErrorNNNが示すerrorを組み立てて返す
 func (e Error400) ActualError() error {
 	return fmt.Errorf(commonErrorFormat, http.StatusBadRequest, e.Error.Message, e.Error.TraceId, e.Error.Errors)
 }
 
+// ActualError ErrorNNNが示すerrorを組み立てて返す
 func (e Error401) ActualError() error {
 	return fmt.Errorf(commonErrorFormat, http.StatusUnauthorized, e.Error.Message, e.Error.TraceId, e.Error.Errors)
 }
 
+// ActualError ErrorNNNが示すerrorを組み立てて返す
 func (e Error403) ActualError() error {
 	return fmt.Errorf(commonErrorFormat, http.StatusForbidden, e.Error.Message, e.Error.TraceId, e.Error.Errors)
 }
 
+// ActualError ErrorNNNが示すerrorを組み立てて返す
 func (e Error404) ActualError() error {
 	return fmt.Errorf(commonErrorFormat, http.StatusNotFound, e.Error.Message, e.Error.TraceId, e.Error.Errors)
 }
 
+// ActualError ErrorNNNが示すerrorを組み立てて返す
 func (e Error409) ActualError() error {
 	return fmt.Errorf(commonErrorFormat, http.StatusConflict, e.Error.Message, e.Error.TraceId, e.Error.Errors)
 }
 
+// ActualError ErrorNNNが示すerrorを組み立てて返す
 func (e ErrorDefault) ActualError() error {
 	status := e.Error.Code
 	if status == 0 {
@@ -69,6 +76,7 @@ func (e ErrorDefault) ActualError() error {
 	return fmt.Errorf(commonErrorFormat, status, e.Error.Message, e.Error.TraceId, e.Error.Errors)
 }
 
+// String Stringer実装
 func (e Error) String() string {
 	return fmt.Sprintf("domain: %s, location: %s, location_type: %s, message: %s, reason: %s",
 		e.Domain,
@@ -79,6 +87,7 @@ func (e Error) String() string {
 	)
 }
 
+// String Stringer実装
 func (e Errors) String() string {
 	if len(e) == 0 {
 		return "(empty)"

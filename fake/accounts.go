@@ -29,12 +29,12 @@ func (engine *Engine) DeleteSiteAccount(siteId string) error {
 
 	// Note: API定義上は定義されていないがサイトがないケースでは404が返される
 	if cluster := engine.getClusterById(siteId); cluster == nil {
-		return NewError(ErrorTypeNotFound, "account", "",
+		return newError(ErrorTypeNotFound, "account", "",
 			"指定のサイトは存在しません。cluster: %s", siteId)
 	}
 
 	if len(engine.Buckets) > 0 {
-		return NewError(ErrorTypeConflict, "account", "",
+		return newError(ErrorTypeConflict, "account", "",
 			"アカウントに紐づくバケットが存在します。cluster: %s", siteId)
 	}
 
@@ -61,12 +61,12 @@ func (engine *Engine) CreateSiteAccount(siteId string) (*v1.Account, error) {
 	// Note: API定義上は定義されていないがサイトがないケースでは404が返される
 	cluster := engine.getClusterById(siteId)
 	if cluster == nil {
-		return nil, NewError(ErrorTypeNotFound, "account", "",
+		return nil, newError(ErrorTypeNotFound, "account", "",
 			"指定のサイトは存在しません。cluster: %s", siteId)
 	}
 
 	if engine.Account != nil {
-		return nil, NewError(ErrorTypeConflict, "account", "",
+		return nil, newError(ErrorTypeConflict, "account", "",
 			"すでにサイトにアカウントが存在します。cluster: %s", siteId)
 	}
 
@@ -96,7 +96,7 @@ func (engine *Engine) siteAndAccountExist(siteId string) error {
 	}
 
 	if engine.Account == nil {
-		return NewError(ErrorTypeNotFound, "account", "",
+		return newError(ErrorTypeNotFound, "account", "",
 			"サイトにアカウントが存在しません。cluster: %s", siteId)
 	}
 

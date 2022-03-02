@@ -34,6 +34,7 @@ type siteOp struct {
 	client *Client
 }
 
+// NewSiteOp .
 func NewSiteOp(client *Client) SiteAPI {
 	return &siteOp{client: client}
 }
