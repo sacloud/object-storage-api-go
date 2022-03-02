@@ -12,25 +12,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package server
+package fake
 
 import (
-	"net/http"
+	"time"
 
-	"github.com/gin-gonic/gin"
 	v1 "github.com/sacloud/object-storage-api-go/apis/v1"
 )
 
 // ReadSiteStatus サイトのステータスの取得
 // (GET /{site_name}/v2/status)
-func (s *Server) ReadSiteStatus(c *gin.Context, siteId string) {
-	status, err := s.Engine.ReadSiteStatus(siteId)
-	if err != nil {
-		s.handleError(c, err)
-		return
+func (engine *Engine) ReadSiteStatus(siteId string) (*v1.Status, error) {
+	defer engine.rLock()()
+
+	if err := engine.siteExist(siteId); err != nil {
+		return nil, err
 	}
 
-	c.JSON(http.StatusOK, &v1.StatusResponseBody{
-		Data: *status,
-	})
+	// Note: fakeでは固定値を返す
+	jst, _ := time.LoadLocation("Asia/Tokyo")
+	return &v1.Status{
+		AcceptNew: true,
+		Message:   "Fake server for sacloud/object-storage-api",
+		StartedAt: time.Date(2020, 7, 17, 9, 0, 0, 0, jst),
+		StatusCode: v1.StatusCode{
+			Id:     1,
+			Status: "ok",
+		},
+	}, nil
 }

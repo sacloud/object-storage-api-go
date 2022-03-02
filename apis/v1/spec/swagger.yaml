@@ -1380,7 +1380,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Status'
+                $ref: '#/components/schemas/StatusResponseBody'
         '401':
           description: 認証に失敗しました
           content:
@@ -1503,6 +1503,16 @@ components:
       properties:
         data:
           $ref: '#/components/schemas/PermissionKeys'
+      required:
+        - data
+
+    # Note: Statusから分離
+    StatusResponseBody:
+      description: Status
+      type: object
+      properties:
+        data:
+          $ref: "#/components/schemas/Status"
       required:
         - data
 
@@ -1960,33 +1970,44 @@ components:
 #        user:
 #          type: string
 #          example: user_name
+
+    # Note: StatusResponseBodyを切り出し
     Status:
-      description: Status
+      description: data type
       type: object
       properties:
-        data:
-          description: data type
-          type: object
-          properties:
-            accept_new:
-              type: boolean
-              example: true
-            message:
-              type: string
-              example: some extra info
-            started_at:
-              type: string
-              format: date-time
-              example: '2020-01-11T01:11:23.123456+09:00'
-            status_code:
-              type: object
-              properties:
-                id:
-                  type: integer
-                  example: 1
-                status:
-                  type: string
-                  example: available
+        accept_new:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: some extra info
+        started_at:
+          type: string
+          format: date-time
+          example: '2020-01-11T01:11:23.123456+09:00'
+        status_code:
+          $ref: "#/components/schemas/StatusCode"
+      required:
+        - accept_new
+        - message
+        - started_at
+        - status_code
+
+    # Note: Statusから分離
+    StatusCode:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        status:
+          type: string
+          example: available
+      required:
+        - id
+        - status
+
     ErrorCode:
       description: |
         エラーコード。
