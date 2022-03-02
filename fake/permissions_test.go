@@ -87,7 +87,7 @@ func TestEngine_Permissions(t *testing.T) {
 	})
 
 	t.Run("read permission", func(t *testing.T) {
-		key, err := engine.ReadPermission(siteId, permissionId.String())
+		key, err := engine.ReadPermission(siteId, permissionId.Int64())
 		require.NoError(t, err)
 		require.NotNil(t, key)
 	})
@@ -98,7 +98,7 @@ func TestEngine_Permissions(t *testing.T) {
 			CanRead:    false,
 			CanWrite:   true,
 		}
-		permission, err := engine.UpdatePermission(siteId, permissionId.String(), &v1.PermissionRequestBody{
+		permission, err := engine.UpdatePermission(siteId, permissionId.Int64(), &v1.PermissionRequestBody{
 			BucketControls: v1.BucketControls{bucketControl},
 			DisplayName:    "foobar",
 		})
@@ -113,7 +113,7 @@ func TestEngine_Permissions(t *testing.T) {
 	})
 
 	t.Run("delete permission", func(t *testing.T) {
-		err := engine.DeletePermission(siteId, permissionId.String())
+		err := engine.DeletePermission(siteId, permissionId.Int64())
 		require.NoError(t, err)
 		require.Len(t, engine.Permissions, 0)
 	})

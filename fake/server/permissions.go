@@ -57,7 +57,7 @@ func (s *Server) CreatePermission(c *gin.Context, siteId string) {
 // DeletePermission パーミッションの削除
 // (DELETE /{site_name}/v2/permissions/{id})
 func (s *Server) DeletePermission(c *gin.Context, siteId string, permissionId v1.PermissionID) {
-	if err := s.Engine.DeletePermission(siteId, permissionId.String()); err != nil {
+	if err := s.Engine.DeletePermission(siteId, permissionId.Int64()); err != nil {
 		s.handleError(c, err)
 		return
 	}
@@ -67,7 +67,7 @@ func (s *Server) DeletePermission(c *gin.Context, siteId string, permissionId v1
 // ReadPermission パーミッションの取得
 // (GET /{site_name}/v2/permissions/{id})
 func (s *Server) ReadPermission(c *gin.Context, siteId string, permissionId v1.PermissionID) {
-	permission, err := s.Engine.ReadPermission(siteId, permissionId.String())
+	permission, err := s.Engine.ReadPermission(siteId, permissionId.Int64())
 	if err != nil {
 		s.handleError(c, err)
 		return
@@ -86,7 +86,7 @@ func (s *Server) UpdatePermission(c *gin.Context, siteId string, permissionId v1
 		return
 	}
 
-	permission, err := s.Engine.UpdatePermission(siteId, permissionId.String(), &paramJSON)
+	permission, err := s.Engine.UpdatePermission(siteId, permissionId.Int64(), &paramJSON)
 	if err != nil {
 		s.handleError(c, err)
 		return

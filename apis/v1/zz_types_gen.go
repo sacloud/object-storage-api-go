@@ -296,17 +296,29 @@ type PermissionID int64
 
 // Permission Key
 type PermissionKey struct {
-	// data type
-	Data *struct {
-		// Created at
-		CreatedAt CreatedAt `json:"created_at"`
+	// Created at
+	CreatedAt CreatedAt `json:"created_at"`
 
-		// Permission ID
-		Id PermissionID `json:"id"`
+	// Access key ID
+	Id AccessKeyID `json:"id"`
 
-		// Permission secret key
-		Secret PermissionSecret `json:"secret"`
-	} `json:"data,omitempty"`
+	// Permission secret key
+	Secret PermissionSecret `json:"secret"`
+}
+
+// data type
+type PermissionKeyResponseBody struct {
+	// Permission Key
+	Data PermissionKey `json:"data"`
+}
+
+// Permission Keys
+type PermissionKeys []PermissionKey
+
+// data type
+type PermissionKeysResponseBody struct {
+	// Permission Keys
+	Data PermissionKeys `json:"data"`
 }
 
 // Request body for bucket controls for Permission

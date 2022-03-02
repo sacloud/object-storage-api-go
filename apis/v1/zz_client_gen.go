@@ -2032,7 +2032,7 @@ func (r UpdatePermissionResponse) UndefinedError() error {
 type ListPermissionAccessKeysResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *PermissionKey
+	JSON200      *PermissionKeysResponseBody
 	JSON401      *Error401
 	JSON404      *Error404
 	JSONDefault  *ErrorDefault
@@ -2055,7 +2055,7 @@ func (r ListPermissionAccessKeysResponse) StatusCode() int {
 }
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-func (r ListPermissionAccessKeysResponse) Result() (*PermissionKey, error) {
+func (r ListPermissionAccessKeysResponse) Result() (*PermissionKeysResponseBody, error) {
 	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSONDefault, r.UndefinedError())
 }
 
@@ -2070,7 +2070,7 @@ func (r ListPermissionAccessKeysResponse) UndefinedError() error {
 type CreatePermissionAccessKeyResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON201      *PermissionKey
+	JSON201      *PermissionKeyResponseBody
 	JSON401      *Error401
 	JSON404      *Error404
 	JSON409      *Error409
@@ -2094,7 +2094,7 @@ func (r CreatePermissionAccessKeyResponse) StatusCode() int {
 }
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-func (r CreatePermissionAccessKeyResponse) Result() (*PermissionKey, error) {
+func (r CreatePermissionAccessKeyResponse) Result() (*PermissionKeyResponseBody, error) {
 	return r.JSON201, eCoalesce(r.JSON401, r.JSON404, r.JSON409, r.JSONDefault, r.UndefinedError())
 }
 
@@ -2146,7 +2146,7 @@ func (r DeletePermissionAccessKeyResponse) UndefinedError() error {
 type ReadPermissionAccessKeyResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *PermissionKey
+	JSON200      *PermissionKeyResponseBody
 	JSON401      *Error401
 	JSON404      *Error404
 	JSONDefault  *ErrorDefault
@@ -2169,7 +2169,7 @@ func (r ReadPermissionAccessKeyResponse) StatusCode() int {
 }
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-func (r ReadPermissionAccessKeyResponse) Result() (*PermissionKey, error) {
+func (r ReadPermissionAccessKeyResponse) Result() (*PermissionKeyResponseBody, error) {
 	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSONDefault, r.UndefinedError())
 }
 
@@ -3164,7 +3164,7 @@ func ParseListPermissionAccessKeysResponse(rsp *http.Response) (*ListPermissionA
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest PermissionKey
+		var dest PermissionKeysResponseBody
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -3211,7 +3211,7 @@ func ParseCreatePermissionAccessKeyResponse(rsp *http.Response) (*CreatePermissi
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
-		var dest PermissionKey
+		var dest PermissionKeyResponseBody
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -3305,7 +3305,7 @@ func ParseReadPermissionAccessKeyResponse(rsp *http.Response) (*ReadPermissionAc
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest PermissionKey
+		var dest PermissionKeyResponseBody
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}

@@ -26,6 +26,7 @@ const defaultActionInterval = 100 * time.Millisecond
 // Engine Fakeサーバであつかうダミーデータを表す
 //
 // Serverに渡した後はDataStore内のデータを外部から操作しないこと
+// Note: 本来はサイトごとに保持するデータを分離すべきだが、現状だと実質1サイトのみのため分離していない。
 type Engine struct {
 	// Clusters サイト(クラスター)
 	Clusters []*v1.Cluster
@@ -41,6 +42,8 @@ type Engine struct {
 
 	// Permissions パーミッション
 	Permissions []*v1.Permission
+
+	PermissionKeys []*v1.PermissionKey
 
 	// ActionInterval バックグラウンドでリソースの状態を変化させるアクションの実行間隔
 	ActionInterval time.Duration

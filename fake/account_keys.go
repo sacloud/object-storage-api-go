@@ -24,10 +24,10 @@ import (
 
 // ListAccountAccessKeys サイトアカウントのアクセスキーの取得
 // (GET /{site_name}/v2/account/keys)
-func (engine *Engine) ListAccountAccessKeys(siteName string) ([]v1.AccountKey, error) {
+func (engine *Engine) ListAccountAccessKeys(siteId string) ([]v1.AccountKey, error) {
 	defer engine.rLock()()
 
-	if err := engine.siteAndAccountExist(siteName); err != nil {
+	if err := engine.siteAndAccountExist(siteId); err != nil {
 		return nil, err
 	}
 	return engine.accountKeys(), nil
@@ -35,11 +35,15 @@ func (engine *Engine) ListAccountAccessKeys(siteName string) ([]v1.AccountKey, e
 
 // CreateAccountAccessKey サイトアカウントのアクセスキーの発行
 // (POST /{site_name}/v2/account/keys)
-func (engine *Engine) CreateAccountAccessKey(siteName string) (*v1.AccountKey, error) {
+func (engine *Engine) CreateAccountAccessKey(siteId string) (*v1.AccountKey, error) {
 	defer engine.lock()()
-	if err := engine.siteAndAccountExist(siteName); err != nil {
+	if err := engine.siteAndAccountExist(siteId); err != nil {
 		return nil, err
 	}
+
+	// Note: 本来はサイトに紐づくアカウントキーが存在する場合はエラーにすべきだが、
+	//       fakeではサイトごとにデータが分離されていないため未チェックとなっている。
+	//       サイトが実質1つなので問題はないと思われる。今後サイトが増えるようであれば実装を検討する。
 
 	key := &v1.AccountKey{
 		CreatedAt: v1.CreatedAt(time.Now()),
@@ -48,15 +52,15 @@ func (engine *Engine) CreateAccountAccessKey(siteName string) (*v1.AccountKey, e
 	}
 
 	engine.AccountKeys = append(engine.AccountKeys, key)
-	return key, nil
+	return engine.copyAccountKey(key)
 }
 
 // DeleteAccountAccessKey サイトアカウントのアクセスキーの削除
 // (DELETE /{site_name}/v2/account/keys/{id})
-func (engine *Engine) DeleteAccountAccessKey(siteName string, id string) error {
+func (engine *Engine) DeleteAccountAccessKey(siteId string, id string) error {
 	defer engine.lock()()
 
-	if err := engine.siteAndAccountExist(siteName); err != nil {
+	if err := engine.siteAndAccountExist(siteId); err != nil {
 		return err
 	}
 
@@ -77,16 +81,21 @@ func (engine *Engine) DeleteAccountAccessKey(siteName string, id string) error {
 
 // ReadAccountAccessKey サイトアカウントのアクセスキーの取得
 // (GET /{site_name}/v2/account/keys/{id})
-func (engine *Engine) ReadAccountAccessKey(siteName string, id string) (*v1.AccountKey, error) {
+func (engine *Engine) ReadAccountAccessKey(siteId string, id string) (*v1.AccountKey, error) {
 	defer engine.rLock()()
 
-	if err := engine.siteAndAccountExist(siteName); err != nil {
+	if err := engine.siteAndAccountExist(siteId); err != nil {
 		return nil, err
 	}
 
 	key := engine.getAccountKeyById(id)
 	if key != nil {
-		return engine.copyAccountKey(key)
+		k, err := engine.copyAccountKey(key)
+		if err != nil {
+			return nil, err
+		}
+		k.Secret = "" // 新規作成時のみ参照できる項目
+		return k, nil
 	}
 	return nil, NewError(ErrorTypeNotFound, "account_key", id, "アカウントキーが存在しません。id: %s", id)
 }
@@ -110,7 +119,6 @@ func (engine *Engine) copyAccountKey(source *v1.AccountKey) (*v1.AccountKey, err
 	if err := deepcopy.Copy(&key, source); err != nil {
 		return nil, err
 	}
-	key.Secret = "" // 新規作成時のみ参照できる項目
 	return &key, nil
 }
 
