@@ -140,3 +140,125 @@ func Example_siteAccountKeys() {
 	// output:
 	// secret
 }
+
+// Example_bucket バケット操作
+func Example_bucket() {
+	token := os.Getenv("SAKURACLOUD_ACCESS_TOKEN")
+	secret := os.Getenv("SAKURACLOUD_ACCESS_TOKEN_SECRET")
+
+	client, err := v1.NewClientWithResponses(serverURL, func(c *v1.Client) error {
+		c.RequestEditors = []v1.RequestEditorFn{
+			v1.OjsAuthInterceptor(token, secret),
+		}
+		return nil
+	})
+	if err != nil {
+		panic(err)
+	}
+
+	// サイトIDが必要になるためまずサイト一覧を取得
+	sitesResp, err := client.ListClustersWithResponse(context.Background())
+	if err != nil {
+		panic(err)
+	}
+
+	sites, err := sitesResp.Result()
+	if err != nil {
+		panic(err)
+	}
+	siteId := sites.Data[0].Id
+
+	// バケット作成
+	createParams := v1.CreateBucketJSONRequestBody{
+		ClusterId: siteId,
+	}
+
+	bucketResp, err := client.CreateBucketWithResponse(context.Background(), "bucket-name", createParams)
+	if err != nil {
+		panic(err)
+	}
+
+	bucket, err := bucketResp.Result()
+	if err != nil {
+		panic(err)
+	}
+
+	defer func() {
+		deleteParams := v1.DeleteBucketJSONRequestBody{
+			ClusterId: siteId,
+		}
+		resp, err := client.DeleteBucketWithResponse(context.Background(), "bucket-name", deleteParams)
+		if err != nil {
+			panic(err)
+		}
+		if err := resp.Result(); err != nil {
+			panic(err)
+		}
+	}()
+
+	fmt.Println(bucket.Data.Name)
+	// output:
+	// bucket-name
+}
+
+// Example_permissions パーミッション操作の例
+func Example_permissions() {
+	token := os.Getenv("SAKURACLOUD_ACCESS_TOKEN")
+	secret := os.Getenv("SAKURACLOUD_ACCESS_TOKEN_SECRET")
+
+	client, err := v1.NewClientWithResponses(serverURL, func(c *v1.Client) error {
+		c.RequestEditors = []v1.RequestEditorFn{
+			v1.OjsAuthInterceptor(token, secret),
+		}
+		return nil
+	})
+	if err != nil {
+		panic(err)
+	}
+
+	// サイトIDが必要になるためまずサイト一覧を取得
+	sitesResp, err := client.ListClustersWithResponse(context.Background())
+	if err != nil {
+		panic(err)
+	}
+
+	sites, err := sitesResp.Result()
+	if err != nil {
+		panic(err)
+	}
+	siteId := sites.Data[0].Id
+
+	// パーミッション作成
+	permissionResp, err := client.CreatePermissionWithResponse(context.Background(), siteId, v1.CreatePermissionJSONRequestBody{
+		BucketControls: v1.BucketControls{
+			{
+				BucketName: "bucket1",
+				CanRead:    true,
+				CanWrite:   true,
+			},
+		},
+		DisplayName: "foobar",
+	})
+	if err != nil {
+		panic(err)
+	}
+
+	permission, err := permissionResp.Result()
+	if err != nil {
+		panic(err)
+	}
+
+	defer func() {
+		resp, err := client.DeletePermissionWithResponse(context.Background(), siteId, permission.Data.Id.String())
+		if err != nil {
+			panic(err)
+		}
+		if err := resp.Result(); err != nil {
+			panic(err)
+		}
+	}()
+
+	fmt.Println(permission.Data.DisplayName)
+	// output:
+	// foobar
+}

@@ -28,11 +28,12 @@ func init() {
 }
 
 func initFakeServer() {
+	siteId := "isk01"
 	fakeServer := &server.Server{
 		Engine: &fake.Engine{
 			Clusters: []*v1.Cluster{
 				{
-					Id: "isk01",
+					Id: siteId,
 
 					ControlPanelUrl: "https://secure.sakura.ad.jp/objectstorage/",
 					DislpayNameEnUs: "Ishikari Site #1",
@@ -46,6 +47,16 @@ func initFakeServer() {
 				Code:       "member@account@isk01",
 				CreatedAt:  v1.CreatedAt(time.Now()),
 				ResourceId: "100000000001",
+			},
+			Buckets: []*v1.Bucket{
+				{
+					ClusterId: siteId,
+					Name:      "bucket1",
+				},
+				{
+					ClusterId: siteId,
+					Name:      "bucket2",
+				},
 			},
 		},
 	}

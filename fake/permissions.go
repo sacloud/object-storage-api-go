@@ -1,0 +1,152 @@
+// Copyright 2022 The sacloud/object-storage-api-go authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package fake
+
+import (
+	"fmt"
+	"time"
+
+	"github.com/getlantern/deepcopy"
+	v1 "github.com/sacloud/object-storage-api-go/apis/v1"
+)
+
+// ListPermissions パーミッション一覧の取得
+// (GET /{site_name}/v2/permissions)
+func (engine *Engine) ListPermissions(siteName string) ([]v1.Permission, error) {
+	defer engine.rLock()()
+
+	if err := engine.siteExist(siteName); err != nil {
+		return nil, err
+	}
+	return engine.permissions(), nil
+}
+
+// CreatePermission パーミッションの作成
+// (POST /{site_name}/v2/permissions)
+func (engine *Engine) CreatePermission(siteName string, params *v1.PermissionRequestBody) (*v1.Permission, error) {
+	defer engine.lock()()
+
+	if err := engine.siteExist(siteName); err != nil {
+		return nil, err
+	}
+
+	permission := &v1.Permission{
+		BucketControls: params.BucketControls,
+		CreatedAt:      v1.CreatedAt(time.Now()),
+		DisplayName:    params.DisplayName,
+		Id:             v1.PermissionID(engine.nextId()),
+	}
+
+	engine.Permissions = append(engine.Permissions, permission)
+	return engine.copyPermission(permission)
+}
+
+// DeletePermission パーミッションの削除
+// (DELETE /{site_name}/v2/permissions/{id})
+func (engine *Engine) DeletePermission(siteName string, id string) error {
+	defer engine.lock()()
+
+	if err := engine.siteAndPermissionExist(siteName, id); err != nil {
+		return err
+	}
+
+	var deleted []*v1.Permission
+	for _, p := range engine.Permissions {
+		if p.Id.String() != id {
+			deleted = append(deleted, p)
+		}
+	}
+	engine.Permissions = deleted
+	return nil
+}
+
+// ReadPermission パーミッションの取得
+// (GET /{site_name}/v2/permissions/{id})
+func (engine *Engine) ReadPermission(siteName string, id string) (*v1.Permission, error) {
+	defer engine.rLock()()
+
+	if err := engine.siteAndPermissionExist(siteName, id); err != nil {
+		return nil, err
+	}
+
+	return engine.copyPermission(engine.getPermissionById(id))
+}
+
+// UpdatePermission パーミッションの更新
+// (PUT /{site_name}/v2/permissions/{id})
+func (engine *Engine) UpdatePermission(siteName string, id string, params *v1.PermissionRequestBody) (*v1.Permission, error) {
+	defer engine.lock()()
+
+	if err := engine.siteAndPermissionExist(siteName, id); err != nil {
+		return nil, err
+	}
+
+	var updated *v1.Permission
+	for _, p := range engine.Permissions {
+		if p.Id.String() == id {
+			p.BucketControls = params.BucketControls
+			p.DisplayName = params.DisplayName
+			updated = p
+		}
+	}
+
+	return engine.copyPermission(updated) // チェック済みなのでupdatedはnilになり得ない
+}
+
+// permissions engine.Permissionsを非ポインタ型にして返す
+func (engine *Engine) permissions() []v1.Permission {
+	var permissions []v1.Permission
+	for _, p := range engine.Permissions {
+		permissions = append(permissions, *p)
+	}
+	return permissions
+}
+
+func (engine *Engine) getPermissionById(id string) *v1.Permission {
+	if id == "" {
+		return nil
+	}
+	for _, p := range engine.Permissions {
+		// Note: idは一度int64に変換して比較した方が良いかもしれないが、
+		//       ここでは簡易に実装するために文字列比較している(実用上さほど問題ではないと判断)
+		if p.Id.String() == id {
+			return p
+		}
+	}
+	return nil
+}
+
+func (engine *Engine) copyPermission(source *v1.Permission) (*v1.Permission, error) {
+	if source == nil {
+		return nil, fmt.Errorf("source is nil")
+	}
+	var permission v1.Permission
+	if err := deepcopy.Copy(&permission, source); err != nil {
+		return nil, err
+	}
+	return &permission, nil
+}
+
+func (engine *Engine) siteAndPermissionExist(siteName string, id string) error {
+	if err := engine.siteExist(siteName); err != nil {
+		return err
+	}
+	// Note: API定義上は定義されていないがサイトがないケースでは404が返される
+	if permission := engine.getPermissionById(id); permission == nil {
+		return NewError(ErrorTypeNotFound, "permission", "",
+			"指定のパーミッションは存在しません。site_name: %s, id: %s", siteName, id)
+	}
+	return nil
+}

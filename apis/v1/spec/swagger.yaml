@@ -840,7 +840,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Permission'
+                $ref: '#/components/schemas/PermissionsResponseBody'
         '401':
           description: 認証に失敗しました
           content:
@@ -880,14 +880,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PermissionBucketControlsBody'
+              $ref: '#/components/schemas/PermissionRequestBody'
       responses:
         '201':
           description: パーミッションの作成に成功しました
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Permission'
+                $ref: '#/components/schemas/PermissionResponseBody'
         '401':
           description: 認証に失敗しました
           content:
@@ -946,7 +946,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Permission'
+                $ref: '#/components/schemas/PermissionResponseBody'
         '401':
           description: 認証に失敗しました
           content:
@@ -1054,14 +1054,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PermissionBucketControlsBody'
+              $ref: '#/components/schemas/PermissionRequestBody'
       responses:
         '200':
           description: パーミッションの更新に成功しました
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Permission'
+                $ref: '#/components/schemas/PermissionResponseBody'
         '401':
           description: 認証に失敗しました
           content:
@@ -1470,6 +1470,22 @@ components:
       required:
         - data
 
+    # Note: PermissionsとPermissionに分離
+    PermissionsResponseBody:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/Permissions'
+      required:
+        - data
+    PermissionResponseBody:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/Permission'
+      required:
+        - data
+
     # Note: model.Bucketからリネーム
     Bucket:
       type: object
@@ -1662,20 +1678,33 @@ components:
         - id
         - secret
         - created_at
+
+    # Note: BucketControlsとBucketControlに分離
     BucketControls:
       description: Bucket controls
       type: array
       items:
-        type: object
-        properties:
-          bucket_name:
-            $ref: '#/components/schemas/BucketName'
-          can_read:
-            $ref: '#/components/schemas/CanRead'
-          can_write:
-            $ref: '#/components/schemas/CanWrite'
-          created_at:
-            $ref: '#/components/schemas/CreatedAt'
+        $ref: '#/components/schemas/BucketControl'
+
+    # Note: BucketControlsとBucketControlに分離
+    BucketControl:
+      description: Bucket control
+      type: object
+      properties:
+        bucket_name:
+          $ref: '#/components/schemas/BucketName'
+        can_read:
+          $ref: '#/components/schemas/CanRead'
+        can_write:
+          $ref: '#/components/schemas/CanWrite'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+      required:
+        - bucket_name
+        - can_read
+        - can_write
+        - created_at
+
     PermissionSecret:
       description: Permission secret key
       type: string
@@ -1686,6 +1715,7 @@ components:
 #      type: string
 #      pattern: '^[\w\d_-]+$'
 #      example: grantfullControl
+
     # Note: ResponseBody+Accountに分離させた
     Account:
       description: Account info
@@ -1701,6 +1731,7 @@ components:
         - resource_id
         - code
         - created_at
+
 #    BucketGrantRead:
 #      description: Bucket Grant Read
 #      type: boolean
@@ -1808,38 +1839,44 @@ components:
 #                  permission:
 #                    type: string
 #                    example: permission
+
+    # Note: Permissions/Permission/Permission[s]ResponseBodyに分離
+    Permissions:
+      description: Permissions
+      type: array
+      items:
+        $ref: '#/components/schemas/Permission'
+
+    # Note: Permissions/Permission/Permission[s]ResponseBodyに分離
     Permission:
-      description: Permission
       type: object
       properties:
-        data:
-          description: data type
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                allOf:
-                  - $ref: '#/components/schemas/PermissionID'
-              display_name:
-                allOf:
-                  - $ref: '#/components/schemas/DisplayName'
-              bucket_controls:
-                allOf:
-                  - $ref: '#/components/schemas/BucketControls'
-              created_at:
-                allOf:
-                  - $ref: '#/components/schemas/CreatedAt'
-    PermissionBucketControlsBody:
+        id:
+          $ref: '#/components/schemas/PermissionID'
+        display_name:
+          $ref: '#/components/schemas/DisplayName'
+        bucket_controls:
+          $ref: '#/components/schemas/BucketControls'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+      required:
+        - id
+        - display_name
+        - bucket_controls
+        - created_at
+
+    # Note: PermissionBucketControlsBodyからリネーム
+    PermissionRequestBody:
       description: Request body for bucket controls for Permission
       type: object
       properties:
         display_name:
-          allOf:
-            - $ref: '#/components/schemas/DisplayName'
+          $ref: '#/components/schemas/DisplayName'
         bucket_controls:
-          allOf:
-            - $ref: '#/components/schemas/BucketControls'
+          $ref: '#/components/schemas/BucketControls'
+      required:
+        - display_name
+        - bucket_controls
     PermissionKey:
       description: Permission Key
       type: object
@@ -1849,14 +1886,16 @@ components:
           type: object
           properties:
             id:
-              allOf:
-                - $ref: '#/components/schemas/PermissionID'
+              $ref: '#/components/schemas/PermissionID'
             secret:
-              allOf:
-                - $ref: '#/components/schemas/PermissionSecret'
+              $ref: '#/components/schemas/PermissionSecret'
             created_at:
-              allOf:
-                - $ref: '#/components/schemas/CreatedAt'
+              $ref: '#/components/schemas/CreatedAt'
+          required:
+            - id
+            - secret
+            - created_at
+
 #    Session:
 #      description: Session
 #      type: object

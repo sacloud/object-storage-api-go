@@ -72,20 +72,23 @@ type Bucket struct {
 	Name      string `json:"name"`
 }
 
-// Bucket controls
-type BucketControls []struct {
+// Bucket control
+type BucketControl struct {
 	// Bucket name
-	BucketName *BucketName `json:"bucket_name,omitempty"`
+	BucketName BucketName `json:"bucket_name"`
 
 	// The flag to read bucket contents
-	CanRead *CanRead `json:"can_read,omitempty"`
+	CanRead CanRead `json:"can_read"`
 
 	// The flag to write bucket contents
-	CanWrite *CanWrite `json:"can_write,omitempty"`
+	CanWrite CanWrite `json:"can_write"`
 
 	// Created at
-	CreatedAt *CreatedAt `json:"created_at,omitempty"`
+	CreatedAt CreatedAt `json:"created_at"`
 }
+
+// Bucket controls
+type BucketControls []BucketControl
 
 // Bucket name
 type BucketName string
@@ -273,39 +276,19 @@ type ListClustersResponseBody struct {
 	Data []Cluster `json:"data"`
 }
 
-// Permission
+// Permission defines model for Permission.
 type Permission struct {
-	// data type
-	Data *[]struct {
-		BucketControls *struct {
-			// Embedded struct due to allOf(#/components/schemas/BucketControls)
-			BucketControls `yaml:",inline"`
-		} `json:"bucket_controls,omitempty"`
-		CreatedAt *struct {
-			// Embedded struct due to allOf(#/components/schemas/CreatedAt)
-			CreatedAt `yaml:",inline"`
-		} `json:"created_at,omitempty"`
-		DisplayName *struct {
-			// Embedded struct due to allOf(#/components/schemas/DisplayName)
-			DisplayName `yaml:",inline"`
-		} `json:"display_name,omitempty"`
-		Id *struct {
-			// Embedded struct due to allOf(#/components/schemas/PermissionID)
-			PermissionID `yaml:",inline"`
-		} `json:"id,omitempty"`
-	} `json:"data,omitempty"`
-}
+	// Bucket controls
+	BucketControls BucketControls `json:"bucket_controls"`
 
-// Request body for bucket controls for Permission
-type PermissionBucketControlsBody struct {
-	BucketControls *struct {
-		// Embedded struct due to allOf(#/components/schemas/BucketControls)
-		BucketControls `yaml:",inline"`
-	} `json:"bucket_controls,omitempty"`
-	DisplayName *struct {
-		// Embedded struct due to allOf(#/components/schemas/DisplayName)
-		DisplayName `yaml:",inline"`
-	} `json:"display_name,omitempty"`
+	// Created at
+	CreatedAt CreatedAt `json:"created_at"`
+
+	// Display name
+	DisplayName DisplayName `json:"display_name"`
+
+	// Permission ID
+	Id PermissionID `json:"id"`
 }
 
 // Permission ID
@@ -315,23 +298,42 @@ type PermissionID int64
 type PermissionKey struct {
 	// data type
 	Data *struct {
-		CreatedAt *struct {
-			// Embedded struct due to allOf(#/components/schemas/CreatedAt)
-			CreatedAt `yaml:",inline"`
-		} `json:"created_at,omitempty"`
-		Id *struct {
-			// Embedded struct due to allOf(#/components/schemas/PermissionID)
-			PermissionID `yaml:",inline"`
-		} `json:"id,omitempty"`
-		Secret *struct {
-			// Embedded struct due to allOf(#/components/schemas/PermissionSecret)
-			PermissionSecret `yaml:",inline"`
-		} `json:"secret,omitempty"`
+		// Created at
+		CreatedAt CreatedAt `json:"created_at"`
+
+		// Permission ID
+		Id PermissionID `json:"id"`
+
+		// Permission secret key
+		Secret PermissionSecret `json:"secret"`
 	} `json:"data,omitempty"`
+}
+
+// Request body for bucket controls for Permission
+type PermissionRequestBody struct {
+	// Bucket controls
+	BucketControls BucketControls `json:"bucket_controls"`
+
+	// Display name
+	DisplayName DisplayName `json:"display_name"`
+}
+
+// PermissionResponseBody defines model for PermissionResponseBody.
+type PermissionResponseBody struct {
+	Data Permission `json:"data"`
 }
 
 // Permission secret key
 type PermissionSecret string
+
+// Permissions
+type Permissions []Permission
+
+// PermissionsResponseBody defines model for PermissionsResponseBody.
+type PermissionsResponseBody struct {
+	// Permissions
+	Data Permissions `json:"data"`
+}
 
 // ReadClusterResponseBody defines model for ReadClusterResponseBody.
 type ReadClusterResponseBody struct {
@@ -365,10 +367,10 @@ type DeleteBucketJSONBody CreateBucketRequestBody
 type CreateBucketJSONBody CreateBucketRequestBody
 
 // CreatePermissionJSONBody defines parameters for CreatePermission.
-type CreatePermissionJSONBody PermissionBucketControlsBody
+type CreatePermissionJSONBody PermissionRequestBody
 
 // UpdatePermissionJSONBody defines parameters for UpdatePermission.
-type UpdatePermissionJSONBody PermissionBucketControlsBody
+type UpdatePermissionJSONBody PermissionRequestBody
 
 // DeleteBucketJSONRequestBody defines body for DeleteBucket for application/json ContentType.
 type DeleteBucketJSONRequestBody DeleteBucketJSONBody

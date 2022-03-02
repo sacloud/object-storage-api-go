@@ -16,26 +16,6 @@ package server
 
 import "github.com/gin-gonic/gin"
 
-// ListPermissions パーミッション一覧の取得
-// (GET /{site_name}/v2/permissions)
-func (s *Server) ListPermissions(c *gin.Context, siteName string) {}
-
-// CreatePermission パーミッションの作成
-// (POST /{site_name}/v2/permissions)
-func (s *Server) CreatePermission(c *gin.Context, siteName string) {}
-
-// DeletePermission パーミッションの削除
-// (DELETE /{site_name}/v2/permissions/{id})
-func (s *Server) DeletePermission(c *gin.Context, siteName string, id string) {}
-
-// ReadPermission パーミッションの取得
-// (GET /{site_name}/v2/permissions/{id})
-func (s *Server) ReadPermission(c *gin.Context, siteName string, id string) {}
-
-// UpdatePermission パーミッションの更新
-// (PUT /{site_name}/v2/permissions/{id})
-func (s *Server) UpdatePermission(c *gin.Context, siteName string, id string) {}
-
 // ListPermissionAccessKeys パーミッションが保有するアクセスキー一覧の取得
 // (GET /{site_name}/v2/permissions/{id}/keys)
 func (s *Server) ListPermissionAccessKeys(c *gin.Context, siteName string, id string) {}
@@ -52,7 +32,3 @@ func (s *Server) DeletePermissionAccessKey(c *gin.Context, siteName string, id s
 // ReadPermissionAccessKey パーミッションが保有するアクセスキーの取得
 // (GET /{site_name}/v2/permissions/{id}/keys/{key_id})
 func (s *Server) ReadPermissionAccessKey(c *gin.Context, siteName string, id string, keyId string) {}
-
-// ReadSiteStatus サイトのステータスの取得
-// (GET /{site_name}/v2/status)
-func (s *Server) ReadSiteStatus(c *gin.Context, siteName string) {}

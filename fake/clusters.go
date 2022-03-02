@@ -72,3 +72,12 @@ func (engine *Engine) copyCluster(source *v1.Cluster) (*v1.Cluster, error) {
 	}
 	return &cluster, nil
 }
+
+func (engine *Engine) siteExist(siteName string) error {
+	// Note: API定義上は定義されていないがサイトがないケースでは404が返される
+	if cluster := engine.getClusterById(siteName); cluster == nil {
+		return NewError(ErrorTypeNotFound, "cluster", "",
+			"指定のサイトは存在しません。site_name: %s", siteName)
+	}
+	return nil
+}

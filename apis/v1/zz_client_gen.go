@@ -1843,7 +1843,7 @@ func (r ReadAccountAccessKeyResponse) UndefinedError() error {
 type ListPermissionsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *Permission
+	JSON200      *PermissionsResponseBody
 	JSON401      *Error401
 	JSONDefault  *ErrorDefault
 }
@@ -1865,7 +1865,7 @@ func (r ListPermissionsResponse) StatusCode() int {
 }
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-func (r ListPermissionsResponse) Result() (*Permission, error) {
+func (r ListPermissionsResponse) Result() (*PermissionsResponseBody, error) {
 	return r.JSON200, eCoalesce(r.JSON401, r.JSONDefault, r.UndefinedError())
 }
 
@@ -1880,7 +1880,7 @@ func (r ListPermissionsResponse) UndefinedError() error {
 type CreatePermissionResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON201      *Permission
+	JSON201      *PermissionResponseBody
 	JSON401      *Error401
 	JSON404      *Error404
 	JSON409      *Error409
@@ -1904,7 +1904,7 @@ func (r CreatePermissionResponse) StatusCode() int {
 }
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-func (r CreatePermissionResponse) Result() (*Permission, error) {
+func (r CreatePermissionResponse) Result() (*PermissionResponseBody, error) {
 	return r.JSON201, eCoalesce(r.JSON401, r.JSON404, r.JSON409, r.JSONDefault, r.UndefinedError())
 }
 
@@ -1955,7 +1955,7 @@ func (r DeletePermissionResponse) UndefinedError() error {
 type ReadPermissionResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *Permission
+	JSON200      *PermissionResponseBody
 	JSON401      *Error401
 	JSON404      *Error404
 	JSONDefault  *ErrorDefault
@@ -1978,7 +1978,7 @@ func (r ReadPermissionResponse) StatusCode() int {
 }
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-func (r ReadPermissionResponse) Result() (*Permission, error) {
+func (r ReadPermissionResponse) Result() (*PermissionResponseBody, error) {
 	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSONDefault, r.UndefinedError())
 }
 
@@ -1993,7 +1993,7 @@ func (r ReadPermissionResponse) UndefinedError() error {
 type UpdatePermissionResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *Permission
+	JSON200      *PermissionResponseBody
 	JSON401      *Error401
 	JSON404      *Error404
 	JSON409      *Error409
@@ -2017,7 +2017,7 @@ func (r UpdatePermissionResponse) StatusCode() int {
 }
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-func (r UpdatePermissionResponse) Result() (*Permission, error) {
+func (r UpdatePermissionResponse) Result() (*PermissionResponseBody, error) {
 	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSON409, r.JSONDefault, r.UndefinedError())
 }
 
@@ -2936,7 +2936,7 @@ func ParseListPermissionsResponse(rsp *http.Response) (*ListPermissionsResponse,
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest Permission
+		var dest PermissionsResponseBody
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -2976,7 +2976,7 @@ func ParseCreatePermissionResponse(rsp *http.Response) (*CreatePermissionRespons
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
-		var dest Permission
+		var dest PermissionResponseBody
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -3063,7 +3063,7 @@ func ParseReadPermissionResponse(rsp *http.Response) (*ReadPermissionResponse, e
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest Permission
+		var dest PermissionResponseBody
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -3110,7 +3110,7 @@ func ParseUpdatePermissionResponse(rsp *http.Response) (*UpdatePermissionRespons
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest Permission
+		var dest PermissionResponseBody
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
