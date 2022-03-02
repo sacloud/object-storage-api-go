@@ -91,10 +91,8 @@ func (engine *Engine) copyAccount(source *v1.Account) (*v1.Account, error) {
 }
 
 func (engine *Engine) siteAndAccountExist(siteName string) error {
-	// Note: API定義上は定義されていないがサイトがないケースでは404が返される
-	if cluster := engine.getClusterById(siteName); cluster == nil {
-		return NewError(ErrorTypeNotFound, "account", "",
-			"指定のサイトは存在しません。site_name: %s", siteName)
+	if err := engine.siteExist(siteName); err != nil {
+		return err
 	}
 
 	if engine.Account == nil {

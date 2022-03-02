@@ -14,6 +14,8 @@
 
 package v1
 
+import "fmt"
+
 // String .
 func (v *AccessKeyID) String() string {
 	return string(*v)
@@ -82,4 +84,9 @@ func (v *ResourceID) String() string {
 // String .
 func (v *SecretAccessKey) String() string {
 	return string(*v)
+}
+
+// String .
+func (v PermissionID) String() string {
+	return fmt.Sprintf("%d", v)
 }

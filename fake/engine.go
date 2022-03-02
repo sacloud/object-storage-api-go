@@ -39,6 +39,9 @@ type Engine struct {
 	// AccountKeys アカウントのアクセスキー
 	AccountKeys []*v1.AccountKey
 
+	// Permissions パーミッション
+	Permissions []*v1.Permission
+
 	// ActionInterval バックグラウンドでリソースの状態を変化させるアクションの実行間隔
 	ActionInterval time.Duration
 
