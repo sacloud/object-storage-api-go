@@ -2184,7 +2184,7 @@ func (r ReadPermissionAccessKeyResponse) UndefinedError() error {
 type ReadSiteStatusResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *Status
+	JSON200      *StatusResponseBody
 	JSON401      *Error401
 	JSONDefault  *ErrorDefault
 }
@@ -2206,7 +2206,7 @@ func (r ReadSiteStatusResponse) StatusCode() int {
 }
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-func (r ReadSiteStatusResponse) Result() (*Status, error) {
+func (r ReadSiteStatusResponse) Result() (*StatusResponseBody, error) {
 	return r.JSON200, eCoalesce(r.JSON401, r.JSONDefault, r.UndefinedError())
 }
 
@@ -3352,7 +3352,7 @@ func ParseReadSiteStatusResponse(rsp *http.Response) (*ReadSiteStatusResponse, e
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest Status
+		var dest StatusResponseBody
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}

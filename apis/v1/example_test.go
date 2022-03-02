@@ -343,3 +343,44 @@ func Example_permissionKeys() {
 	// output:
 	// secret
 }
+
+// Example_siteStatus サイトステータス確認の例
+func Example_siteStatus() {
+	token := os.Getenv("SAKURACLOUD_ACCESS_TOKEN")
+	secret := os.Getenv("SAKURACLOUD_ACCESS_TOKEN_SECRET")
+
+	client, err := v1.NewClientWithResponses(serverURL, func(c *v1.Client) error {
+		c.RequestEditors = []v1.RequestEditorFn{
+			v1.OjsAuthInterceptor(token, secret),
+		}
+		return nil
+	})
+	if err != nil {
+		panic(err)
+	}
+
+	// サイトIDが必要になるためまずサイト一覧を取得
+	sitesResp, err := client.ListClustersWithResponse(context.Background())
+	if err != nil {
+		panic(err)
+	}
+
+	sites, err := sitesResp.Result()
+	if err != nil {
+		panic(err)
+	}
+	siteId := sites.Data[0].Id
+
+	statusResp, err := client.ReadSiteStatusWithResponse(context.Background(), siteId)
+	if err != nil {
+		panic(err)
+	}
+	status, err := statusResp.Result()
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println(status.Data.StatusCode.Status)
+	// output:
+	// ok
+}

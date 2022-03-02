@@ -358,18 +358,24 @@ type ResourceID string
 // Secret Access key
 type SecretAccessKey string
 
-// Status
+// data type
 type Status struct {
+	AcceptNew  bool       `json:"accept_new"`
+	Message    string     `json:"message"`
+	StartedAt  time.Time  `json:"started_at"`
+	StatusCode StatusCode `json:"status_code"`
+}
+
+// StatusCode defines model for StatusCode.
+type StatusCode struct {
+	Id     int    `json:"id"`
+	Status string `json:"status"`
+}
+
+// Status
+type StatusResponseBody struct {
 	// data type
-	Data *struct {
-		AcceptNew  *bool      `json:"accept_new,omitempty"`
-		Message    *string    `json:"message,omitempty"`
-		StartedAt  *time.Time `json:"started_at,omitempty"`
-		StatusCode *struct {
-			Id     *int    `json:"id,omitempty"`
-			Status *string `json:"status,omitempty"`
-		} `json:"status_code,omitempty"`
-	} `json:"data,omitempty"`
+	Data Status `json:"data"`
 }
 
 // DeleteBucketJSONBody defines parameters for DeleteBucket.
