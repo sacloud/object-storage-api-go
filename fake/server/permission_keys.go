@@ -14,21 +14,27 @@
 
 package server
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+	v1 "github.com/sacloud/object-storage-api-go/apis/v1"
+)
 
 // ListPermissionAccessKeys パーミッションが保有するアクセスキー一覧の取得
 // (GET /{site_name}/v2/permissions/{id}/keys)
-func (s *Server) ListPermissionAccessKeys(c *gin.Context, siteName string, id string) {}
+func (s *Server) ListPermissionAccessKeys(c *gin.Context, siteId string, permissionId v1.PermissionID) {
+}
 
 // CreatePermissionAccessKey パーミッションのアクセスキーの発行
 // (POST /{site_name}/v2/permissions/{id}/keys)
-func (s *Server) CreatePermissionAccessKey(c *gin.Context, siteName string, id string) {}
+func (s *Server) CreatePermissionAccessKey(c *gin.Context, siteId string, permissionId v1.PermissionID) {
+}
 
 // DeletePermissionAccessKey パーミッションが保有するアクセスキーの削除
 // (DELETE /{site_name}/v2/permissions/{id}/keys/{key_id})
-func (s *Server) DeletePermissionAccessKey(c *gin.Context, siteName string, id string, keyId string) {
+func (s *Server) DeletePermissionAccessKey(c *gin.Context, siteId string, permissionId v1.PermissionID, permissionKeyId v1.AccessKeyID) {
 }
 
 // ReadPermissionAccessKey パーミッションが保有するアクセスキーの取得
 // (GET /{site_name}/v2/permissions/{id}/keys/{key_id})
-func (s *Server) ReadPermissionAccessKey(c *gin.Context, siteName string, id string, keyId string) {}
+func (s *Server) ReadPermissionAccessKey(c *gin.Context, siteId string, permissionId v1.PermissionID, permissionKeyId v1.AccessKeyID) {
+}

@@ -23,8 +23,8 @@ import (
 
 // DeleteSiteAccount サイトアカウントの削除
 // (DELETE /{site_name}/v2/account)
-func (s *Server) DeleteSiteAccount(c *gin.Context, siteName string) {
-	if err := s.Engine.DeleteSiteAccount(siteName); err != nil {
+func (s *Server) DeleteSiteAccount(c *gin.Context, siteId string) {
+	if err := s.Engine.DeleteSiteAccount(siteId); err != nil {
 		s.handleError(c, err)
 		return
 	}
@@ -34,8 +34,8 @@ func (s *Server) DeleteSiteAccount(c *gin.Context, siteName string) {
 
 // ReadSiteAccount サイトアカウントの取得
 // (GET /{site_name}/v2/account)
-func (s *Server) ReadSiteAccount(c *gin.Context, siteName string) {
-	account, err := s.Engine.ReadSiteAccount(siteName)
+func (s *Server) ReadSiteAccount(c *gin.Context, siteId string) {
+	account, err := s.Engine.ReadSiteAccount(siteId)
 	if err != nil {
 		s.handleError(c, err)
 		return
@@ -48,8 +48,8 @@ func (s *Server) ReadSiteAccount(c *gin.Context, siteName string) {
 
 // CreateSiteAccount サイトアカウントの作成
 // (POST /{site_name}/v2/account)
-func (s *Server) CreateSiteAccount(c *gin.Context, siteName string) {
-	account, err := s.Engine.CreateSiteAccount(siteName)
+func (s *Server) CreateSiteAccount(c *gin.Context, siteId string) {
+	account, err := s.Engine.CreateSiteAccount(siteId)
 	if err != nil {
 		s.handleError(c, err)
 		return

@@ -105,79 +105,79 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 // The interface specification for the client above.
 type ClientInterface interface {
 	// DeleteBucket request with any body
-	DeleteBucketWithBody(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	DeleteBucketWithBody(ctx context.Context, bucketName BucketName, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	DeleteBucket(ctx context.Context, name string, body DeleteBucketJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	DeleteBucket(ctx context.Context, bucketName BucketName, body DeleteBucketJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// CreateBucket request with any body
-	CreateBucketWithBody(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	CreateBucketWithBody(ctx context.Context, bucketName BucketName, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	CreateBucket(ctx context.Context, name string, body CreateBucketJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	CreateBucket(ctx context.Context, bucketName BucketName, body CreateBucketJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ListClusters request
 	ListClusters(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ReadCluster request
-	ReadCluster(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	ReadCluster(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DeleteSiteAccount request
-	DeleteSiteAccount(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	DeleteSiteAccount(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ReadSiteAccount request
-	ReadSiteAccount(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	ReadSiteAccount(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// CreateSiteAccount request
-	CreateSiteAccount(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	CreateSiteAccount(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ListAccountAccessKeys request
-	ListAccountAccessKeys(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	ListAccountAccessKeys(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// CreateAccountAccessKey request
-	CreateAccountAccessKey(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	CreateAccountAccessKey(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DeleteAccountAccessKey request
-	DeleteAccountAccessKey(ctx context.Context, siteName string, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	DeleteAccountAccessKey(ctx context.Context, siteId string, accountKeyId AccessKeyID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ReadAccountAccessKey request
-	ReadAccountAccessKey(ctx context.Context, siteName string, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	ReadAccountAccessKey(ctx context.Context, siteId string, accountKeyId AccessKeyID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ListPermissions request
-	ListPermissions(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	ListPermissions(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// CreatePermission request with any body
-	CreatePermissionWithBody(ctx context.Context, siteName string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	CreatePermissionWithBody(ctx context.Context, siteId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	CreatePermission(ctx context.Context, siteName string, body CreatePermissionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	CreatePermission(ctx context.Context, siteId string, body CreatePermissionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DeletePermission request
-	DeletePermission(ctx context.Context, siteName string, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	DeletePermission(ctx context.Context, siteId string, permissionId PermissionID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ReadPermission request
-	ReadPermission(ctx context.Context, siteName string, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	ReadPermission(ctx context.Context, siteId string, permissionId PermissionID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// UpdatePermission request with any body
-	UpdatePermissionWithBody(ctx context.Context, siteName string, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	UpdatePermissionWithBody(ctx context.Context, siteId string, permissionId PermissionID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	UpdatePermission(ctx context.Context, siteName string, id string, body UpdatePermissionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	UpdatePermission(ctx context.Context, siteId string, permissionId PermissionID, body UpdatePermissionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ListPermissionAccessKeys request
-	ListPermissionAccessKeys(ctx context.Context, siteName string, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	ListPermissionAccessKeys(ctx context.Context, siteId string, permissionId PermissionID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// CreatePermissionAccessKey request
-	CreatePermissionAccessKey(ctx context.Context, siteName string, id string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	CreatePermissionAccessKey(ctx context.Context, siteId string, permissionId PermissionID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DeletePermissionAccessKey request
-	DeletePermissionAccessKey(ctx context.Context, siteName string, id string, keyId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	DeletePermissionAccessKey(ctx context.Context, siteId string, permissionId PermissionID, permissionKeyId AccessKeyID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ReadPermissionAccessKey request
-	ReadPermissionAccessKey(ctx context.Context, siteName string, id string, keyId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	ReadPermissionAccessKey(ctx context.Context, siteId string, permissionId PermissionID, permissionKeyId AccessKeyID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ReadSiteStatus request
-	ReadSiteStatus(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	ReadSiteStatus(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
-func (c *Client) DeleteBucketWithBody(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeleteBucketRequestWithBody(c.Server, name, contentType, body)
+func (c *Client) DeleteBucketWithBody(ctx context.Context, bucketName BucketName, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteBucketRequestWithBody(c.Server, bucketName, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -188,8 +188,8 @@ func (c *Client) DeleteBucketWithBody(ctx context.Context, name string, contentT
 	return c.Client.Do(req)
 }
 
-func (c *Client) DeleteBucket(ctx context.Context, name string, body DeleteBucketJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeleteBucketRequest(c.Server, name, body)
+func (c *Client) DeleteBucket(ctx context.Context, bucketName BucketName, body DeleteBucketJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteBucketRequest(c.Server, bucketName, body)
 	if err != nil {
 		return nil, err
 	}
@@ -200,8 +200,8 @@ func (c *Client) DeleteBucket(ctx context.Context, name string, body DeleteBucke
 	return c.Client.Do(req)
 }
 
-func (c *Client) CreateBucketWithBody(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateBucketRequestWithBody(c.Server, name, contentType, body)
+func (c *Client) CreateBucketWithBody(ctx context.Context, bucketName BucketName, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateBucketRequestWithBody(c.Server, bucketName, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -212,8 +212,8 @@ func (c *Client) CreateBucketWithBody(ctx context.Context, name string, contentT
 	return c.Client.Do(req)
 }
 
-func (c *Client) CreateBucket(ctx context.Context, name string, body CreateBucketJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateBucketRequest(c.Server, name, body)
+func (c *Client) CreateBucket(ctx context.Context, bucketName BucketName, body CreateBucketJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateBucketRequest(c.Server, bucketName, body)
 	if err != nil {
 		return nil, err
 	}
@@ -236,8 +236,8 @@ func (c *Client) ListClusters(ctx context.Context, reqEditors ...RequestEditorFn
 	return c.Client.Do(req)
 }
 
-func (c *Client) ReadCluster(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewReadClusterRequest(c.Server, id)
+func (c *Client) ReadCluster(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewReadClusterRequest(c.Server, siteId)
 	if err != nil {
 		return nil, err
 	}
@@ -248,8 +248,8 @@ func (c *Client) ReadCluster(ctx context.Context, id string, reqEditors ...Reque
 	return c.Client.Do(req)
 }
 
-func (c *Client) DeleteSiteAccount(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeleteSiteAccountRequest(c.Server, siteName)
+func (c *Client) DeleteSiteAccount(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteSiteAccountRequest(c.Server, siteId)
 	if err != nil {
 		return nil, err
 	}
@@ -260,8 +260,8 @@ func (c *Client) DeleteSiteAccount(ctx context.Context, siteName string, reqEdit
 	return c.Client.Do(req)
 }
 
-func (c *Client) ReadSiteAccount(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewReadSiteAccountRequest(c.Server, siteName)
+func (c *Client) ReadSiteAccount(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewReadSiteAccountRequest(c.Server, siteId)
 	if err != nil {
 		return nil, err
 	}
@@ -272,8 +272,8 @@ func (c *Client) ReadSiteAccount(ctx context.Context, siteName string, reqEditor
 	return c.Client.Do(req)
 }
 
-func (c *Client) CreateSiteAccount(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateSiteAccountRequest(c.Server, siteName)
+func (c *Client) CreateSiteAccount(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateSiteAccountRequest(c.Server, siteId)
 	if err != nil {
 		return nil, err
 	}
@@ -284,8 +284,8 @@ func (c *Client) CreateSiteAccount(ctx context.Context, siteName string, reqEdit
 	return c.Client.Do(req)
 }
 
-func (c *Client) ListAccountAccessKeys(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewListAccountAccessKeysRequest(c.Server, siteName)
+func (c *Client) ListAccountAccessKeys(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListAccountAccessKeysRequest(c.Server, siteId)
 	if err != nil {
 		return nil, err
 	}
@@ -296,8 +296,8 @@ func (c *Client) ListAccountAccessKeys(ctx context.Context, siteName string, req
 	return c.Client.Do(req)
 }
 
-func (c *Client) CreateAccountAccessKey(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateAccountAccessKeyRequest(c.Server, siteName)
+func (c *Client) CreateAccountAccessKey(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateAccountAccessKeyRequest(c.Server, siteId)
 	if err != nil {
 		return nil, err
 	}
@@ -308,8 +308,8 @@ func (c *Client) CreateAccountAccessKey(ctx context.Context, siteName string, re
 	return c.Client.Do(req)
 }
 
-func (c *Client) DeleteAccountAccessKey(ctx context.Context, siteName string, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeleteAccountAccessKeyRequest(c.Server, siteName, id)
+func (c *Client) DeleteAccountAccessKey(ctx context.Context, siteId string, accountKeyId AccessKeyID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteAccountAccessKeyRequest(c.Server, siteId, accountKeyId)
 	if err != nil {
 		return nil, err
 	}
@@ -320,8 +320,8 @@ func (c *Client) DeleteAccountAccessKey(ctx context.Context, siteName string, id
 	return c.Client.Do(req)
 }
 
-func (c *Client) ReadAccountAccessKey(ctx context.Context, siteName string, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewReadAccountAccessKeyRequest(c.Server, siteName, id)
+func (c *Client) ReadAccountAccessKey(ctx context.Context, siteId string, accountKeyId AccessKeyID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewReadAccountAccessKeyRequest(c.Server, siteId, accountKeyId)
 	if err != nil {
 		return nil, err
 	}
@@ -332,8 +332,8 @@ func (c *Client) ReadAccountAccessKey(ctx context.Context, siteName string, id s
 	return c.Client.Do(req)
 }
 
-func (c *Client) ListPermissions(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewListPermissionsRequest(c.Server, siteName)
+func (c *Client) ListPermissions(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListPermissionsRequest(c.Server, siteId)
 	if err != nil {
 		return nil, err
 	}
@@ -344,8 +344,8 @@ func (c *Client) ListPermissions(ctx context.Context, siteName string, reqEditor
 	return c.Client.Do(req)
 }
 
-func (c *Client) CreatePermissionWithBody(ctx context.Context, siteName string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreatePermissionRequestWithBody(c.Server, siteName, contentType, body)
+func (c *Client) CreatePermissionWithBody(ctx context.Context, siteId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreatePermissionRequestWithBody(c.Server, siteId, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -356,8 +356,8 @@ func (c *Client) CreatePermissionWithBody(ctx context.Context, siteName string, 
 	return c.Client.Do(req)
 }
 
-func (c *Client) CreatePermission(ctx context.Context, siteName string, body CreatePermissionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreatePermissionRequest(c.Server, siteName, body)
+func (c *Client) CreatePermission(ctx context.Context, siteId string, body CreatePermissionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreatePermissionRequest(c.Server, siteId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -368,8 +368,8 @@ func (c *Client) CreatePermission(ctx context.Context, siteName string, body Cre
 	return c.Client.Do(req)
 }
 
-func (c *Client) DeletePermission(ctx context.Context, siteName string, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeletePermissionRequest(c.Server, siteName, id)
+func (c *Client) DeletePermission(ctx context.Context, siteId string, permissionId PermissionID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeletePermissionRequest(c.Server, siteId, permissionId)
 	if err != nil {
 		return nil, err
 	}
@@ -380,8 +380,8 @@ func (c *Client) DeletePermission(ctx context.Context, siteName string, id strin
 	return c.Client.Do(req)
 }
 
-func (c *Client) ReadPermission(ctx context.Context, siteName string, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewReadPermissionRequest(c.Server, siteName, id)
+func (c *Client) ReadPermission(ctx context.Context, siteId string, permissionId PermissionID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewReadPermissionRequest(c.Server, siteId, permissionId)
 	if err != nil {
 		return nil, err
 	}
@@ -392,8 +392,8 @@ func (c *Client) ReadPermission(ctx context.Context, siteName string, id string,
 	return c.Client.Do(req)
 }
 
-func (c *Client) UpdatePermissionWithBody(ctx context.Context, siteName string, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdatePermissionRequestWithBody(c.Server, siteName, id, contentType, body)
+func (c *Client) UpdatePermissionWithBody(ctx context.Context, siteId string, permissionId PermissionID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdatePermissionRequestWithBody(c.Server, siteId, permissionId, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -404,8 +404,8 @@ func (c *Client) UpdatePermissionWithBody(ctx context.Context, siteName string, 
 	return c.Client.Do(req)
 }
 
-func (c *Client) UpdatePermission(ctx context.Context, siteName string, id string, body UpdatePermissionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewUpdatePermissionRequest(c.Server, siteName, id, body)
+func (c *Client) UpdatePermission(ctx context.Context, siteId string, permissionId PermissionID, body UpdatePermissionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdatePermissionRequest(c.Server, siteId, permissionId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -416,8 +416,8 @@ func (c *Client) UpdatePermission(ctx context.Context, siteName string, id strin
 	return c.Client.Do(req)
 }
 
-func (c *Client) ListPermissionAccessKeys(ctx context.Context, siteName string, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewListPermissionAccessKeysRequest(c.Server, siteName, id)
+func (c *Client) ListPermissionAccessKeys(ctx context.Context, siteId string, permissionId PermissionID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListPermissionAccessKeysRequest(c.Server, siteId, permissionId)
 	if err != nil {
 		return nil, err
 	}
@@ -428,8 +428,8 @@ func (c *Client) ListPermissionAccessKeys(ctx context.Context, siteName string, 
 	return c.Client.Do(req)
 }
 
-func (c *Client) CreatePermissionAccessKey(ctx context.Context, siteName string, id string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreatePermissionAccessKeyRequest(c.Server, siteName, id)
+func (c *Client) CreatePermissionAccessKey(ctx context.Context, siteId string, permissionId PermissionID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreatePermissionAccessKeyRequest(c.Server, siteId, permissionId)
 	if err != nil {
 		return nil, err
 	}
@@ -440,8 +440,8 @@ func (c *Client) CreatePermissionAccessKey(ctx context.Context, siteName string,
 	return c.Client.Do(req)
 }
 
-func (c *Client) DeletePermissionAccessKey(ctx context.Context, siteName string, id string, keyId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeletePermissionAccessKeyRequest(c.Server, siteName, id, keyId)
+func (c *Client) DeletePermissionAccessKey(ctx context.Context, siteId string, permissionId PermissionID, permissionKeyId AccessKeyID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeletePermissionAccessKeyRequest(c.Server, siteId, permissionId, permissionKeyId)
 	if err != nil {
 		return nil, err
 	}
@@ -452,8 +452,8 @@ func (c *Client) DeletePermissionAccessKey(ctx context.Context, siteName string,
 	return c.Client.Do(req)
 }
 
-func (c *Client) ReadPermissionAccessKey(ctx context.Context, siteName string, id string, keyId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewReadPermissionAccessKeyRequest(c.Server, siteName, id, keyId)
+func (c *Client) ReadPermissionAccessKey(ctx context.Context, siteId string, permissionId PermissionID, permissionKeyId AccessKeyID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewReadPermissionAccessKeyRequest(c.Server, siteId, permissionId, permissionKeyId)
 	if err != nil {
 		return nil, err
 	}
@@ -464,8 +464,8 @@ func (c *Client) ReadPermissionAccessKey(ctx context.Context, siteName string, i
 	return c.Client.Do(req)
 }
 
-func (c *Client) ReadSiteStatus(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewReadSiteStatusRequest(c.Server, siteName)
+func (c *Client) ReadSiteStatus(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewReadSiteStatusRequest(c.Server, siteId)
 	if err != nil {
 		return nil, err
 	}
@@ -477,23 +477,23 @@ func (c *Client) ReadSiteStatus(ctx context.Context, siteName string, reqEditors
 }
 
 // NewDeleteBucketRequest calls the generic DeleteBucket builder with application/json body
-func NewDeleteBucketRequest(server string, name string, body DeleteBucketJSONRequestBody) (*http.Request, error) {
+func NewDeleteBucketRequest(server string, bucketName BucketName, body DeleteBucketJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewDeleteBucketRequestWithBody(server, name, "application/json", bodyReader)
+	return NewDeleteBucketRequestWithBody(server, bucketName, "application/json", bodyReader)
 }
 
 // NewDeleteBucketRequestWithBody generates requests for DeleteBucket with any type of body
-func NewDeleteBucketRequestWithBody(server string, name string, contentType string, body io.Reader) (*http.Request, error) {
+func NewDeleteBucketRequestWithBody(server string, bucketName BucketName, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "name", runtime.ParamLocationPath, name)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "bucket_name", runtime.ParamLocationPath, bucketName)
 	if err != nil {
 		return nil, err
 	}
@@ -524,23 +524,23 @@ func NewDeleteBucketRequestWithBody(server string, name string, contentType stri
 }
 
 // NewCreateBucketRequest calls the generic CreateBucket builder with application/json body
-func NewCreateBucketRequest(server string, name string, body CreateBucketJSONRequestBody) (*http.Request, error) {
+func NewCreateBucketRequest(server string, bucketName BucketName, body CreateBucketJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewCreateBucketRequestWithBody(server, name, "application/json", bodyReader)
+	return NewCreateBucketRequestWithBody(server, bucketName, "application/json", bodyReader)
 }
 
 // NewCreateBucketRequestWithBody generates requests for CreateBucket with any type of body
-func NewCreateBucketRequestWithBody(server string, name string, contentType string, body io.Reader) (*http.Request, error) {
+func NewCreateBucketRequestWithBody(server string, bucketName BucketName, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "name", runtime.ParamLocationPath, name)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "bucket_name", runtime.ParamLocationPath, bucketName)
 	if err != nil {
 		return nil, err
 	}
@@ -598,12 +598,12 @@ func NewListClustersRequest(server string) (*http.Request, error) {
 }
 
 // NewReadClusterRequest generates requests for ReadCluster
-func NewReadClusterRequest(server string, id string) (*http.Request, error) {
+func NewReadClusterRequest(server string, siteId string) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_id", runtime.ParamLocationPath, siteId)
 	if err != nil {
 		return nil, err
 	}
@@ -632,12 +632,12 @@ func NewReadClusterRequest(server string, id string) (*http.Request, error) {
 }
 
 // NewDeleteSiteAccountRequest generates requests for DeleteSiteAccount
-func NewDeleteSiteAccountRequest(server string, siteName string) (*http.Request, error) {
+func NewDeleteSiteAccountRequest(server string, siteId string) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_name", runtime.ParamLocationPath, siteName)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_id", runtime.ParamLocationPath, siteId)
 	if err != nil {
 		return nil, err
 	}
@@ -666,12 +666,12 @@ func NewDeleteSiteAccountRequest(server string, siteName string) (*http.Request,
 }
 
 // NewReadSiteAccountRequest generates requests for ReadSiteAccount
-func NewReadSiteAccountRequest(server string, siteName string) (*http.Request, error) {
+func NewReadSiteAccountRequest(server string, siteId string) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_name", runtime.ParamLocationPath, siteName)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_id", runtime.ParamLocationPath, siteId)
 	if err != nil {
 		return nil, err
 	}
@@ -700,12 +700,12 @@ func NewReadSiteAccountRequest(server string, siteName string) (*http.Request, e
 }
 
 // NewCreateSiteAccountRequest generates requests for CreateSiteAccount
-func NewCreateSiteAccountRequest(server string, siteName string) (*http.Request, error) {
+func NewCreateSiteAccountRequest(server string, siteId string) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_name", runtime.ParamLocationPath, siteName)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_id", runtime.ParamLocationPath, siteId)
 	if err != nil {
 		return nil, err
 	}
@@ -734,12 +734,12 @@ func NewCreateSiteAccountRequest(server string, siteName string) (*http.Request,
 }
 
 // NewListAccountAccessKeysRequest generates requests for ListAccountAccessKeys
-func NewListAccountAccessKeysRequest(server string, siteName string) (*http.Request, error) {
+func NewListAccountAccessKeysRequest(server string, siteId string) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_name", runtime.ParamLocationPath, siteName)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_id", runtime.ParamLocationPath, siteId)
 	if err != nil {
 		return nil, err
 	}
@@ -768,12 +768,12 @@ func NewListAccountAccessKeysRequest(server string, siteName string) (*http.Requ
 }
 
 // NewCreateAccountAccessKeyRequest generates requests for CreateAccountAccessKey
-func NewCreateAccountAccessKeyRequest(server string, siteName string) (*http.Request, error) {
+func NewCreateAccountAccessKeyRequest(server string, siteId string) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_name", runtime.ParamLocationPath, siteName)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_id", runtime.ParamLocationPath, siteId)
 	if err != nil {
 		return nil, err
 	}
@@ -802,19 +802,19 @@ func NewCreateAccountAccessKeyRequest(server string, siteName string) (*http.Req
 }
 
 // NewDeleteAccountAccessKeyRequest generates requests for DeleteAccountAccessKey
-func NewDeleteAccountAccessKeyRequest(server string, siteName string, id string) (*http.Request, error) {
+func NewDeleteAccountAccessKeyRequest(server string, siteId string, accountKeyId AccessKeyID) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_name", runtime.ParamLocationPath, siteName)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_id", runtime.ParamLocationPath, siteId)
 	if err != nil {
 		return nil, err
 	}
 
 	var pathParam1 string
 
-	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "account_key_id", runtime.ParamLocationPath, accountKeyId)
 	if err != nil {
 		return nil, err
 	}
@@ -843,19 +843,19 @@ func NewDeleteAccountAccessKeyRequest(server string, siteName string, id string)
 }
 
 // NewReadAccountAccessKeyRequest generates requests for ReadAccountAccessKey
-func NewReadAccountAccessKeyRequest(server string, siteName string, id string) (*http.Request, error) {
+func NewReadAccountAccessKeyRequest(server string, siteId string, accountKeyId AccessKeyID) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_name", runtime.ParamLocationPath, siteName)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_id", runtime.ParamLocationPath, siteId)
 	if err != nil {
 		return nil, err
 	}
 
 	var pathParam1 string
 
-	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "account_key_id", runtime.ParamLocationPath, accountKeyId)
 	if err != nil {
 		return nil, err
 	}
@@ -884,12 +884,12 @@ func NewReadAccountAccessKeyRequest(server string, siteName string, id string) (
 }
 
 // NewListPermissionsRequest generates requests for ListPermissions
-func NewListPermissionsRequest(server string, siteName string) (*http.Request, error) {
+func NewListPermissionsRequest(server string, siteId string) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_name", runtime.ParamLocationPath, siteName)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_id", runtime.ParamLocationPath, siteId)
 	if err != nil {
 		return nil, err
 	}
@@ -918,23 +918,23 @@ func NewListPermissionsRequest(server string, siteName string) (*http.Request, e
 }
 
 // NewCreatePermissionRequest calls the generic CreatePermission builder with application/json body
-func NewCreatePermissionRequest(server string, siteName string, body CreatePermissionJSONRequestBody) (*http.Request, error) {
+func NewCreatePermissionRequest(server string, siteId string, body CreatePermissionJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewCreatePermissionRequestWithBody(server, siteName, "application/json", bodyReader)
+	return NewCreatePermissionRequestWithBody(server, siteId, "application/json", bodyReader)
 }
 
 // NewCreatePermissionRequestWithBody generates requests for CreatePermission with any type of body
-func NewCreatePermissionRequestWithBody(server string, siteName string, contentType string, body io.Reader) (*http.Request, error) {
+func NewCreatePermissionRequestWithBody(server string, siteId string, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_name", runtime.ParamLocationPath, siteName)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_id", runtime.ParamLocationPath, siteId)
 	if err != nil {
 		return nil, err
 	}
@@ -965,19 +965,19 @@ func NewCreatePermissionRequestWithBody(server string, siteName string, contentT
 }
 
 // NewDeletePermissionRequest generates requests for DeletePermission
-func NewDeletePermissionRequest(server string, siteName string, id string) (*http.Request, error) {
+func NewDeletePermissionRequest(server string, siteId string, permissionId PermissionID) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_name", runtime.ParamLocationPath, siteName)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_id", runtime.ParamLocationPath, siteId)
 	if err != nil {
 		return nil, err
 	}
 
 	var pathParam1 string
 
-	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "permission_id", runtime.ParamLocationPath, permissionId)
 	if err != nil {
 		return nil, err
 	}
@@ -1006,19 +1006,19 @@ func NewDeletePermissionRequest(server string, siteName string, id string) (*htt
 }
 
 // NewReadPermissionRequest generates requests for ReadPermission
-func NewReadPermissionRequest(server string, siteName string, id string) (*http.Request, error) {
+func NewReadPermissionRequest(server string, siteId string, permissionId PermissionID) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_name", runtime.ParamLocationPath, siteName)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_id", runtime.ParamLocationPath, siteId)
 	if err != nil {
 		return nil, err
 	}
 
 	var pathParam1 string
 
-	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "permission_id", runtime.ParamLocationPath, permissionId)
 	if err != nil {
 		return nil, err
 	}
@@ -1047,30 +1047,30 @@ func NewReadPermissionRequest(server string, siteName string, id string) (*http.
 }
 
 // NewUpdatePermissionRequest calls the generic UpdatePermission builder with application/json body
-func NewUpdatePermissionRequest(server string, siteName string, id string, body UpdatePermissionJSONRequestBody) (*http.Request, error) {
+func NewUpdatePermissionRequest(server string, siteId string, permissionId PermissionID, body UpdatePermissionJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewUpdatePermissionRequestWithBody(server, siteName, id, "application/json", bodyReader)
+	return NewUpdatePermissionRequestWithBody(server, siteId, permissionId, "application/json", bodyReader)
 }
 
 // NewUpdatePermissionRequestWithBody generates requests for UpdatePermission with any type of body
-func NewUpdatePermissionRequestWithBody(server string, siteName string, id string, contentType string, body io.Reader) (*http.Request, error) {
+func NewUpdatePermissionRequestWithBody(server string, siteId string, permissionId PermissionID, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_name", runtime.ParamLocationPath, siteName)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_id", runtime.ParamLocationPath, siteId)
 	if err != nil {
 		return nil, err
 	}
 
 	var pathParam1 string
 
-	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "permission_id", runtime.ParamLocationPath, permissionId)
 	if err != nil {
 		return nil, err
 	}
@@ -1101,19 +1101,19 @@ func NewUpdatePermissionRequestWithBody(server string, siteName string, id strin
 }
 
 // NewListPermissionAccessKeysRequest generates requests for ListPermissionAccessKeys
-func NewListPermissionAccessKeysRequest(server string, siteName string, id string) (*http.Request, error) {
+func NewListPermissionAccessKeysRequest(server string, siteId string, permissionId PermissionID) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_name", runtime.ParamLocationPath, siteName)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_id", runtime.ParamLocationPath, siteId)
 	if err != nil {
 		return nil, err
 	}
 
 	var pathParam1 string
 
-	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "permission_id", runtime.ParamLocationPath, permissionId)
 	if err != nil {
 		return nil, err
 	}
@@ -1142,19 +1142,19 @@ func NewListPermissionAccessKeysRequest(server string, siteName string, id strin
 }
 
 // NewCreatePermissionAccessKeyRequest generates requests for CreatePermissionAccessKey
-func NewCreatePermissionAccessKeyRequest(server string, siteName string, id string) (*http.Request, error) {
+func NewCreatePermissionAccessKeyRequest(server string, siteId string, permissionId PermissionID) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_name", runtime.ParamLocationPath, siteName)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_id", runtime.ParamLocationPath, siteId)
 	if err != nil {
 		return nil, err
 	}
 
 	var pathParam1 string
 
-	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "permission_id", runtime.ParamLocationPath, permissionId)
 	if err != nil {
 		return nil, err
 	}
@@ -1183,26 +1183,26 @@ func NewCreatePermissionAccessKeyRequest(server string, siteName string, id stri
 }
 
 // NewDeletePermissionAccessKeyRequest generates requests for DeletePermissionAccessKey
-func NewDeletePermissionAccessKeyRequest(server string, siteName string, id string, keyId string) (*http.Request, error) {
+func NewDeletePermissionAccessKeyRequest(server string, siteId string, permissionId PermissionID, permissionKeyId AccessKeyID) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_name", runtime.ParamLocationPath, siteName)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_id", runtime.ParamLocationPath, siteId)
 	if err != nil {
 		return nil, err
 	}
 
 	var pathParam1 string
 
-	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "permission_id", runtime.ParamLocationPath, permissionId)
 	if err != nil {
 		return nil, err
 	}
 
 	var pathParam2 string
 
-	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "key_id", runtime.ParamLocationPath, keyId)
+	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "permission_key_id", runtime.ParamLocationPath, permissionKeyId)
 	if err != nil {
 		return nil, err
 	}
@@ -1231,26 +1231,26 @@ func NewDeletePermissionAccessKeyRequest(server string, siteName string, id stri
 }
 
 // NewReadPermissionAccessKeyRequest generates requests for ReadPermissionAccessKey
-func NewReadPermissionAccessKeyRequest(server string, siteName string, id string, keyId string) (*http.Request, error) {
+func NewReadPermissionAccessKeyRequest(server string, siteId string, permissionId PermissionID, permissionKeyId AccessKeyID) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_name", runtime.ParamLocationPath, siteName)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_id", runtime.ParamLocationPath, siteId)
 	if err != nil {
 		return nil, err
 	}
 
 	var pathParam1 string
 
-	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "id", runtime.ParamLocationPath, id)
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "permission_id", runtime.ParamLocationPath, permissionId)
 	if err != nil {
 		return nil, err
 	}
 
 	var pathParam2 string
 
-	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "key_id", runtime.ParamLocationPath, keyId)
+	pathParam2, err = runtime.StyleParamWithLocation("simple", false, "permission_key_id", runtime.ParamLocationPath, permissionKeyId)
 	if err != nil {
 		return nil, err
 	}
@@ -1279,12 +1279,12 @@ func NewReadPermissionAccessKeyRequest(server string, siteName string, id string
 }
 
 // NewReadSiteStatusRequest generates requests for ReadSiteStatus
-func NewReadSiteStatusRequest(server string, siteName string) (*http.Request, error) {
+func NewReadSiteStatusRequest(server string, siteId string) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
 
-	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_name", runtime.ParamLocationPath, siteName)
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "site_id", runtime.ParamLocationPath, siteId)
 	if err != nil {
 		return nil, err
 	}
@@ -1356,75 +1356,75 @@ func WithBaseURL(baseURL string) ClientOption {
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
 	// DeleteBucket request with any body
-	DeleteBucketWithBodyWithResponse(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*DeleteBucketResponse, error)
+	DeleteBucketWithBodyWithResponse(ctx context.Context, bucketName BucketName, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*DeleteBucketResponse, error)
 
-	DeleteBucketWithResponse(ctx context.Context, name string, body DeleteBucketJSONRequestBody, reqEditors ...RequestEditorFn) (*DeleteBucketResponse, error)
+	DeleteBucketWithResponse(ctx context.Context, bucketName BucketName, body DeleteBucketJSONRequestBody, reqEditors ...RequestEditorFn) (*DeleteBucketResponse, error)
 
 	// CreateBucket request with any body
-	CreateBucketWithBodyWithResponse(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateBucketResponse, error)
+	CreateBucketWithBodyWithResponse(ctx context.Context, bucketName BucketName, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateBucketResponse, error)
 
-	CreateBucketWithResponse(ctx context.Context, name string, body CreateBucketJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateBucketResponse, error)
+	CreateBucketWithResponse(ctx context.Context, bucketName BucketName, body CreateBucketJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateBucketResponse, error)
 
 	// ListClusters request
 	ListClustersWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListClustersResponse, error)
 
 	// ReadCluster request
-	ReadClusterWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*ReadClusterResponse, error)
+	ReadClusterWithResponse(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*ReadClusterResponse, error)
 
 	// DeleteSiteAccount request
-	DeleteSiteAccountWithResponse(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*DeleteSiteAccountResponse, error)
+	DeleteSiteAccountWithResponse(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*DeleteSiteAccountResponse, error)
 
 	// ReadSiteAccount request
-	ReadSiteAccountWithResponse(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*ReadSiteAccountResponse, error)
+	ReadSiteAccountWithResponse(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*ReadSiteAccountResponse, error)
 
 	// CreateSiteAccount request
-	CreateSiteAccountWithResponse(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*CreateSiteAccountResponse, error)
+	CreateSiteAccountWithResponse(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*CreateSiteAccountResponse, error)
 
 	// ListAccountAccessKeys request
-	ListAccountAccessKeysWithResponse(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*ListAccountAccessKeysResponse, error)
+	ListAccountAccessKeysWithResponse(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*ListAccountAccessKeysResponse, error)
 
 	// CreateAccountAccessKey request
-	CreateAccountAccessKeyWithResponse(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*CreateAccountAccessKeyResponse, error)
+	CreateAccountAccessKeyWithResponse(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*CreateAccountAccessKeyResponse, error)
 
 	// DeleteAccountAccessKey request
-	DeleteAccountAccessKeyWithResponse(ctx context.Context, siteName string, id string, reqEditors ...RequestEditorFn) (*DeleteAccountAccessKeyResponse, error)
+	DeleteAccountAccessKeyWithResponse(ctx context.Context, siteId string, accountKeyId AccessKeyID, reqEditors ...RequestEditorFn) (*DeleteAccountAccessKeyResponse, error)
 
 	// ReadAccountAccessKey request
-	ReadAccountAccessKeyWithResponse(ctx context.Context, siteName string, id string, reqEditors ...RequestEditorFn) (*ReadAccountAccessKeyResponse, error)
+	ReadAccountAccessKeyWithResponse(ctx context.Context, siteId string, accountKeyId AccessKeyID, reqEditors ...RequestEditorFn) (*ReadAccountAccessKeyResponse, error)
 
 	// ListPermissions request
-	ListPermissionsWithResponse(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*ListPermissionsResponse, error)
+	ListPermissionsWithResponse(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*ListPermissionsResponse, error)
 
 	// CreatePermission request with any body
-	CreatePermissionWithBodyWithResponse(ctx context.Context, siteName string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreatePermissionResponse, error)
+	CreatePermissionWithBodyWithResponse(ctx context.Context, siteId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreatePermissionResponse, error)
 
-	CreatePermissionWithResponse(ctx context.Context, siteName string, body CreatePermissionJSONRequestBody, reqEditors ...RequestEditorFn) (*CreatePermissionResponse, error)
+	CreatePermissionWithResponse(ctx context.Context, siteId string, body CreatePermissionJSONRequestBody, reqEditors ...RequestEditorFn) (*CreatePermissionResponse, error)
 
 	// DeletePermission request
-	DeletePermissionWithResponse(ctx context.Context, siteName string, id string, reqEditors ...RequestEditorFn) (*DeletePermissionResponse, error)
+	DeletePermissionWithResponse(ctx context.Context, siteId string, permissionId PermissionID, reqEditors ...RequestEditorFn) (*DeletePermissionResponse, error)
 
 	// ReadPermission request
-	ReadPermissionWithResponse(ctx context.Context, siteName string, id string, reqEditors ...RequestEditorFn) (*ReadPermissionResponse, error)
+	ReadPermissionWithResponse(ctx context.Context, siteId string, permissionId PermissionID, reqEditors ...RequestEditorFn) (*ReadPermissionResponse, error)
 
 	// UpdatePermission request with any body
-	UpdatePermissionWithBodyWithResponse(ctx context.Context, siteName string, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdatePermissionResponse, error)
+	UpdatePermissionWithBodyWithResponse(ctx context.Context, siteId string, permissionId PermissionID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdatePermissionResponse, error)
 
-	UpdatePermissionWithResponse(ctx context.Context, siteName string, id string, body UpdatePermissionJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdatePermissionResponse, error)
+	UpdatePermissionWithResponse(ctx context.Context, siteId string, permissionId PermissionID, body UpdatePermissionJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdatePermissionResponse, error)
 
 	// ListPermissionAccessKeys request
-	ListPermissionAccessKeysWithResponse(ctx context.Context, siteName string, id string, reqEditors ...RequestEditorFn) (*ListPermissionAccessKeysResponse, error)
+	ListPermissionAccessKeysWithResponse(ctx context.Context, siteId string, permissionId PermissionID, reqEditors ...RequestEditorFn) (*ListPermissionAccessKeysResponse, error)
 
 	// CreatePermissionAccessKey request
-	CreatePermissionAccessKeyWithResponse(ctx context.Context, siteName string, id string, reqEditors ...RequestEditorFn) (*CreatePermissionAccessKeyResponse, error)
+	CreatePermissionAccessKeyWithResponse(ctx context.Context, siteId string, permissionId PermissionID, reqEditors ...RequestEditorFn) (*CreatePermissionAccessKeyResponse, error)
 
 	// DeletePermissionAccessKey request
-	DeletePermissionAccessKeyWithResponse(ctx context.Context, siteName string, id string, keyId string, reqEditors ...RequestEditorFn) (*DeletePermissionAccessKeyResponse, error)
+	DeletePermissionAccessKeyWithResponse(ctx context.Context, siteId string, permissionId PermissionID, permissionKeyId AccessKeyID, reqEditors ...RequestEditorFn) (*DeletePermissionAccessKeyResponse, error)
 
 	// ReadPermissionAccessKey request
-	ReadPermissionAccessKeyWithResponse(ctx context.Context, siteName string, id string, keyId string, reqEditors ...RequestEditorFn) (*ReadPermissionAccessKeyResponse, error)
+	ReadPermissionAccessKeyWithResponse(ctx context.Context, siteId string, permissionId PermissionID, permissionKeyId AccessKeyID, reqEditors ...RequestEditorFn) (*ReadPermissionAccessKeyResponse, error)
 
 	// ReadSiteStatus request
-	ReadSiteStatusWithResponse(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*ReadSiteStatusResponse, error)
+	ReadSiteStatusWithResponse(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*ReadSiteStatusResponse, error)
 }
 
 type DeleteBucketResponse struct {
@@ -2219,16 +2219,16 @@ func (r ReadSiteStatusResponse) UndefinedError() error {
 }
 
 // DeleteBucketWithBodyWithResponse request with arbitrary body returning *DeleteBucketResponse
-func (c *ClientWithResponses) DeleteBucketWithBodyWithResponse(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*DeleteBucketResponse, error) {
-	rsp, err := c.DeleteBucketWithBody(ctx, name, contentType, body, reqEditors...)
+func (c *ClientWithResponses) DeleteBucketWithBodyWithResponse(ctx context.Context, bucketName BucketName, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*DeleteBucketResponse, error) {
+	rsp, err := c.DeleteBucketWithBody(ctx, bucketName, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
 	return ParseDeleteBucketResponse(rsp)
 }
 
-func (c *ClientWithResponses) DeleteBucketWithResponse(ctx context.Context, name string, body DeleteBucketJSONRequestBody, reqEditors ...RequestEditorFn) (*DeleteBucketResponse, error) {
-	rsp, err := c.DeleteBucket(ctx, name, body, reqEditors...)
+func (c *ClientWithResponses) DeleteBucketWithResponse(ctx context.Context, bucketName BucketName, body DeleteBucketJSONRequestBody, reqEditors ...RequestEditorFn) (*DeleteBucketResponse, error) {
+	rsp, err := c.DeleteBucket(ctx, bucketName, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -2236,16 +2236,16 @@ func (c *ClientWithResponses) DeleteBucketWithResponse(ctx context.Context, name
 }
 
 // CreateBucketWithBodyWithResponse request with arbitrary body returning *CreateBucketResponse
-func (c *ClientWithResponses) CreateBucketWithBodyWithResponse(ctx context.Context, name string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateBucketResponse, error) {
-	rsp, err := c.CreateBucketWithBody(ctx, name, contentType, body, reqEditors...)
+func (c *ClientWithResponses) CreateBucketWithBodyWithResponse(ctx context.Context, bucketName BucketName, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreateBucketResponse, error) {
+	rsp, err := c.CreateBucketWithBody(ctx, bucketName, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
 	return ParseCreateBucketResponse(rsp)
 }
 
-func (c *ClientWithResponses) CreateBucketWithResponse(ctx context.Context, name string, body CreateBucketJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateBucketResponse, error) {
-	rsp, err := c.CreateBucket(ctx, name, body, reqEditors...)
+func (c *ClientWithResponses) CreateBucketWithResponse(ctx context.Context, bucketName BucketName, body CreateBucketJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateBucketResponse, error) {
+	rsp, err := c.CreateBucket(ctx, bucketName, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -2262,8 +2262,8 @@ func (c *ClientWithResponses) ListClustersWithResponse(ctx context.Context, reqE
 }
 
 // ReadClusterWithResponse request returning *ReadClusterResponse
-func (c *ClientWithResponses) ReadClusterWithResponse(ctx context.Context, id string, reqEditors ...RequestEditorFn) (*ReadClusterResponse, error) {
-	rsp, err := c.ReadCluster(ctx, id, reqEditors...)
+func (c *ClientWithResponses) ReadClusterWithResponse(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*ReadClusterResponse, error) {
+	rsp, err := c.ReadCluster(ctx, siteId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -2271,8 +2271,8 @@ func (c *ClientWithResponses) ReadClusterWithResponse(ctx context.Context, id st
 }
 
 // DeleteSiteAccountWithResponse request returning *DeleteSiteAccountResponse
-func (c *ClientWithResponses) DeleteSiteAccountWithResponse(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*DeleteSiteAccountResponse, error) {
-	rsp, err := c.DeleteSiteAccount(ctx, siteName, reqEditors...)
+func (c *ClientWithResponses) DeleteSiteAccountWithResponse(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*DeleteSiteAccountResponse, error) {
+	rsp, err := c.DeleteSiteAccount(ctx, siteId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -2280,8 +2280,8 @@ func (c *ClientWithResponses) DeleteSiteAccountWithResponse(ctx context.Context,
 }
 
 // ReadSiteAccountWithResponse request returning *ReadSiteAccountResponse
-func (c *ClientWithResponses) ReadSiteAccountWithResponse(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*ReadSiteAccountResponse, error) {
-	rsp, err := c.ReadSiteAccount(ctx, siteName, reqEditors...)
+func (c *ClientWithResponses) ReadSiteAccountWithResponse(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*ReadSiteAccountResponse, error) {
+	rsp, err := c.ReadSiteAccount(ctx, siteId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -2289,8 +2289,8 @@ func (c *ClientWithResponses) ReadSiteAccountWithResponse(ctx context.Context, s
 }
 
 // CreateSiteAccountWithResponse request returning *CreateSiteAccountResponse
-func (c *ClientWithResponses) CreateSiteAccountWithResponse(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*CreateSiteAccountResponse, error) {
-	rsp, err := c.CreateSiteAccount(ctx, siteName, reqEditors...)
+func (c *ClientWithResponses) CreateSiteAccountWithResponse(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*CreateSiteAccountResponse, error) {
+	rsp, err := c.CreateSiteAccount(ctx, siteId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -2298,8 +2298,8 @@ func (c *ClientWithResponses) CreateSiteAccountWithResponse(ctx context.Context,
 }
 
 // ListAccountAccessKeysWithResponse request returning *ListAccountAccessKeysResponse
-func (c *ClientWithResponses) ListAccountAccessKeysWithResponse(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*ListAccountAccessKeysResponse, error) {
-	rsp, err := c.ListAccountAccessKeys(ctx, siteName, reqEditors...)
+func (c *ClientWithResponses) ListAccountAccessKeysWithResponse(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*ListAccountAccessKeysResponse, error) {
+	rsp, err := c.ListAccountAccessKeys(ctx, siteId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -2307,8 +2307,8 @@ func (c *ClientWithResponses) ListAccountAccessKeysWithResponse(ctx context.Cont
 }
 
 // CreateAccountAccessKeyWithResponse request returning *CreateAccountAccessKeyResponse
-func (c *ClientWithResponses) CreateAccountAccessKeyWithResponse(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*CreateAccountAccessKeyResponse, error) {
-	rsp, err := c.CreateAccountAccessKey(ctx, siteName, reqEditors...)
+func (c *ClientWithResponses) CreateAccountAccessKeyWithResponse(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*CreateAccountAccessKeyResponse, error) {
+	rsp, err := c.CreateAccountAccessKey(ctx, siteId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -2316,8 +2316,8 @@ func (c *ClientWithResponses) CreateAccountAccessKeyWithResponse(ctx context.Con
 }
 
 // DeleteAccountAccessKeyWithResponse request returning *DeleteAccountAccessKeyResponse
-func (c *ClientWithResponses) DeleteAccountAccessKeyWithResponse(ctx context.Context, siteName string, id string, reqEditors ...RequestEditorFn) (*DeleteAccountAccessKeyResponse, error) {
-	rsp, err := c.DeleteAccountAccessKey(ctx, siteName, id, reqEditors...)
+func (c *ClientWithResponses) DeleteAccountAccessKeyWithResponse(ctx context.Context, siteId string, accountKeyId AccessKeyID, reqEditors ...RequestEditorFn) (*DeleteAccountAccessKeyResponse, error) {
+	rsp, err := c.DeleteAccountAccessKey(ctx, siteId, accountKeyId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -2325,8 +2325,8 @@ func (c *ClientWithResponses) DeleteAccountAccessKeyWithResponse(ctx context.Con
 }
 
 // ReadAccountAccessKeyWithResponse request returning *ReadAccountAccessKeyResponse
-func (c *ClientWithResponses) ReadAccountAccessKeyWithResponse(ctx context.Context, siteName string, id string, reqEditors ...RequestEditorFn) (*ReadAccountAccessKeyResponse, error) {
-	rsp, err := c.ReadAccountAccessKey(ctx, siteName, id, reqEditors...)
+func (c *ClientWithResponses) ReadAccountAccessKeyWithResponse(ctx context.Context, siteId string, accountKeyId AccessKeyID, reqEditors ...RequestEditorFn) (*ReadAccountAccessKeyResponse, error) {
+	rsp, err := c.ReadAccountAccessKey(ctx, siteId, accountKeyId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -2334,8 +2334,8 @@ func (c *ClientWithResponses) ReadAccountAccessKeyWithResponse(ctx context.Conte
 }
 
 // ListPermissionsWithResponse request returning *ListPermissionsResponse
-func (c *ClientWithResponses) ListPermissionsWithResponse(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*ListPermissionsResponse, error) {
-	rsp, err := c.ListPermissions(ctx, siteName, reqEditors...)
+func (c *ClientWithResponses) ListPermissionsWithResponse(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*ListPermissionsResponse, error) {
+	rsp, err := c.ListPermissions(ctx, siteId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -2343,16 +2343,16 @@ func (c *ClientWithResponses) ListPermissionsWithResponse(ctx context.Context, s
 }
 
 // CreatePermissionWithBodyWithResponse request with arbitrary body returning *CreatePermissionResponse
-func (c *ClientWithResponses) CreatePermissionWithBodyWithResponse(ctx context.Context, siteName string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreatePermissionResponse, error) {
-	rsp, err := c.CreatePermissionWithBody(ctx, siteName, contentType, body, reqEditors...)
+func (c *ClientWithResponses) CreatePermissionWithBodyWithResponse(ctx context.Context, siteId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreatePermissionResponse, error) {
+	rsp, err := c.CreatePermissionWithBody(ctx, siteId, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
 	return ParseCreatePermissionResponse(rsp)
 }
 
-func (c *ClientWithResponses) CreatePermissionWithResponse(ctx context.Context, siteName string, body CreatePermissionJSONRequestBody, reqEditors ...RequestEditorFn) (*CreatePermissionResponse, error) {
-	rsp, err := c.CreatePermission(ctx, siteName, body, reqEditors...)
+func (c *ClientWithResponses) CreatePermissionWithResponse(ctx context.Context, siteId string, body CreatePermissionJSONRequestBody, reqEditors ...RequestEditorFn) (*CreatePermissionResponse, error) {
+	rsp, err := c.CreatePermission(ctx, siteId, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -2360,8 +2360,8 @@ func (c *ClientWithResponses) CreatePermissionWithResponse(ctx context.Context, 
 }
 
 // DeletePermissionWithResponse request returning *DeletePermissionResponse
-func (c *ClientWithResponses) DeletePermissionWithResponse(ctx context.Context, siteName string, id string, reqEditors ...RequestEditorFn) (*DeletePermissionResponse, error) {
-	rsp, err := c.DeletePermission(ctx, siteName, id, reqEditors...)
+func (c *ClientWithResponses) DeletePermissionWithResponse(ctx context.Context, siteId string, permissionId PermissionID, reqEditors ...RequestEditorFn) (*DeletePermissionResponse, error) {
+	rsp, err := c.DeletePermission(ctx, siteId, permissionId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -2369,8 +2369,8 @@ func (c *ClientWithResponses) DeletePermissionWithResponse(ctx context.Context, 
 }
 
 // ReadPermissionWithResponse request returning *ReadPermissionResponse
-func (c *ClientWithResponses) ReadPermissionWithResponse(ctx context.Context, siteName string, id string, reqEditors ...RequestEditorFn) (*ReadPermissionResponse, error) {
-	rsp, err := c.ReadPermission(ctx, siteName, id, reqEditors...)
+func (c *ClientWithResponses) ReadPermissionWithResponse(ctx context.Context, siteId string, permissionId PermissionID, reqEditors ...RequestEditorFn) (*ReadPermissionResponse, error) {
+	rsp, err := c.ReadPermission(ctx, siteId, permissionId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -2378,16 +2378,16 @@ func (c *ClientWithResponses) ReadPermissionWithResponse(ctx context.Context, si
 }
 
 // UpdatePermissionWithBodyWithResponse request with arbitrary body returning *UpdatePermissionResponse
-func (c *ClientWithResponses) UpdatePermissionWithBodyWithResponse(ctx context.Context, siteName string, id string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdatePermissionResponse, error) {
-	rsp, err := c.UpdatePermissionWithBody(ctx, siteName, id, contentType, body, reqEditors...)
+func (c *ClientWithResponses) UpdatePermissionWithBodyWithResponse(ctx context.Context, siteId string, permissionId PermissionID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdatePermissionResponse, error) {
+	rsp, err := c.UpdatePermissionWithBody(ctx, siteId, permissionId, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
 	return ParseUpdatePermissionResponse(rsp)
 }
 
-func (c *ClientWithResponses) UpdatePermissionWithResponse(ctx context.Context, siteName string, id string, body UpdatePermissionJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdatePermissionResponse, error) {
-	rsp, err := c.UpdatePermission(ctx, siteName, id, body, reqEditors...)
+func (c *ClientWithResponses) UpdatePermissionWithResponse(ctx context.Context, siteId string, permissionId PermissionID, body UpdatePermissionJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdatePermissionResponse, error) {
+	rsp, err := c.UpdatePermission(ctx, siteId, permissionId, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -2395,8 +2395,8 @@ func (c *ClientWithResponses) UpdatePermissionWithResponse(ctx context.Context, 
 }
 
 // ListPermissionAccessKeysWithResponse request returning *ListPermissionAccessKeysResponse
-func (c *ClientWithResponses) ListPermissionAccessKeysWithResponse(ctx context.Context, siteName string, id string, reqEditors ...RequestEditorFn) (*ListPermissionAccessKeysResponse, error) {
-	rsp, err := c.ListPermissionAccessKeys(ctx, siteName, id, reqEditors...)
+func (c *ClientWithResponses) ListPermissionAccessKeysWithResponse(ctx context.Context, siteId string, permissionId PermissionID, reqEditors ...RequestEditorFn) (*ListPermissionAccessKeysResponse, error) {
+	rsp, err := c.ListPermissionAccessKeys(ctx, siteId, permissionId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -2404,8 +2404,8 @@ func (c *ClientWithResponses) ListPermissionAccessKeysWithResponse(ctx context.C
 }
 
 // CreatePermissionAccessKeyWithResponse request returning *CreatePermissionAccessKeyResponse
-func (c *ClientWithResponses) CreatePermissionAccessKeyWithResponse(ctx context.Context, siteName string, id string, reqEditors ...RequestEditorFn) (*CreatePermissionAccessKeyResponse, error) {
-	rsp, err := c.CreatePermissionAccessKey(ctx, siteName, id, reqEditors...)
+func (c *ClientWithResponses) CreatePermissionAccessKeyWithResponse(ctx context.Context, siteId string, permissionId PermissionID, reqEditors ...RequestEditorFn) (*CreatePermissionAccessKeyResponse, error) {
+	rsp, err := c.CreatePermissionAccessKey(ctx, siteId, permissionId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -2413,8 +2413,8 @@ func (c *ClientWithResponses) CreatePermissionAccessKeyWithResponse(ctx context.
 }
 
 // DeletePermissionAccessKeyWithResponse request returning *DeletePermissionAccessKeyResponse
-func (c *ClientWithResponses) DeletePermissionAccessKeyWithResponse(ctx context.Context, siteName string, id string, keyId string, reqEditors ...RequestEditorFn) (*DeletePermissionAccessKeyResponse, error) {
-	rsp, err := c.DeletePermissionAccessKey(ctx, siteName, id, keyId, reqEditors...)
+func (c *ClientWithResponses) DeletePermissionAccessKeyWithResponse(ctx context.Context, siteId string, permissionId PermissionID, permissionKeyId AccessKeyID, reqEditors ...RequestEditorFn) (*DeletePermissionAccessKeyResponse, error) {
+	rsp, err := c.DeletePermissionAccessKey(ctx, siteId, permissionId, permissionKeyId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -2422,8 +2422,8 @@ func (c *ClientWithResponses) DeletePermissionAccessKeyWithResponse(ctx context.
 }
 
 // ReadPermissionAccessKeyWithResponse request returning *ReadPermissionAccessKeyResponse
-func (c *ClientWithResponses) ReadPermissionAccessKeyWithResponse(ctx context.Context, siteName string, id string, keyId string, reqEditors ...RequestEditorFn) (*ReadPermissionAccessKeyResponse, error) {
-	rsp, err := c.ReadPermissionAccessKey(ctx, siteName, id, keyId, reqEditors...)
+func (c *ClientWithResponses) ReadPermissionAccessKeyWithResponse(ctx context.Context, siteId string, permissionId PermissionID, permissionKeyId AccessKeyID, reqEditors ...RequestEditorFn) (*ReadPermissionAccessKeyResponse, error) {
+	rsp, err := c.ReadPermissionAccessKey(ctx, siteId, permissionId, permissionKeyId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -2431,8 +2431,8 @@ func (c *ClientWithResponses) ReadPermissionAccessKeyWithResponse(ctx context.Co
 }
 
 // ReadSiteStatusWithResponse request returning *ReadSiteStatusResponse
-func (c *ClientWithResponses) ReadSiteStatusWithResponse(ctx context.Context, siteName string, reqEditors ...RequestEditorFn) (*ReadSiteStatusResponse, error) {
-	rsp, err := c.ReadSiteStatus(ctx, siteName, reqEditors...)
+func (c *ClientWithResponses) ReadSiteStatusWithResponse(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*ReadSiteStatusResponse, error) {
+	rsp, err := c.ReadSiteStatus(ctx, siteId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}

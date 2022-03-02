@@ -337,7 +337,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error401'
-  '/fed/v1/clusters/{id}':
+  '/fed/v1/clusters/{site_id}':
     get:
       operationId: "ReadCluster"
       tags:
@@ -351,12 +351,12 @@ paths:
         `https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/fed/v1/clusters`
         となります。
       parameters:
-        - description: サイトID
-          name: id
-          in: path
+        - in: path
+          name: site_id
           required: true
           schema:
             type: string
+          description: サイト名
       responses:
         '200':
           description: サイトの取得に成功しました
@@ -376,7 +376,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error404'
-  '/fed/v1/buckets/{name}':
+  '/fed/v1/buckets/{bucket_name}':
     put:
       operationId: "CreateBucket"
       tags:
@@ -391,10 +391,10 @@ paths:
         となります。
       parameters:
         - in: path
-          name: name
+          name: bucket_name
           required: true
           schema:
-            type: string
+            $ref: '#/components/schemas/BucketName'
           description: バケット名
       requestBody:
         content:
@@ -444,10 +444,10 @@ paths:
         となります。
       parameters:
         - in: path
-          name: name
+          name: bucket_name
           required: true
           schema:
-            type: string
+            $ref: '#/components/schemas/BucketName'
           description: バケット名
       requestBody:
         content:
@@ -475,7 +475,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error409'
-  '/{site_name}/v2/account':
+  '/{site_id}/v2/account':
     get:
       operationId: "ReadSiteAccount"
       tags:
@@ -492,7 +492,7 @@ paths:
         なお、サイト名の取得方法は「利用例＞接続先サイト一覧の取得」をご参考下さい。
       parameters:
         - in: path
-          name: site_name
+          name: site_id
           required: true
           schema:
             type: string
@@ -538,7 +538,7 @@ paths:
         なお、サイト名の取得方法は「利用例＞接続先サイト一覧の取得」をご参考下さい。
       parameters:
         - in: path
-          name: site_name
+          name: site_id
           required: true
           schema:
             type: string
@@ -590,7 +590,7 @@ paths:
         なお、サイト名の取得方法は「利用例＞接続先サイト一覧の取得」をご参考下さい。
       parameters:
         - in: path
-          name: site_name
+          name: site_id
           required: true
           schema:
             type: string
@@ -616,7 +616,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDefault'
-  '/{site_name}/v2/account/keys':
+  '/{site_id}/v2/account/keys':
     get:
       operationId: "ListAccountAccessKeys"
       tags:
@@ -633,7 +633,7 @@ paths:
         なお、サイト名の取得方法は「利用例＞接続先サイト一覧の取得」をご参考下さい。
       parameters:
         - in: path
-          name: site_name
+          name: site_id
           required: true
           schema:
             type: string
@@ -668,7 +668,7 @@ paths:
       tags:
         - サイトアカウント
       servers:
-        - url: 'https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/{site_name}/v2/'
+        - url: 'https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/{site_id}/v2/'
       summary: サイトアカウントのアクセスキーの発行
       description: |-
         アクセス先ベースURL: `https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/（サイト名）/v2/`
@@ -681,7 +681,7 @@ paths:
         なお、サイト名の取得方法は「利用例＞接続先サイト一覧の取得」をご参考下さい。
       parameters:
         - in: path
-          name: site_name
+          name: site_id
           required: true
           schema:
             type: string
@@ -717,7 +717,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDefault'
-  '/{site_name}/v2/account/keys/{id}':
+  '/{site_id}/v2/account/keys/{account_key_id}':
     get:
       operationId: "ReadAccountAccessKey"
       tags:
@@ -734,15 +734,15 @@ paths:
         なお、サイト名の取得方法は「利用例＞接続先サイト一覧の取得」をご参考下さい。
       parameters:
         - in: path
-          name: site_name
+          name: site_id
           required: true
           schema:
             type: string
           description: サイト名
         - in: path
-          name: id
+          name: account_key_id
           schema:
-            type: string
+            $ref: '#/components/schemas/AccessKeyID'
           required: true
           description: アクセスキーID
       responses:
@@ -786,15 +786,15 @@ paths:
         なお、サイト名の取得方法は「利用例＞接続先サイト一覧の取得」をご参考下さい。
       parameters:
         - in: path
-          name: site_name
+          name: site_id
           required: true
           schema:
             type: string
           description: サイト名
         - in: path
-          name: id
+          name: account_key_id
           schema:
-            type: string
+            $ref: '#/components/schemas/AccessKeyID'
           required: true
           description: アクセスキーID
       responses:
@@ -812,7 +812,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDefault'
-  '/{site_name}/v2/permissions':
+  '/{site_id}/v2/permissions':
     get:
       operationId: "ListPermissions"
       tags:
@@ -829,7 +829,7 @@ paths:
         なお、サイト名の取得方法は「利用例＞接続先サイト一覧の取得」をご参考下さい。
       parameters:
         - in: path
-          name: site_name
+          name: site_id
           required: true
           schema:
             type: string
@@ -869,7 +869,7 @@ paths:
         なお、サイト名の取得方法は「利用例＞接続先サイト一覧の取得」をご参考下さい。
       parameters:
         - in: path
-          name: site_name
+          name: site_id
           required: true
           schema:
             type: string
@@ -912,7 +912,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDefault'
-  '/{site_name}/v2/permissions/{id}':
+  '/{site_id}/v2/permissions/{permission_id}':
     get:
       operationId: "ReadPermission"
       tags:
@@ -929,15 +929,15 @@ paths:
         なお、サイト名の取得方法は「利用例＞接続先サイト一覧の取得」をご参考下さい。
       parameters:
         - in: path
-          name: site_name
+          name: site_id
           required: true
           schema:
             type: string
           description: サイト名
         - in: path
-          name: id
+          name: permission_id
           schema:
-            type: string
+            $ref: "#/components/schemas/PermissionID"
           required: true
           description: パーミッションID
       responses:
@@ -1037,15 +1037,15 @@ paths:
         ```
       parameters:
         - in: path
-          name: site_name
+          name: site_id
           required: true
           schema:
             type: string
           description: サイト名
         - in: path
-          name: id
+          name: permission_id
           schema:
-            type: string
+            $ref: "#/components/schemas/PermissionID"
           required: true
           description: パーミッションID
       requestBody:
@@ -1102,15 +1102,15 @@ paths:
         なお、サイト名の取得方法は「利用例＞接続先サイト一覧の取得」をご参考下さい。
       parameters:
         - in: path
-          name: site_name
+          name: site_id
           required: true
           schema:
             type: string
           description: サイト名
         - in: path
-          name: id
+          name: permission_id
           schema:
-            type: string
+            $ref: "#/components/schemas/PermissionID"
           required: true
           description: パーミッションID
       responses:
@@ -1128,7 +1128,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDefault'
-  '/{site_name}/v2/permissions/{id}/keys':
+  '/{site_id}/v2/permissions/{permission_id}/keys':
     get:
       operationId: "ListPermissionAccessKeys"
       tags:
@@ -1145,15 +1145,15 @@ paths:
         なお、サイト名の取得方法は「利用例＞接続先サイト一覧の取得」をご参考下さい。
       parameters:
         - in: path
-          name: site_name
+          name: site_id
           required: true
           schema:
             type: string
           description: サイト名
         - in: path
-          name: id
+          name: permission_id
           schema:
-            type: string
+            $ref: "#/components/schemas/PermissionID"
           required: true
           description: パーミッションID
       responses:
@@ -1197,15 +1197,15 @@ paths:
         なお、サイト名の取得方法は「利用例＞接続先サイト一覧の取得」をご参考下さい。
       parameters:
         - in: path
-          name: site_name
+          name: site_id
           required: true
           schema:
             type: string
           description: サイト名
         - in: path
-          name: id
+          name: permission_id
           schema:
-            type: string
+            $ref: "#/components/schemas/PermissionID"
           required: true
           description: パーミッションID
       responses:
@@ -1239,7 +1239,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDefault'
-  '/{site_name}/v2/permissions/{id}/keys/{key_id}':
+  '/{site_id}/v2/permissions/{permission_id}/keys/{permission_key_id}':
     get:
       operationId: "ReadPermissionAccessKey"
       tags:
@@ -1256,21 +1256,21 @@ paths:
         なお、サイト名の取得方法は「利用例＞接続先サイト一覧の取得」をご参考下さい。
       parameters:
         - in: path
-          name: site_name
+          name: site_id
           required: true
           schema:
             type: string
           description: サイト名
         - in: path
-          name: id
+          name: permission_id
           schema:
-            type: string
+            $ref: "#/components/schemas/PermissionID"
           required: true
           description: パーミッションID
-        - name: key_id
+        - name: permission_key_id
           in: path
           schema:
-            type: string
+            $ref: "#/components/schemas/AccessKeyID"
           required: true
           description: パーミッションが保有するアクセスキーID
       responses:
@@ -1314,21 +1314,21 @@ paths:
         なお、サイト名の取得方法は「利用例＞接続先サイト一覧の取得」をご参考下さい。
       parameters:
         - in: path
-          name: site_name
+          name: site_id
           required: true
           schema:
             type: string
           description: サイト名
         - in: path
-          name: id
+          name: permission_id
           schema:
-            type: string
+            $ref: "#/components/schemas/PermissionID"
           required: true
           description: パーミッションID
-        - name: key_id
+        - name: permission_key_id
           in: path
           schema:
-            type: string
+            $ref: "#/components/schemas/AccessKeyID"
           required: true
           description: パーミッションが保有するアクセスキーID
       responses:
@@ -1352,7 +1352,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorDefault'
-  '/{site_name}/v2/status':
+  '/{site_id}/v2/status':
     get:
       operationId: "ReadSiteStatus"
       tags:
@@ -1369,7 +1369,7 @@ paths:
         なお、サイト名の取得方法は「利用例＞接続先サイト一覧の取得」をご参考下さい。
       parameters:
         - in: path
-          name: site_name
+          name: site_id
           required: true
           schema:
             type: string
