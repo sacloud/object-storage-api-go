@@ -262,3 +262,84 @@ func Example_permissions() {
 	// output:
 	// foobar
 }
+
+// Example_permissionKeys パーミッションのキー操作の例
+func Example_permissionKeys() {
+	token := os.Getenv("SAKURACLOUD_ACCESS_TOKEN")
+	secret := os.Getenv("SAKURACLOUD_ACCESS_TOKEN_SECRET")
+
+	client, err := v1.NewClientWithResponses(serverURL, func(c *v1.Client) error {
+		c.RequestEditors = []v1.RequestEditorFn{
+			v1.OjsAuthInterceptor(token, secret),
+		}
+		return nil
+	})
+	if err != nil {
+		panic(err)
+	}
+
+	// サイトIDが必要になるためまずサイト一覧を取得
+	sitesResp, err := client.ListClustersWithResponse(context.Background())
+	if err != nil {
+		panic(err)
+	}
+
+	sites, err := sitesResp.Result()
+	if err != nil {
+		panic(err)
+	}
+	siteId := sites.Data[0].Id
+
+	// パーミッション作成
+	permissionResp, err := client.CreatePermissionWithResponse(context.Background(), siteId, v1.CreatePermissionJSONRequestBody{
+		BucketControls: v1.BucketControls{
+			{
+				BucketName: "bucket1",
+				CanRead:    true,
+				CanWrite:   true,
+			},
+		},
+		DisplayName: "foobar",
+	})
+	if err != nil {
+		panic(err)
+	}
+
+	permission, err := permissionResp.Result()
+	if err != nil {
+		panic(err)
+	}
+
+	// パーミッションのキーを作成
+	keyResp, err := client.CreatePermissionAccessKeyWithResponse(context.Background(), siteId, permission.Data.Id)
+	if err != nil {
+		panic(err)
+	}
+
+	key, err := keyResp.Result()
+	if err != nil {
+		panic(err)
+	}
+
+	defer func() {
+		keyDeleteResp, err := client.DeletePermissionAccessKeyWithResponse(context.Background(), siteId, permission.Data.Id, key.Data.Id)
+		if err != nil {
+			panic(err)
+		}
+		if err := keyDeleteResp.Result(); err != nil {
+			panic(err)
+		}
+
+		permDeleteResp, err := client.DeletePermissionWithResponse(context.Background(), siteId, permission.Data.Id)
+		if err != nil {
+			panic(err)
+		}
+		if err := permDeleteResp.Result(); err != nil {
+			panic(err)
+		}
+	}()
+
+	fmt.Println(key.Data.Secret)
+	// output:
+	// secret
+}

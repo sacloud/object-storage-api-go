@@ -1162,7 +1162,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PermissionKey'
+                $ref: '#/components/schemas/PermissionKeysResponseBody'
         '401':
           description: 認証に失敗しました
           content:
@@ -1214,7 +1214,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PermissionKey'
+                $ref: '#/components/schemas/PermissionKeyResponseBody'
         '401':
           description: 認証に失敗しました
           content:
@@ -1279,7 +1279,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PermissionKey'
+                $ref: '#/components/schemas/PermissionKeyResponseBody'
         '401':
           description: 認証に失敗しました
           content:
@@ -1483,6 +1483,26 @@ components:
       properties:
         data:
           $ref: '#/components/schemas/Permission'
+      required:
+        - data
+
+    # Note: PermissionKeyから分離
+    PermissionKeyResponseBody:
+      description: data type
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/PermissionKey'
+      required:
+        - data
+
+    # Note: PermissionKeyから分離
+    PermissionKeysResponseBody:
+      description: data type
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/PermissionKeys'
       required:
         - data
 
@@ -1877,24 +1897,30 @@ components:
       required:
         - display_name
         - bucket_controls
+
+
+    # Note: PermissionKeyから分離
+    PermissionKeys:
+      description: Permission Keys
+      type: array
+      items:
+        $ref: '#/components/schemas/PermissionKey'
+
+    # Note: PermissionKey[s]ResponseBodyを切り出し
     PermissionKey:
       description: Permission Key
       type: object
       properties:
-        data:
-          description: data type
-          type: object
-          properties:
-            id:
-              $ref: '#/components/schemas/PermissionID'
-            secret:
-              $ref: '#/components/schemas/PermissionSecret'
-            created_at:
-              $ref: '#/components/schemas/CreatedAt'
-          required:
-            - id
-            - secret
-            - created_at
+        id:
+          $ref: '#/components/schemas/AccessKeyID'
+        secret:
+          $ref: '#/components/schemas/PermissionSecret'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+      required:
+        - id
+        - secret
+        - created_at
 
 #    Session:
 #      description: Session

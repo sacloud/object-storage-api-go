@@ -90,3 +90,8 @@ func (v *SecretAccessKey) String() string {
 func (v PermissionID) String() string {
 	return fmt.Sprintf("%d", v)
 }
+
+// Int64 .
+func (v PermissionID) Int64() int64 {
+	return int64(v)
+}

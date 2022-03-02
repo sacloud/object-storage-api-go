@@ -55,16 +55,16 @@ func (engine *Engine) CreatePermission(siteName string, params *v1.PermissionReq
 
 // DeletePermission パーミッションの削除
 // (DELETE /{site_name}/v2/permissions/{id})
-func (engine *Engine) DeletePermission(siteName string, id string) error {
+func (engine *Engine) DeletePermission(siteName string, permissionId int64) error {
 	defer engine.lock()()
 
-	if err := engine.siteAndPermissionExist(siteName, id); err != nil {
+	if err := engine.siteAndPermissionExist(siteName, permissionId); err != nil {
 		return err
 	}
 
 	var deleted []*v1.Permission
 	for _, p := range engine.Permissions {
-		if p.Id.String() != id {
+		if p.Id.Int64() != permissionId {
 			deleted = append(deleted, p)
 		}
 	}
@@ -74,28 +74,28 @@ func (engine *Engine) DeletePermission(siteName string, id string) error {
 
 // ReadPermission パーミッションの取得
 // (GET /{site_name}/v2/permissions/{id})
-func (engine *Engine) ReadPermission(siteName string, id string) (*v1.Permission, error) {
+func (engine *Engine) ReadPermission(siteName string, permissionId int64) (*v1.Permission, error) {
 	defer engine.rLock()()
 
-	if err := engine.siteAndPermissionExist(siteName, id); err != nil {
+	if err := engine.siteAndPermissionExist(siteName, permissionId); err != nil {
 		return nil, err
 	}
 
-	return engine.copyPermission(engine.getPermissionById(id))
+	return engine.copyPermission(engine.getPermissionById(permissionId))
 }
 
 // UpdatePermission パーミッションの更新
 // (PUT /{site_name}/v2/permissions/{id})
-func (engine *Engine) UpdatePermission(siteName string, id string, params *v1.PermissionRequestBody) (*v1.Permission, error) {
+func (engine *Engine) UpdatePermission(siteName string, permissionId int64, params *v1.PermissionRequestBody) (*v1.Permission, error) {
 	defer engine.lock()()
 
-	if err := engine.siteAndPermissionExist(siteName, id); err != nil {
+	if err := engine.siteAndPermissionExist(siteName, permissionId); err != nil {
 		return nil, err
 	}
 
 	var updated *v1.Permission
 	for _, p := range engine.Permissions {
-		if p.Id.String() == id {
+		if p.Id.Int64() == permissionId {
 			p.BucketControls = params.BucketControls
 			p.DisplayName = params.DisplayName
 			updated = p
@@ -114,14 +114,12 @@ func (engine *Engine) permissions() []v1.Permission {
 	return permissions
 }
 
-func (engine *Engine) getPermissionById(id string) *v1.Permission {
-	if id == "" {
+func (engine *Engine) getPermissionById(permissionId int64) *v1.Permission {
+	if permissionId == 0 {
 		return nil
 	}
 	for _, p := range engine.Permissions {
-		// Note: idは一度int64に変換して比較した方が良いかもしれないが、
-		//       ここでは簡易に実装するために文字列比較している(実用上さほど問題ではないと判断)
-		if p.Id.String() == id {
+		if p.Id.Int64() == permissionId {
 			return p
 		}
 	}
@@ -139,14 +137,14 @@ func (engine *Engine) copyPermission(source *v1.Permission) (*v1.Permission, err
 	return &permission, nil
 }
 
-func (engine *Engine) siteAndPermissionExist(siteName string, id string) error {
-	if err := engine.siteExist(siteName); err != nil {
+func (engine *Engine) siteAndPermissionExist(siteId string, permissionId int64) error {
+	if err := engine.siteExist(siteId); err != nil {
 		return err
 	}
 	// Note: API定義上は定義されていないがサイトがないケースでは404が返される
-	if permission := engine.getPermissionById(id); permission == nil {
+	if permission := engine.getPermissionById(permissionId); permission == nil {
 		return NewError(ErrorTypeNotFound, "permission", "",
-			"指定のパーミッションは存在しません。site_name: %s, id: %s", siteName, id)
+			"指定のパーミッションは存在しません。site_id: %s, id: %d", siteId, permissionId)
 	}
 	return nil
 }
