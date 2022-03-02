@@ -20,12 +20,14 @@ COPYRIGHT_FILES ?=$$(find . -name "*.go" -print | grep -v "/vendor/")
 
 default: gen fmt set-license goimports lint test
 
-# TODO テスト用モックサーバを追加したらここを修正する
-# .PHONY: all
-# all: dist/phy-go-fake-server
-#
-# dist/phy-go-fake-server: *.go
-# 	go build -o dist/phy-go-fake-server cmd/phy-go-fake-server/*.go
+.PHONY: all
+all: dist/sacloud-ojs-fake-server
+
+.PHONY: bin
+bin: all
+
+dist/sacloud-ojs-fake-server:
+	go build -o dist/sacloud-ojs-fake-server cmd/sacloud-ojs-fake-server/*.go
 
 .PHONY: test
 test:
@@ -48,8 +50,9 @@ tools:
 .PHONY: clean
 clean:
 	find . -type f -name "*_gen.go" -delete
-	rm apis/v1/spec/original-swagger.yaml
-	rm apis/v1/spec/swagger.json
+	rm -f apis/v1/spec/original-swagger.yaml
+	rm -f apis/v1/spec/swagger.json
+	rm -rf dist/
 
 .PHONY: gen
 gen: _gen fmt goimports set-license
