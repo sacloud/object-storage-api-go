@@ -33,7 +33,7 @@ const DefaultAPIRootURL = "https://secure.sakura.ad.jp/cloud/zone/is1a/api/objec
 
 // UserAgent APIリクエスト時のユーザーエージェント
 var UserAgent = fmt.Sprintf(
-	"phy-go/%s (%s/%s; +https://github.com/sacloud/object-storage-api-go) %s",
+	"object-storage-api-go/%s (%s/%s; +https://github.com/sacloud/object-storage-api-go) %s",
 	Version,
 	runtime.GOOS,
 	runtime.GOARCH,
