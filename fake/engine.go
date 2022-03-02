@@ -16,12 +16,9 @@ package fake
 
 import (
 	"sync"
-	"time"
 
 	v1 "github.com/sacloud/object-storage-api-go/apis/v1"
 )
-
-const defaultActionInterval = 100 * time.Millisecond
 
 // Engine Fakeサーバであつかうダミーデータを表す
 //
@@ -45,9 +42,6 @@ type Engine struct {
 
 	PermissionKeys []*v1.PermissionKey
 
-	// ActionInterval バックグラウンドでリソースの状態を変化させるアクションの実行間隔
-	ActionInterval time.Duration
-
 	// GeneratedID 採番済みの最終ID
 	//
 	// DataStoreの各フィールドの値との整合性は確認されないため利用者側が管理する必要がある
@@ -69,21 +63,8 @@ func (engine *Engine) rLock() func() {
 // nextId GeneratedIDを+1したものを返す
 //
 // ロックは行わないため呼び出し側で適切に制御すること
-func (engine *Engine) nextId() int { // nolint TODO 一時的な処置、後でnolintを消す
+func (engine *Engine) nextId() int {
 	engine.GeneratedID++
 	id := engine.GeneratedID
 	return id
-}
-
-func (engine *Engine) actionInterval() time.Duration { // nolint TODO 一時的な処置、後でnolintを消す
-	if engine.ActionInterval > 0 {
-		return engine.ActionInterval
-	}
-	return defaultActionInterval
-}
-
-func (engine *Engine) startUpdateAction(action func()) { // nolint TODO 一時的な処置、後でnolintを消す
-	time.Sleep(engine.actionInterval())
-	defer engine.lock()()
-	action()
 }

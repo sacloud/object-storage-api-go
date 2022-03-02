@@ -143,7 +143,7 @@ func (engine *Engine) siteAndPermissionExist(siteId string, permissionId int64) 
 	}
 	// Note: API定義上は定義されていないがサイトがないケースでは404が返される
 	if permission := engine.getPermissionById(permissionId); permission == nil {
-		return NewError(ErrorTypeNotFound, "permission", "",
+		return newError(ErrorTypeNotFound, "permission", "",
 			"指定のパーミッションは存在しません。site_id: %s, id: %d", siteId, permissionId)
 	}
 	return nil

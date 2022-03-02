@@ -47,6 +47,7 @@ type accountOp struct {
 	client *Client
 }
 
+// NewAccountOp アカウント操作関連API
 func NewAccountOp(client *Client) AccountAPI {
 	return &accountOp{client: client}
 }

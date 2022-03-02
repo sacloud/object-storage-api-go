@@ -75,7 +75,7 @@ func (engine *Engine) DeleteAccountAccessKey(siteId string, id string) error {
 		engine.AccountKeys = keys
 		return nil
 	}
-	return NewError(ErrorTypeNotFound, "account_key", id, "アカウントキーが存在しません。id: %s", id)
+	return newError(ErrorTypeNotFound, "account_key", id, "アカウントキーが存在しません。id: %s", id)
 
 }
 
@@ -97,7 +97,7 @@ func (engine *Engine) ReadAccountAccessKey(siteId string, id string) (*v1.Accoun
 		k.Secret = "" // 新規作成時のみ参照できる項目
 		return k, nil
 	}
-	return nil, NewError(ErrorTypeNotFound, "account_key", id, "アカウントキーが存在しません。id: %s", id)
+	return nil, newError(ErrorTypeNotFound, "account_key", id, "アカウントキーが存在しません。id: %s", id)
 }
 
 // accountKeys engine.AccountKeysを非ポインタ型にして返す

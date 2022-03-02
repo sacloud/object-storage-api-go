@@ -16,15 +16,17 @@ package fake
 
 import "fmt"
 
+// ErrorType fakeサーバが扱うエラーの種別
 type ErrorType int
 
 const (
-	ErrorTypeUnknown ErrorType = iota
-	ErrorTypeInvalidRequest
-	ErrorTypeNotFound
-	ErrorTypeConflict
+	ErrorTypeUnknown        ErrorType = iota // 未知のエラー
+	ErrorTypeInvalidRequest                  // Bad Request
+	ErrorTypeNotFound                        // Not Found
+	ErrorTypeConflict                        // Conflict
 )
 
+// String Stringer実装
 func (e ErrorType) String() string {
 	switch e {
 	case ErrorTypeInvalidRequest:
@@ -38,6 +40,7 @@ func (e ErrorType) String() string {
 	}
 }
 
+// Error fake.Engineが出力するエラー型
 type Error struct {
 	Type          ErrorType
 	Resource      string
@@ -45,7 +48,7 @@ type Error struct {
 	msgFmtAndVars []interface{}
 }
 
-func NewError(errorType ErrorType, resource string, id interface{}, msgFmtAndVars ...interface{}) *Error {
+func newError(errorType ErrorType, resource string, id interface{}, msgFmtAndVars ...interface{}) *Error {
 	return &Error{
 		Type:          errorType,
 		Resource:      resource,
@@ -54,6 +57,7 @@ func NewError(errorType ErrorType, resource string, id interface{}, msgFmtAndVar
 	}
 }
 
+// Error errorインターフェースの実装
 func (e *Error) Error() string {
 	return fmt.Errorf("%s: %s[%s]%s", e.Type, e.Resource, e.Id, e.message()).Error()
 }

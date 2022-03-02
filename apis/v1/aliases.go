@@ -14,6 +14,8 @@
 
 package v1
 
+// CreatePermissionParams CreatePermissionJSONRequestBodyのエイリアス
 type CreatePermissionParams = CreatePermissionJSONRequestBody
 
-type UpdatePermissionParams = UpdatePermissionJSONRequestBody
+// UpdatePermissionParams CreatePermissionJSONRequestBodyのエイリアス
+type UpdatePermissionParams = CreatePermissionJSONRequestBody
