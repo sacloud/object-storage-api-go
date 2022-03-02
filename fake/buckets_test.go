@@ -48,14 +48,14 @@ func TestEngine_Buckets(t *testing.T) {
 	}
 
 	t.Run("create bucket", func(t *testing.T) {
-		bucket, err := engine.CreateBucket("foobar")
+		bucket, err := engine.CreateBucket("isk01", "foobar")
 		require.NoError(t, err)
 		require.Equal(t, &v1.Bucket{ClusterId: "isk01", Name: "foobar"}, bucket)
 		require.Len(t, engine.Buckets, 3)
 	})
 
 	t.Run("delete bucket", func(t *testing.T) {
-		err := engine.DeleteBucket("foobar")
+		err := engine.DeleteBucket("isk01", "foobar")
 		require.NoError(t, err)
 		require.Len(t, engine.Buckets, 2)
 		require.Equal(t, engine.Buckets[0].Name, "bucket1")

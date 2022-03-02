@@ -24,10 +24,10 @@ import (
 
 // ListPermissions パーミッション一覧の取得
 // (GET /{site_name}/v2/permissions)
-func (engine *Engine) ListPermissions(siteName string) ([]v1.Permission, error) {
+func (engine *Engine) ListPermissions(siteId string) ([]v1.Permission, error) {
 	defer engine.rLock()()
 
-	if err := engine.siteExist(siteName); err != nil {
+	if err := engine.siteExist(siteId); err != nil {
 		return nil, err
 	}
 	return engine.permissions(), nil
@@ -35,10 +35,10 @@ func (engine *Engine) ListPermissions(siteName string) ([]v1.Permission, error) 
 
 // CreatePermission パーミッションの作成
 // (POST /{site_name}/v2/permissions)
-func (engine *Engine) CreatePermission(siteName string, params *v1.PermissionRequestBody) (*v1.Permission, error) {
+func (engine *Engine) CreatePermission(siteId string, params *v1.PermissionRequestBody) (*v1.Permission, error) {
 	defer engine.lock()()
 
-	if err := engine.siteExist(siteName); err != nil {
+	if err := engine.siteExist(siteId); err != nil {
 		return nil, err
 	}
 
@@ -55,10 +55,10 @@ func (engine *Engine) CreatePermission(siteName string, params *v1.PermissionReq
 
 // DeletePermission パーミッションの削除
 // (DELETE /{site_name}/v2/permissions/{id})
-func (engine *Engine) DeletePermission(siteName string, permissionId int64) error {
+func (engine *Engine) DeletePermission(siteId string, permissionId int64) error {
 	defer engine.lock()()
 
-	if err := engine.siteAndPermissionExist(siteName, permissionId); err != nil {
+	if err := engine.siteAndPermissionExist(siteId, permissionId); err != nil {
 		return err
 	}
 
@@ -74,10 +74,10 @@ func (engine *Engine) DeletePermission(siteName string, permissionId int64) erro
 
 // ReadPermission パーミッションの取得
 // (GET /{site_name}/v2/permissions/{id})
-func (engine *Engine) ReadPermission(siteName string, permissionId int64) (*v1.Permission, error) {
+func (engine *Engine) ReadPermission(siteId string, permissionId int64) (*v1.Permission, error) {
 	defer engine.rLock()()
 
-	if err := engine.siteAndPermissionExist(siteName, permissionId); err != nil {
+	if err := engine.siteAndPermissionExist(siteId, permissionId); err != nil {
 		return nil, err
 	}
 
@@ -86,10 +86,10 @@ func (engine *Engine) ReadPermission(siteName string, permissionId int64) (*v1.P
 
 // UpdatePermission パーミッションの更新
 // (PUT /{site_name}/v2/permissions/{id})
-func (engine *Engine) UpdatePermission(siteName string, permissionId int64, params *v1.PermissionRequestBody) (*v1.Permission, error) {
+func (engine *Engine) UpdatePermission(siteId string, permissionId int64, params *v1.PermissionRequestBody) (*v1.Permission, error) {
 	defer engine.lock()()
 
-	if err := engine.siteAndPermissionExist(siteName, permissionId); err != nil {
+	if err := engine.siteAndPermissionExist(siteId, permissionId); err != nil {
 		return nil, err
 	}
 

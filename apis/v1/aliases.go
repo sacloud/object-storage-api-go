@@ -14,15 +14,6 @@
 
 package v1
 
-import (
-	"context"
-	"net/http"
-)
+type CreatePermissionParams = CreatePermissionJSONRequestBody
 
-// OjsAuthInterceptor オブジェクトストレージAPIリクエストに認証情報の注入を行う
-func OjsAuthInterceptor(token, secret string) func(context.Context, *http.Request) error {
-	return func(ctx context.Context, req *http.Request) error {
-		req.SetBasicAuth(token, secret)
-		return nil
-	}
-}
+type UpdatePermissionParams = UpdatePermissionJSONRequestBody

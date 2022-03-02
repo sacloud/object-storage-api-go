@@ -24,18 +24,18 @@ import (
 
 // DeleteSiteAccount サイトアカウントの削除
 // (DELETE /{site_name}/v2/account)
-func (engine *Engine) DeleteSiteAccount(siteName string) error {
+func (engine *Engine) DeleteSiteAccount(siteId string) error {
 	defer engine.lock()()
 
 	// Note: API定義上は定義されていないがサイトがないケースでは404が返される
-	if cluster := engine.getClusterById(siteName); cluster == nil {
+	if cluster := engine.getClusterById(siteId); cluster == nil {
 		return NewError(ErrorTypeNotFound, "account", "",
-			"指定のサイトは存在しません。site_name: %s", siteName)
+			"指定のサイトは存在しません。cluster: %s", siteId)
 	}
 
 	if len(engine.Buckets) > 0 {
 		return NewError(ErrorTypeConflict, "account", "",
-			"アカウントに紐づくバケットが存在します")
+			"アカウントに紐づくバケットが存在します。cluster: %s", siteId)
 	}
 
 	engine.Account = nil
@@ -44,10 +44,10 @@ func (engine *Engine) DeleteSiteAccount(siteName string) error {
 
 // ReadSiteAccount サイトアカウントの取得
 // (GET /{site_name}/v2/account)
-func (engine *Engine) ReadSiteAccount(siteName string) (*v1.Account, error) {
+func (engine *Engine) ReadSiteAccount(siteId string) (*v1.Account, error) {
 	defer engine.rLock()()
 
-	if err := engine.siteAndAccountExist(siteName); err != nil {
+	if err := engine.siteAndAccountExist(siteId); err != nil {
 		return nil, err
 	}
 	return engine.copyAccount(engine.Account)
@@ -55,23 +55,23 @@ func (engine *Engine) ReadSiteAccount(siteName string) (*v1.Account, error) {
 
 // CreateSiteAccount サイトアカウントの作成
 // (POST /{site_name}/v2/account)
-func (engine *Engine) CreateSiteAccount(siteName string) (*v1.Account, error) {
+func (engine *Engine) CreateSiteAccount(siteId string) (*v1.Account, error) {
 	defer engine.lock()()
 
 	// Note: API定義上は定義されていないがサイトがないケースでは404が返される
-	cluster := engine.getClusterById(siteName)
+	cluster := engine.getClusterById(siteId)
 	if cluster == nil {
 		return nil, NewError(ErrorTypeNotFound, "account", "",
-			"指定のサイトは存在しません。site_name: %s", siteName)
+			"指定のサイトは存在しません。cluster: %s", siteId)
 	}
 
 	if engine.Account != nil {
 		return nil, NewError(ErrorTypeConflict, "account", "",
-			"すでにサイトにアカウントが存在します。site_name: %s", siteName)
+			"すでにサイトにアカウントが存在します。cluster: %s", siteId)
 	}
 
 	engine.Account = &v1.Account{
-		Code:       v1.Code("member@account@" + siteName),
+		Code:       v1.Code("member@account@" + siteId),
 		CreatedAt:  v1.CreatedAt(time.Now()),
 		ResourceId: v1.ResourceID(fmt.Sprintf("%d", engine.nextId())),
 	}
@@ -90,14 +90,14 @@ func (engine *Engine) copyAccount(source *v1.Account) (*v1.Account, error) {
 	return &account, nil
 }
 
-func (engine *Engine) siteAndAccountExist(siteName string) error {
-	if err := engine.siteExist(siteName); err != nil {
+func (engine *Engine) siteAndAccountExist(siteId string) error {
+	if err := engine.siteExist(siteId); err != nil {
 		return err
 	}
 
 	if engine.Account == nil {
 		return NewError(ErrorTypeNotFound, "account", "",
-			"サイトにアカウントが存在しません。site_name: %s", siteName)
+			"サイトにアカウントが存在しません。cluster: %s", siteId)
 	}
 
 	return nil

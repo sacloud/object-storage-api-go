@@ -24,7 +24,12 @@ import (
 // DeleteBucket バケットの削除
 // (DELETE /fed/v1/buckets/{name})
 func (s *Server) DeleteBucket(c *gin.Context, bucketName v1.BucketName) {
-	if err := s.Engine.DeleteBucket(bucketName.String()); err != nil {
+	var paramJSON v1.DeleteBucketJSONRequestBody
+	if err := c.ShouldBindJSON(&paramJSON); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	if err := s.Engine.DeleteBucket(paramJSON.ClusterId, bucketName.String()); err != nil {
 		s.handleError(c, err)
 		return
 	}
@@ -35,7 +40,13 @@ func (s *Server) DeleteBucket(c *gin.Context, bucketName v1.BucketName) {
 // CreateBucket バケットの作成
 // (PUT /fed/v1/buckets/{name})
 func (s *Server) CreateBucket(c *gin.Context, bucketName v1.BucketName) {
-	bucket, err := s.Engine.CreateBucket(bucketName.String())
+	var paramJSON v1.CreateBucketJSONRequestBody
+	if err := c.ShouldBindJSON(&paramJSON); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	bucket, err := s.Engine.CreateBucket(paramJSON.ClusterId, bucketName.String())
 	if err != nil {
 		s.handleError(c, err)
 		return
