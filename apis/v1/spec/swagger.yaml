@@ -459,10 +459,6 @@ paths:
       responses:
         '204':
           description: バケット削除に成功しました
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CreateBucketResponseBody'
         '400':
           description: バケット名が不正です
           content:
@@ -610,12 +606,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error409'
-        default:
-          description: 不明なエラーです
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorDefault'
   '/{site_id}/v2/account/keys':
     get:
       operationId: "ListAccountAccessKeys"
@@ -806,12 +796,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error401'
-        default:
-          description: 不明なエラーです
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorDefault'
   '/{site_id}/v2/permissions':
     get:
       operationId: "ListPermissions"
@@ -1122,12 +1106,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error401'
-        default:
-          description: 不明なエラーです
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorDefault'
   '/{site_id}/v2/permissions/{permission_id}/keys':
     get:
       operationId: "ListPermissionAccessKeys"
@@ -1346,12 +1324,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error404'
-        default:
-          description: 不明なエラーです
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorDefault'
   '/{site_id}/v2/status':
     get:
       operationId: "ReadSiteStatus"

@@ -24,7 +24,9 @@ import (
 	objectstorage "github.com/sacloud/object-storage-api-go"
 )
 
-var serverURL = "https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0"
+const defaultServerURL = "https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0"
+
+var serverURL = defaultServerURL
 
 // Example_clusterAPI サイト(クラスタ)APIの利用例
 func Example_clusterAPI() {

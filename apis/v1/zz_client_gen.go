@@ -1430,7 +1430,6 @@ type ClientWithResponsesInterface interface {
 type DeleteBucketResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON204      *CreateBucketResponseBody
 	JSON400      *Error400
 	JSON409      *Error409
 }
@@ -1453,7 +1452,7 @@ func (r DeleteBucketResponse) StatusCode() int {
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
 func (r DeleteBucketResponse) Result() error {
-	return eCoalesce(r.JSON204, r.JSON400, r.JSON409, r.UndefinedError())
+	return eCoalesce(r.JSON400, r.JSON409, r.UndefinedError())
 }
 
 // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
@@ -1580,7 +1579,6 @@ type DeleteSiteAccountResponse struct {
 	HTTPResponse *http.Response
 	JSON401      *Error401
 	JSON409      *Error409
-	JSONDefault  *ErrorDefault
 }
 
 // Status returns HTTPResponse.Status
@@ -1601,7 +1599,7 @@ func (r DeleteSiteAccountResponse) StatusCode() int {
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
 func (r DeleteSiteAccountResponse) Result() error {
-	return eCoalesce(r.JSON401, r.JSON409, r.JSONDefault, r.UndefinedError())
+	return eCoalesce(r.JSON401, r.JSON409, r.UndefinedError())
 }
 
 // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
@@ -1770,7 +1768,6 @@ type DeleteAccountAccessKeyResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON401      *Error401
-	JSONDefault  *ErrorDefault
 }
 
 // Status returns HTTPResponse.Status
@@ -1791,7 +1788,7 @@ func (r DeleteAccountAccessKeyResponse) StatusCode() int {
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
 func (r DeleteAccountAccessKeyResponse) Result() error {
-	return eCoalesce(r.JSON401, r.JSONDefault, r.UndefinedError())
+	return eCoalesce(r.JSON401, r.UndefinedError())
 }
 
 // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
@@ -1920,7 +1917,6 @@ type DeletePermissionResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON401      *Error401
-	JSONDefault  *ErrorDefault
 }
 
 // Status returns HTTPResponse.Status
@@ -1941,7 +1937,7 @@ func (r DeletePermissionResponse) StatusCode() int {
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
 func (r DeletePermissionResponse) Result() error {
-	return eCoalesce(r.JSON401, r.JSONDefault, r.UndefinedError())
+	return eCoalesce(r.JSON401, r.UndefinedError())
 }
 
 // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
@@ -2111,7 +2107,6 @@ type DeletePermissionAccessKeyResponse struct {
 	HTTPResponse *http.Response
 	JSON401      *Error401
 	JSON404      *Error404
-	JSONDefault  *ErrorDefault
 }
 
 // Status returns HTTPResponse.Status
@@ -2132,7 +2127,7 @@ func (r DeletePermissionAccessKeyResponse) StatusCode() int {
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
 func (r DeletePermissionAccessKeyResponse) Result() error {
-	return eCoalesce(r.JSON401, r.JSON404, r.JSONDefault, r.UndefinedError())
+	return eCoalesce(r.JSON401, r.JSON404, r.UndefinedError())
 }
 
 // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
@@ -2453,13 +2448,6 @@ func ParseDeleteBucketResponse(rsp *http.Response) (*DeleteBucketResponse, error
 	}
 
 	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 204:
-		var dest CreateBucketResponseBody
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON204 = &dest
-
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
 		var dest Error400
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
@@ -2626,13 +2614,6 @@ func ParseDeleteSiteAccountResponse(rsp *http.Response) (*DeleteSiteAccountRespo
 			return nil, err
 		}
 		response.JSON409 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
-		var dest ErrorDefault
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSONDefault = &dest
 
 	}
 
@@ -2862,13 +2843,6 @@ func ParseDeleteAccountAccessKeyResponse(rsp *http.Response) (*DeleteAccountAcce
 		}
 		response.JSON401 = &dest
 
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
-		var dest ErrorDefault
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSONDefault = &dest
-
 	}
 
 	return response, nil
@@ -3035,13 +3009,6 @@ func ParseDeletePermissionResponse(rsp *http.Response) (*DeletePermissionRespons
 			return nil, err
 		}
 		response.JSON401 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
-		var dest ErrorDefault
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSONDefault = &dest
 
 	}
 
@@ -3277,13 +3244,6 @@ func ParseDeletePermissionAccessKeyResponse(rsp *http.Response) (*DeletePermissi
 			return nil, err
 		}
 		response.JSON404 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
-		var dest ErrorDefault
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSONDefault = &dest
 
 	}
 

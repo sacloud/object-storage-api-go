@@ -35,7 +35,7 @@ test:
 
 .PHONY: testacc
 testacc:
-	TESTACC=1 go test ./... $(TESTARGS) -v -timeout=120m -parallel=8 ;
+	TESTACC=1 go test ./... $(TESTARGS) --tags=acctest -v -timeout=120m -parallel=8 ;
 
 .PHONY: tools
 tools:
