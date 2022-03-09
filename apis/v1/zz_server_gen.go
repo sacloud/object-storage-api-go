@@ -35,34 +35,34 @@ type ServerInterface interface {
 	CreateBucket(c *gin.Context, bucketName BucketName)
 	// サイト一覧の取得
 	// (GET /fed/v1/clusters)
-	ListClusters(c *gin.Context)
+	GetClusters(c *gin.Context)
 	// サイトの取得
 	// (GET /fed/v1/clusters/{site_id})
-	ReadCluster(c *gin.Context, siteId string)
+	GetCluster(c *gin.Context, siteId string)
 	// サイトアカウントの削除
 	// (DELETE /{site_id}/v2/account)
-	DeleteSiteAccount(c *gin.Context, siteId string)
+	DeleteAccount(c *gin.Context, siteId string)
 	// サイトアカウントの取得
 	// (GET /{site_id}/v2/account)
-	ReadSiteAccount(c *gin.Context, siteId string)
+	GetAccount(c *gin.Context, siteId string)
 	// サイトアカウントの作成
 	// (POST /{site_id}/v2/account)
-	CreateSiteAccount(c *gin.Context, siteId string)
+	CreateAccount(c *gin.Context, siteId string)
 	// サイトアカウントのアクセスキーの取得
 	// (GET /{site_id}/v2/account/keys)
-	ListAccountAccessKeys(c *gin.Context, siteId string)
+	GetAccountKeys(c *gin.Context, siteId string)
 	// サイトアカウントのアクセスキーの発行
 	// (POST /{site_id}/v2/account/keys)
-	CreateAccountAccessKey(c *gin.Context, siteId string)
+	CreateAccountKey(c *gin.Context, siteId string)
 	// サイトアカウントのアクセスキーの削除
 	// (DELETE /{site_id}/v2/account/keys/{account_key_id})
-	DeleteAccountAccessKey(c *gin.Context, siteId string, accountKeyId AccessKeyID)
+	DeleteAccountKey(c *gin.Context, siteId string, accountKeyId AccessKeyID)
 	// サイトアカウントのアクセスキーの取得
 	// (GET /{site_id}/v2/account/keys/{account_key_id})
-	ReadAccountAccessKey(c *gin.Context, siteId string, accountKeyId AccessKeyID)
+	GetAccountKey(c *gin.Context, siteId string, accountKeyId AccessKeyID)
 	// パーミッション一覧の取得
 	// (GET /{site_id}/v2/permissions)
-	ListPermissions(c *gin.Context, siteId string)
+	GetPermissions(c *gin.Context, siteId string)
 	// パーミッションの作成
 	// (POST /{site_id}/v2/permissions)
 	CreatePermission(c *gin.Context, siteId string)
@@ -71,25 +71,25 @@ type ServerInterface interface {
 	DeletePermission(c *gin.Context, siteId string, permissionId PermissionID)
 	// パーミッションの取得
 	// (GET /{site_id}/v2/permissions/{permission_id})
-	ReadPermission(c *gin.Context, siteId string, permissionId PermissionID)
+	GetPermission(c *gin.Context, siteId string, permissionId PermissionID)
 	// パーミッションの更新
 	// (PUT /{site_id}/v2/permissions/{permission_id})
 	UpdatePermission(c *gin.Context, siteId string, permissionId PermissionID)
 	// パーミッションが保有するアクセスキー一覧の取得
 	// (GET /{site_id}/v2/permissions/{permission_id}/keys)
-	ListPermissionAccessKeys(c *gin.Context, siteId string, permissionId PermissionID)
+	GetPermissionKeys(c *gin.Context, siteId string, permissionId PermissionID)
 	// パーミッションのアクセスキーの発行
 	// (POST /{site_id}/v2/permissions/{permission_id}/keys)
-	CreatePermissionAccessKey(c *gin.Context, siteId string, permissionId PermissionID)
+	CreatePermissionKey(c *gin.Context, siteId string, permissionId PermissionID)
 	// パーミッションが保有するアクセスキーの削除
 	// (DELETE /{site_id}/v2/permissions/{permission_id}/keys/{permission_key_id})
-	DeletePermissionAccessKey(c *gin.Context, siteId string, permissionId PermissionID, permissionKeyId AccessKeyID)
+	DeletePermissionKey(c *gin.Context, siteId string, permissionId PermissionID, permissionKeyId AccessKeyID)
 	// パーミッションが保有するアクセスキーの取得
 	// (GET /{site_id}/v2/permissions/{permission_id}/keys/{permission_key_id})
-	ReadPermissionAccessKey(c *gin.Context, siteId string, permissionId PermissionID, permissionKeyId AccessKeyID)
+	GetPermissionKey(c *gin.Context, siteId string, permissionId PermissionID, permissionKeyId AccessKeyID)
 	// サイトのステータスの取得
 	// (GET /{site_id}/v2/status)
-	ReadSiteStatus(c *gin.Context, siteId string)
+	GetStatus(c *gin.Context, siteId string)
 }
 
 // ServerInterfaceWrapper converts contexts to parameters.
@@ -142,18 +142,18 @@ func (siw *ServerInterfaceWrapper) CreateBucket(c *gin.Context) {
 	siw.Handler.CreateBucket(c, bucketName)
 }
 
-// ListClusters operation middleware
-func (siw *ServerInterfaceWrapper) ListClusters(c *gin.Context) {
+// GetClusters operation middleware
+func (siw *ServerInterfaceWrapper) GetClusters(c *gin.Context) {
 
 	for _, middleware := range siw.HandlerMiddlewares {
 		middleware(c)
 	}
 
-	siw.Handler.ListClusters(c)
+	siw.Handler.GetClusters(c)
 }
 
-// ReadCluster operation middleware
-func (siw *ServerInterfaceWrapper) ReadCluster(c *gin.Context) {
+// GetCluster operation middleware
+func (siw *ServerInterfaceWrapper) GetCluster(c *gin.Context) {
 
 	var err error
 
@@ -170,11 +170,11 @@ func (siw *ServerInterfaceWrapper) ReadCluster(c *gin.Context) {
 		middleware(c)
 	}
 
-	siw.Handler.ReadCluster(c, siteId)
+	siw.Handler.GetCluster(c, siteId)
 }
 
-// DeleteSiteAccount operation middleware
-func (siw *ServerInterfaceWrapper) DeleteSiteAccount(c *gin.Context) {
+// DeleteAccount operation middleware
+func (siw *ServerInterfaceWrapper) DeleteAccount(c *gin.Context) {
 
 	var err error
 
@@ -191,11 +191,11 @@ func (siw *ServerInterfaceWrapper) DeleteSiteAccount(c *gin.Context) {
 		middleware(c)
 	}
 
-	siw.Handler.DeleteSiteAccount(c, siteId)
+	siw.Handler.DeleteAccount(c, siteId)
 }
 
-// ReadSiteAccount operation middleware
-func (siw *ServerInterfaceWrapper) ReadSiteAccount(c *gin.Context) {
+// GetAccount operation middleware
+func (siw *ServerInterfaceWrapper) GetAccount(c *gin.Context) {
 
 	var err error
 
@@ -212,11 +212,11 @@ func (siw *ServerInterfaceWrapper) ReadSiteAccount(c *gin.Context) {
 		middleware(c)
 	}
 
-	siw.Handler.ReadSiteAccount(c, siteId)
+	siw.Handler.GetAccount(c, siteId)
 }
 
-// CreateSiteAccount operation middleware
-func (siw *ServerInterfaceWrapper) CreateSiteAccount(c *gin.Context) {
+// CreateAccount operation middleware
+func (siw *ServerInterfaceWrapper) CreateAccount(c *gin.Context) {
 
 	var err error
 
@@ -233,11 +233,11 @@ func (siw *ServerInterfaceWrapper) CreateSiteAccount(c *gin.Context) {
 		middleware(c)
 	}
 
-	siw.Handler.CreateSiteAccount(c, siteId)
+	siw.Handler.CreateAccount(c, siteId)
 }
 
-// ListAccountAccessKeys operation middleware
-func (siw *ServerInterfaceWrapper) ListAccountAccessKeys(c *gin.Context) {
+// GetAccountKeys operation middleware
+func (siw *ServerInterfaceWrapper) GetAccountKeys(c *gin.Context) {
 
 	var err error
 
@@ -254,11 +254,11 @@ func (siw *ServerInterfaceWrapper) ListAccountAccessKeys(c *gin.Context) {
 		middleware(c)
 	}
 
-	siw.Handler.ListAccountAccessKeys(c, siteId)
+	siw.Handler.GetAccountKeys(c, siteId)
 }
 
-// CreateAccountAccessKey operation middleware
-func (siw *ServerInterfaceWrapper) CreateAccountAccessKey(c *gin.Context) {
+// CreateAccountKey operation middleware
+func (siw *ServerInterfaceWrapper) CreateAccountKey(c *gin.Context) {
 
 	var err error
 
@@ -275,41 +275,11 @@ func (siw *ServerInterfaceWrapper) CreateAccountAccessKey(c *gin.Context) {
 		middleware(c)
 	}
 
-	siw.Handler.CreateAccountAccessKey(c, siteId)
+	siw.Handler.CreateAccountKey(c, siteId)
 }
 
-// DeleteAccountAccessKey operation middleware
-func (siw *ServerInterfaceWrapper) DeleteAccountAccessKey(c *gin.Context) {
-
-	var err error
-
-	// ------------- Path parameter "site_id" -------------
-	var siteId string
-
-	err = runtime.BindStyledParameter("simple", false, "site_id", c.Param("site_id"), &siteId)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter site_id: %s", err)})
-		return
-	}
-
-	// ------------- Path parameter "account_key_id" -------------
-	var accountKeyId AccessKeyID
-
-	err = runtime.BindStyledParameter("simple", false, "account_key_id", c.Param("account_key_id"), &accountKeyId)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter account_key_id: %s", err)})
-		return
-	}
-
-	for _, middleware := range siw.HandlerMiddlewares {
-		middleware(c)
-	}
-
-	siw.Handler.DeleteAccountAccessKey(c, siteId, accountKeyId)
-}
-
-// ReadAccountAccessKey operation middleware
-func (siw *ServerInterfaceWrapper) ReadAccountAccessKey(c *gin.Context) {
+// DeleteAccountKey operation middleware
+func (siw *ServerInterfaceWrapper) DeleteAccountKey(c *gin.Context) {
 
 	var err error
 
@@ -335,11 +305,41 @@ func (siw *ServerInterfaceWrapper) ReadAccountAccessKey(c *gin.Context) {
 		middleware(c)
 	}
 
-	siw.Handler.ReadAccountAccessKey(c, siteId, accountKeyId)
+	siw.Handler.DeleteAccountKey(c, siteId, accountKeyId)
 }
 
-// ListPermissions operation middleware
-func (siw *ServerInterfaceWrapper) ListPermissions(c *gin.Context) {
+// GetAccountKey operation middleware
+func (siw *ServerInterfaceWrapper) GetAccountKey(c *gin.Context) {
+
+	var err error
+
+	// ------------- Path parameter "site_id" -------------
+	var siteId string
+
+	err = runtime.BindStyledParameter("simple", false, "site_id", c.Param("site_id"), &siteId)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter site_id: %s", err)})
+		return
+	}
+
+	// ------------- Path parameter "account_key_id" -------------
+	var accountKeyId AccessKeyID
+
+	err = runtime.BindStyledParameter("simple", false, "account_key_id", c.Param("account_key_id"), &accountKeyId)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter account_key_id: %s", err)})
+		return
+	}
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		middleware(c)
+	}
+
+	siw.Handler.GetAccountKey(c, siteId, accountKeyId)
+}
+
+// GetPermissions operation middleware
+func (siw *ServerInterfaceWrapper) GetPermissions(c *gin.Context) {
 
 	var err error
 
@@ -356,7 +356,7 @@ func (siw *ServerInterfaceWrapper) ListPermissions(c *gin.Context) {
 		middleware(c)
 	}
 
-	siw.Handler.ListPermissions(c, siteId)
+	siw.Handler.GetPermissions(c, siteId)
 }
 
 // CreatePermission operation middleware
@@ -410,8 +410,8 @@ func (siw *ServerInterfaceWrapper) DeletePermission(c *gin.Context) {
 	siw.Handler.DeletePermission(c, siteId, permissionId)
 }
 
-// ReadPermission operation middleware
-func (siw *ServerInterfaceWrapper) ReadPermission(c *gin.Context) {
+// GetPermission operation middleware
+func (siw *ServerInterfaceWrapper) GetPermission(c *gin.Context) {
 
 	var err error
 
@@ -437,7 +437,7 @@ func (siw *ServerInterfaceWrapper) ReadPermission(c *gin.Context) {
 		middleware(c)
 	}
 
-	siw.Handler.ReadPermission(c, siteId, permissionId)
+	siw.Handler.GetPermission(c, siteId, permissionId)
 }
 
 // UpdatePermission operation middleware
@@ -470,8 +470,8 @@ func (siw *ServerInterfaceWrapper) UpdatePermission(c *gin.Context) {
 	siw.Handler.UpdatePermission(c, siteId, permissionId)
 }
 
-// ListPermissionAccessKeys operation middleware
-func (siw *ServerInterfaceWrapper) ListPermissionAccessKeys(c *gin.Context) {
+// GetPermissionKeys operation middleware
+func (siw *ServerInterfaceWrapper) GetPermissionKeys(c *gin.Context) {
 
 	var err error
 
@@ -497,11 +497,11 @@ func (siw *ServerInterfaceWrapper) ListPermissionAccessKeys(c *gin.Context) {
 		middleware(c)
 	}
 
-	siw.Handler.ListPermissionAccessKeys(c, siteId, permissionId)
+	siw.Handler.GetPermissionKeys(c, siteId, permissionId)
 }
 
-// CreatePermissionAccessKey operation middleware
-func (siw *ServerInterfaceWrapper) CreatePermissionAccessKey(c *gin.Context) {
+// CreatePermissionKey operation middleware
+func (siw *ServerInterfaceWrapper) CreatePermissionKey(c *gin.Context) {
 
 	var err error
 
@@ -527,50 +527,11 @@ func (siw *ServerInterfaceWrapper) CreatePermissionAccessKey(c *gin.Context) {
 		middleware(c)
 	}
 
-	siw.Handler.CreatePermissionAccessKey(c, siteId, permissionId)
+	siw.Handler.CreatePermissionKey(c, siteId, permissionId)
 }
 
-// DeletePermissionAccessKey operation middleware
-func (siw *ServerInterfaceWrapper) DeletePermissionAccessKey(c *gin.Context) {
-
-	var err error
-
-	// ------------- Path parameter "site_id" -------------
-	var siteId string
-
-	err = runtime.BindStyledParameter("simple", false, "site_id", c.Param("site_id"), &siteId)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter site_id: %s", err)})
-		return
-	}
-
-	// ------------- Path parameter "permission_id" -------------
-	var permissionId PermissionID
-
-	err = runtime.BindStyledParameter("simple", false, "permission_id", c.Param("permission_id"), &permissionId)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter permission_id: %s", err)})
-		return
-	}
-
-	// ------------- Path parameter "permission_key_id" -------------
-	var permissionKeyId AccessKeyID
-
-	err = runtime.BindStyledParameter("simple", false, "permission_key_id", c.Param("permission_key_id"), &permissionKeyId)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter permission_key_id: %s", err)})
-		return
-	}
-
-	for _, middleware := range siw.HandlerMiddlewares {
-		middleware(c)
-	}
-
-	siw.Handler.DeletePermissionAccessKey(c, siteId, permissionId, permissionKeyId)
-}
-
-// ReadPermissionAccessKey operation middleware
-func (siw *ServerInterfaceWrapper) ReadPermissionAccessKey(c *gin.Context) {
+// DeletePermissionKey operation middleware
+func (siw *ServerInterfaceWrapper) DeletePermissionKey(c *gin.Context) {
 
 	var err error
 
@@ -605,11 +566,50 @@ func (siw *ServerInterfaceWrapper) ReadPermissionAccessKey(c *gin.Context) {
 		middleware(c)
 	}
 
-	siw.Handler.ReadPermissionAccessKey(c, siteId, permissionId, permissionKeyId)
+	siw.Handler.DeletePermissionKey(c, siteId, permissionId, permissionKeyId)
 }
 
-// ReadSiteStatus operation middleware
-func (siw *ServerInterfaceWrapper) ReadSiteStatus(c *gin.Context) {
+// GetPermissionKey operation middleware
+func (siw *ServerInterfaceWrapper) GetPermissionKey(c *gin.Context) {
+
+	var err error
+
+	// ------------- Path parameter "site_id" -------------
+	var siteId string
+
+	err = runtime.BindStyledParameter("simple", false, "site_id", c.Param("site_id"), &siteId)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter site_id: %s", err)})
+		return
+	}
+
+	// ------------- Path parameter "permission_id" -------------
+	var permissionId PermissionID
+
+	err = runtime.BindStyledParameter("simple", false, "permission_id", c.Param("permission_id"), &permissionId)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter permission_id: %s", err)})
+		return
+	}
+
+	// ------------- Path parameter "permission_key_id" -------------
+	var permissionKeyId AccessKeyID
+
+	err = runtime.BindStyledParameter("simple", false, "permission_key_id", c.Param("permission_key_id"), &permissionKeyId)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Invalid format for parameter permission_key_id: %s", err)})
+		return
+	}
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		middleware(c)
+	}
+
+	siw.Handler.GetPermissionKey(c, siteId, permissionId, permissionKeyId)
+}
+
+// GetStatus operation middleware
+func (siw *ServerInterfaceWrapper) GetStatus(c *gin.Context) {
 
 	var err error
 
@@ -626,7 +626,7 @@ func (siw *ServerInterfaceWrapper) ReadSiteStatus(c *gin.Context) {
 		middleware(c)
 	}
 
-	siw.Handler.ReadSiteStatus(c, siteId)
+	siw.Handler.GetStatus(c, siteId)
 }
 
 // GinServerOptions provides options for the Gin server.
@@ -651,43 +651,43 @@ func RegisterHandlersWithOptions(router *gin.Engine, si ServerInterface, options
 
 	router.PUT(options.BaseURL+"/fed/v1/buckets/:bucket_name", wrapper.CreateBucket)
 
-	router.GET(options.BaseURL+"/fed/v1/clusters", wrapper.ListClusters)
+	router.GET(options.BaseURL+"/fed/v1/clusters", wrapper.GetClusters)
 
-	router.GET(options.BaseURL+"/fed/v1/clusters/:site_id", wrapper.ReadCluster)
+	router.GET(options.BaseURL+"/fed/v1/clusters/:site_id", wrapper.GetCluster)
 
-	router.DELETE(options.BaseURL+"/:site_id/v2/account", wrapper.DeleteSiteAccount)
+	router.DELETE(options.BaseURL+"/:site_id/v2/account", wrapper.DeleteAccount)
 
-	router.GET(options.BaseURL+"/:site_id/v2/account", wrapper.ReadSiteAccount)
+	router.GET(options.BaseURL+"/:site_id/v2/account", wrapper.GetAccount)
 
-	router.POST(options.BaseURL+"/:site_id/v2/account", wrapper.CreateSiteAccount)
+	router.POST(options.BaseURL+"/:site_id/v2/account", wrapper.CreateAccount)
 
-	router.GET(options.BaseURL+"/:site_id/v2/account/keys", wrapper.ListAccountAccessKeys)
+	router.GET(options.BaseURL+"/:site_id/v2/account/keys", wrapper.GetAccountKeys)
 
-	router.POST(options.BaseURL+"/:site_id/v2/account/keys", wrapper.CreateAccountAccessKey)
+	router.POST(options.BaseURL+"/:site_id/v2/account/keys", wrapper.CreateAccountKey)
 
-	router.DELETE(options.BaseURL+"/:site_id/v2/account/keys/:account_key_id", wrapper.DeleteAccountAccessKey)
+	router.DELETE(options.BaseURL+"/:site_id/v2/account/keys/:account_key_id", wrapper.DeleteAccountKey)
 
-	router.GET(options.BaseURL+"/:site_id/v2/account/keys/:account_key_id", wrapper.ReadAccountAccessKey)
+	router.GET(options.BaseURL+"/:site_id/v2/account/keys/:account_key_id", wrapper.GetAccountKey)
 
-	router.GET(options.BaseURL+"/:site_id/v2/permissions", wrapper.ListPermissions)
+	router.GET(options.BaseURL+"/:site_id/v2/permissions", wrapper.GetPermissions)
 
 	router.POST(options.BaseURL+"/:site_id/v2/permissions", wrapper.CreatePermission)
 
 	router.DELETE(options.BaseURL+"/:site_id/v2/permissions/:permission_id", wrapper.DeletePermission)
 
-	router.GET(options.BaseURL+"/:site_id/v2/permissions/:permission_id", wrapper.ReadPermission)
+	router.GET(options.BaseURL+"/:site_id/v2/permissions/:permission_id", wrapper.GetPermission)
 
 	router.PUT(options.BaseURL+"/:site_id/v2/permissions/:permission_id", wrapper.UpdatePermission)
 
-	router.GET(options.BaseURL+"/:site_id/v2/permissions/:permission_id/keys", wrapper.ListPermissionAccessKeys)
+	router.GET(options.BaseURL+"/:site_id/v2/permissions/:permission_id/keys", wrapper.GetPermissionKeys)
 
-	router.POST(options.BaseURL+"/:site_id/v2/permissions/:permission_id/keys", wrapper.CreatePermissionAccessKey)
+	router.POST(options.BaseURL+"/:site_id/v2/permissions/:permission_id/keys", wrapper.CreatePermissionKey)
 
-	router.DELETE(options.BaseURL+"/:site_id/v2/permissions/:permission_id/keys/:permission_key_id", wrapper.DeletePermissionAccessKey)
+	router.DELETE(options.BaseURL+"/:site_id/v2/permissions/:permission_id/keys/:permission_key_id", wrapper.DeletePermissionKey)
 
-	router.GET(options.BaseURL+"/:site_id/v2/permissions/:permission_id/keys/:permission_key_id", wrapper.ReadPermissionAccessKey)
+	router.GET(options.BaseURL+"/:site_id/v2/permissions/:permission_id/keys/:permission_key_id", wrapper.GetPermissionKey)
 
-	router.GET(options.BaseURL+"/:site_id/v2/status", wrapper.ReadSiteStatus)
+	router.GET(options.BaseURL+"/:site_id/v2/status", wrapper.GetStatus)
 
 	return router
 }

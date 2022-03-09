@@ -2,6 +2,8 @@ openapi: 3.0.0
 info:
   version: 1.0.0
   title: さくらのオブジェクトストレージ APIドキュメント
+  contact:
+    name: SAKURA internet Inc.
   license:
     name: Copyright(C) 2021 SAKURA internet Inc. all rights reserved.
   x-logo:
@@ -121,8 +123,8 @@ info:
         {
           "api_zone": [],
           "control_panel_url": "https://secure.sakura.ad.jp/objectstorage/",
-          "dislpay_name_en_us": "Ishikari Site #1",
-          "dislpay_name_ja": "石狩第1サイト",
+          "display_name_en_us": "Ishikari Site #1",
+          "display_name_ja": "石狩第1サイト",
           "display_name": "石狩第1サイト",
           "display_order": 1,
           "endpoint_base": "isk01.sakurastorage.jp",
@@ -245,8 +247,8 @@ info:
     ```
     # 出力サンプル
     {
-      "data":{
-        "bucket_controls":[
+      "data": {
+        "bucket_controls": [
           {
             "bucket_name":"sample",
             "can_read":true,
@@ -313,7 +315,7 @@ info:
 paths:
   /fed/v1/clusters:
     get:
-      operationId: "ListClusters"
+      operationId: getClusters
       tags:
         - サイト
       summary: サイト一覧の取得
@@ -339,7 +341,7 @@ paths:
                 $ref: '#/components/schemas/Error401'
   '/fed/v1/clusters/{site_id}':
     get:
-      operationId: "ReadCluster"
+      operationId: getCluster
       tags:
         - サイト
       summary: サイトの取得
@@ -378,7 +380,7 @@ paths:
                 $ref: '#/components/schemas/Error404'
   '/fed/v1/buckets/{bucket_name}':
     put:
-      operationId: "CreateBucket"
+      operationId: createBucket
       tags:
         - バケット
       summary: バケットの作成
@@ -429,7 +431,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error409'
     delete:
-      operationId: "DeleteBucket"
+      operationId: deleteBucket
       tags:
         - バケット
       servers:
@@ -473,7 +475,7 @@ paths:
                 $ref: '#/components/schemas/Error409'
   '/{site_id}/v2/account':
     get:
-      operationId: "ReadSiteAccount"
+      operationId: getAccount
       tags:
         - サイトアカウント
       summary: サイトアカウントの取得
@@ -519,7 +521,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorDefault'
     post:
-      operationId: "CreateSiteAccount"
+      operationId: createAccount
       tags:
         - サイトアカウント
       summary: サイトアカウントの作成
@@ -571,7 +573,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorDefault'
     delete:
-      operationId: "DeleteSiteAccount"
+      operationId: deleteAccount
       tags:
         - サイトアカウント
       summary: サイトアカウントの削除
@@ -608,7 +610,7 @@ paths:
                 $ref: '#/components/schemas/Error409'
   '/{site_id}/v2/account/keys':
     get:
-      operationId: "ListAccountAccessKeys"
+      operationId: getAccountKeys
       tags:
         - サイトアカウント
       summary: サイトアカウントのアクセスキーの取得
@@ -654,7 +656,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorDefault'
     post:
-      operationId: "CreateAccountAccessKey"
+      operationId: createAccountKey
       tags:
         - サイトアカウント
       servers:
@@ -709,7 +711,7 @@ paths:
                 $ref: '#/components/schemas/ErrorDefault'
   '/{site_id}/v2/account/keys/{account_key_id}':
     get:
-      operationId: "ReadAccountAccessKey"
+      operationId: getAccountKey
       tags:
         - サイトアカウント
       summary: サイトアカウントのアクセスキーの取得
@@ -761,7 +763,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorDefault'
     delete:
-      operationId: "DeleteAccountAccessKey"
+      operationId: deleteAccountKey
       tags:
         - サイトアカウント
       summary: サイトアカウントのアクセスキーの削除
@@ -798,7 +800,7 @@ paths:
                 $ref: '#/components/schemas/Error401'
   '/{site_id}/v2/permissions':
     get:
-      operationId: "ListPermissions"
+      operationId: getPermissions
       tags:
         - パーミッション
       summary: パーミッション一覧の取得
@@ -838,7 +840,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorDefault'
     post:
-      operationId: "CreatePermission"
+      operationId: createPermission
       tags:
         - パーミッション
       summary: パーミッションの作成
@@ -898,7 +900,7 @@ paths:
                 $ref: '#/components/schemas/ErrorDefault'
   '/{site_id}/v2/permissions/{permission_id}':
     get:
-      operationId: "ReadPermission"
+      operationId: getPermission
       tags:
         - パーミッション
       summary: パーミッションの取得
@@ -950,7 +952,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorDefault'
     put:
-      operationId: "UpdatePermission"
+      operationId: updatePermission
       tags:
         - パーミッション
       summary: パーミッションの更新
@@ -1071,7 +1073,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorDefault'
     delete:
-      operationId: "DeletePermission"
+      operationId: deletePermission
       tags:
         - パーミッション
       summary: パーミッションの削除
@@ -1108,7 +1110,7 @@ paths:
                 $ref: '#/components/schemas/Error401'
   '/{site_id}/v2/permissions/{permission_id}/keys':
     get:
-      operationId: "ListPermissionAccessKeys"
+      operationId: getPermissionKeys
       tags:
         - パーミッション
       summary: パーミッションが保有するアクセスキー一覧の取得
@@ -1160,7 +1162,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorDefault'
     post:
-      operationId: "CreatePermissionAccessKey"
+      operationId: createPermissionKey
       tags:
         - パーミッション
       summary: パーミッションのアクセスキーの発行
@@ -1219,7 +1221,7 @@ paths:
                 $ref: '#/components/schemas/ErrorDefault'
   '/{site_id}/v2/permissions/{permission_id}/keys/{permission_key_id}':
     get:
-      operationId: "ReadPermissionAccessKey"
+      operationId: getPermissionKey
       tags:
         - パーミッション
       summary: パーミッションが保有するアクセスキーの取得
@@ -1277,7 +1279,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorDefault'
     delete:
-      operationId: "DeletePermissionAccessKey"
+      operationId: deletePermissionKey
       tags:
         - パーミッション
       summary: パーミッションが保有するアクセスキーの削除
@@ -1326,7 +1328,7 @@ paths:
                 $ref: '#/components/schemas/Error404'
   '/{site_id}/v2/status':
     get:
-      operationId: "ReadSiteStatus"
+      operationId: getStatus
       tags:
         - ステータス
       summary: サイトのステータスの取得
@@ -1369,7 +1371,7 @@ servers:
   - url: 'https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0'
 components:
   securitySchemes:
-    Account_api_key:
+    BasicAuth:
       type: http
       scheme: basic
       description: |-
@@ -1514,11 +1516,11 @@ components:
           description: URL of Control Panel
           type: string
           example: secure.sakura.ad.jp/objectstorage/isk01
-        dislpay_name_en_us:
+        display_name_en_us:
           description: Display Name (en-us)
           type: string
           example: 'Ishikari Cluster #1'
-        dislpay_name_ja:
+        display_name_ja:
           description: Display Name (ja)
           type: string
           example: 石狩第1サイト
@@ -1564,8 +1566,8 @@ components:
       required:
         - api_zone
         - control_panel_url
-        - dislpay_name_en_us
-        - dislpay_name_ja
+        - display_name_en_us
+        - display_name_ja
         - display_name
         - display_order
         - endpoint_base
@@ -1575,49 +1577,6 @@ components:
         - s3_endpoint
         - s3_endpoint_for_control_panel
         - storage_zone
-    #    model.HTTPErr:
-#      type: object
-#      properties:
-#        error:
-#          $ref: '#/components/schemas/model.HTTPErrDoc'
-#    model.HTTPErrDoc:
-#      type: object
-#      properties:
-#        code:
-#          type: integer
-#          example: 429
-#        errors:
-#          type: array
-#          items:
-#            $ref: '#/components/schemas/model.InnerErr'
-#        message:
-#          type: string
-#          example: Rate Limit Exceeded
-#        trace_id:
-#          description: X-Sakura-Internal-Serial-ID
-#          type: string
-#          example: 0f36837633984f3fc8871f515e8efa24
-#    model.InnerErr:
-#      type: object
-#      properties:
-#        domain:
-#          description: 'global, usage,...'
-#          type: string
-#          example: usage
-#        location:
-#          description: 'Authorization, {paramName},...'
-#          type: string
-#        location_type:
-#          description: 'header, parameter,...'
-#          type: string
-#        message:
-#          description: '{description}'
-#          type: string
-#          example: Rate Limit Exceeded
-#        reason:
-#          description: 'invalidParameter, required,...'
-#          type: string
-#          example: rateLimitExceeded
     PermissionID:
       description: Permission ID
       type: integer
@@ -1664,8 +1623,8 @@ components:
     SecretAccessKey:
       description: Secret Access key
       type: string
-      pattern: '^[\w\d\/=]{40}$'
-      example: '==NOTICE==EXISTS/ONLY/WHEN/JUST/CREATED='
+      pattern: '^[\w\d\/+=]{1,40}$'
+      example: /NOTICE==EXISTS+ONLY+WHEN+JUST+CREATED/
     AccountKey:
       description: Root user access key
       type: object
@@ -1710,13 +1669,8 @@ components:
     PermissionSecret:
       description: Permission secret key
       type: string
-      pattern: '^[\w\d\/=]{40}$'
-      example: '==NOTICE==EXISTS/ONLY/WHEN/JUST/CREATED='
-#    BucketGrantFullControl:
-#      description: Bucket Grant Full Control
-#      type: string
-#      pattern: '^[\w\d_-]+$'
-#      example: grantfullControl
+      pattern: '^[\w\d\/+=]{1,40}$'
+      example: /NOTICE==EXISTS+ONLY+WHEN+JUST+CREATED/
 
     # Note: ResponseBody+Accountに分離させた
     Account:
@@ -1733,114 +1687,6 @@ components:
         - resource_id
         - code
         - created_at
-
-#    BucketGrantRead:
-#      description: Bucket Grant Read
-#      type: boolean
-#      example: true
-#    BucketGrantReadAcp:
-#      description: Bucket Grant Read ACP
-#      type: string
-#      example: Bucket Grant Read ACP
-#    BucketGrantWrite:
-#      description: Bcuket Grant Write
-#      type: boolean
-#      example: true
-#    BucketGrantWriteAcp:
-#      description: Bucket Grant Write ACP
-#      type: string
-#      example: Bucket Grant Write ACP
-#    BucketBody:
-#      description: Request body for bucket
-#      type: object
-#      properties:
-#        acl:
-#          type: string
-#          example: |
-#            {
-#              "Owner": {
-#                "DisplayName": "123456789012",
-#                "ID": "abcdefABCDEF0123456789"
-#              },
-#              "Grants": [
-#                {
-#                  "Grantee": {
-#                    "DisplayName": "113100030424",
-#                    "ID": "abcedefABCDEF0123456789",
-#                    "Type": "CanonicalUser"
-#                  },
-#                  "Permission": "FULL_CONTROL"
-#                }
-#              ]
-#            }
-#        grant_full_control:
-#          allOf:
-#            - $ref: '#/components/schemas/BucketGrantFullControl'
-#        grant_read:
-#          allOf:
-#            - $ref: '#/components/schemas/BucketGrantRead'
-#        grnat_read_acp:
-#          allOf:
-#            - $ref: '#/components/schemas/BucketGrantReadAcp'
-#        grant_write:
-#          allOf:
-#            - $ref: '#/components/schemas/BucketGrantWrite'
-#        grant_write_acp:
-#          allOf:
-#            - $ref: '#/components/schemas/BucketGrantWriteAcp'
-#    Bucket:
-#      description: Bucket
-#      type: object
-#      properties:
-#        data:
-#          type: object
-#          properties:
-#            name:
-#              allOf:
-#                - $ref: '#/components/schemas/BucketName'
-#            resource_id:
-#              allOf:
-#                - $ref: '#/components/schemas/ResourceID'
-#    BucketForGetACL:
-#      description: Bucket
-#      type: object
-#      properties:
-#        data:
-#          description: data type
-#          type: object
-#          properties:
-#            owner:
-#              type: object
-#              properties:
-#                id:
-#                  type: string
-#                  example: '123456789012'
-#                display_name:
-#                  type: string
-#                  example: display_name
-#            grants:
-#              type: array
-#              items:
-#                type: object
-#                properties:
-#                  grantee:
-#                    type: object
-#                    properties:
-#                      id:
-#                        type: string
-#                        example: abcedefABCDEF0123456789
-#                      display_name:
-#                        type: string
-#                        example: '113100030424'
-#                      type:
-#                        type: string
-#                        example: CanonicalUser
-#                      uri:
-#                        type: string
-#                        example: uri
-#                  permission:
-#                    type: string
-#                    example: permission
 
     # Note: Permissions/Permission/Permission[s]ResponseBodyに分離
     Permissions:
@@ -1903,45 +1749,6 @@ components:
         - id
         - secret
         - created_at
-
-#    Session:
-#      description: Session
-#      type: object
-#      properties:
-#        data:
-#          type: object
-#          properties:
-#            access_key_id:
-#              type: string
-#              example: abcdefABCDEF0123456789
-#            access_key_secret:
-#              type: string
-#              pattern: '^[\w\d\/]{1,40}$'
-#              example: abcdefABCDEF0123456789
-#            user:
-#              type: string
-#              example: user_name
-#            created_at:
-#              allOf:
-#                - $ref: '#/components/schemas/CreatedAt'
-#            expired_at:
-#              type: string
-#              format: date-time
-#              example: '2021-01-11T01:11:23.123456+09:00'
-#    SessionBody:
-#      description: Session body
-#      type: object
-#      properties:
-#        expires_at:
-#          type: string
-#          format: date-time
-#          example: '2020-01-11T01:11:23.123456+09:00'
-#        token:
-#          type: string
-#          example: abcdefABCDEF0123456789
-#        user:
-#          type: string
-#          example: user_name
 
     # Note: StatusResponseBodyを切り出し
     Status:
@@ -2109,3 +1916,15 @@ components:
         - message
         - trace_id
         - errors
+
+tags:
+  - name: サイト
+    description: サイトに関する情報
+  - name: バケット
+    description: バケットに関する情報
+  - name: サイトアカウント
+    description: サイトアカウントに関する情報
+  - name: パーミッション
+    description: パーミッションに関する情報
+  - name: ステータス
+    description: ステータスに関する情報

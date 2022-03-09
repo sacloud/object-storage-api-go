@@ -23,7 +23,7 @@ import (
 
 // ListClusters サイト一覧の取得
 // (GET /fed/v1/clusters)
-func (s *Server) ListClusters(c *gin.Context) {
+func (s *Server) GetClusters(c *gin.Context) {
 	clusters, err := s.Engine.ListClusters()
 	if err != nil {
 		s.handleError(c, err)
@@ -37,7 +37,7 @@ func (s *Server) ListClusters(c *gin.Context) {
 
 // ReadCluster サイトの取得
 // (GET /fed/v1/clusters/{id})
-func (s *Server) ReadCluster(c *gin.Context, siteId string) {
+func (s *Server) GetCluster(c *gin.Context, siteId string) {
 	cluster, err := s.Engine.ReadCluster(siteId)
 	if err != nil {
 		s.handleError(c, err)

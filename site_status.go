@@ -38,7 +38,7 @@ func NewSiteStatusOp(client *Client) SiteStatusAPI {
 }
 
 func (op *siteStatusOp) Read(ctx context.Context, siteId string) (*v1.Status, error) {
-	resp, err := op.client.apiClient().ReadSiteStatusWithResponse(ctx, siteId)
+	resp, err := op.client.apiClient().GetStatusWithResponse(ctx, siteId)
 	if err != nil {
 		return nil, err
 	}

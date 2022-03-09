@@ -36,8 +36,8 @@ func initFakeServer() {
 					Id: siteId,
 
 					ControlPanelUrl: "https://secure.sakura.ad.jp/objectstorage/",
-					DislpayNameEnUs: "Ishikari Site #1",
-					DislpayNameJa:   "石狩第1サイト",
+					DisplayNameEnUs: "Ishikari Site #1",
+					DisplayNameJa:   "石狩第1サイト",
 					DisplayName:     "石狩第1サイト",
 					DisplayOrder:    1,
 					EndpointBase:    "isk01.sakurastorage.jp",

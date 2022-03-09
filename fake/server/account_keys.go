@@ -23,7 +23,7 @@ import (
 
 // ListAccountAccessKeys サイトアカウントのアクセスキーの取得
 // (GET /{site_name}/v2/account/keys)
-func (s *Server) ListAccountAccessKeys(c *gin.Context, siteId string) {
+func (s *Server) GetAccountKeys(c *gin.Context, siteId string) {
 	keys, err := s.Engine.ListAccountAccessKeys(siteId)
 	if err != nil {
 		s.handleError(c, err)
@@ -37,7 +37,7 @@ func (s *Server) ListAccountAccessKeys(c *gin.Context, siteId string) {
 
 // CreateAccountAccessKey サイトアカウントのアクセスキーの発行
 // (POST /{site_name}/v2/account/keys)
-func (s *Server) CreateAccountAccessKey(c *gin.Context, siteId string) {
+func (s *Server) CreateAccountKey(c *gin.Context, siteId string) {
 	key, err := s.Engine.CreateAccountAccessKey(siteId)
 	if err != nil {
 		s.handleError(c, err)
@@ -51,7 +51,7 @@ func (s *Server) CreateAccountAccessKey(c *gin.Context, siteId string) {
 
 // DeleteAccountAccessKey サイトアカウントのアクセスキーの削除
 // (DELETE /{site_name}/v2/account/keys/{id})
-func (s *Server) DeleteAccountAccessKey(c *gin.Context, siteId string, accountKeyId v1.AccessKeyID) {
+func (s *Server) DeleteAccountKey(c *gin.Context, siteId string, accountKeyId v1.AccessKeyID) {
 	if err := s.Engine.DeleteAccountAccessKey(siteId, accountKeyId.String()); err != nil {
 		s.handleError(c, err)
 		return
@@ -62,7 +62,7 @@ func (s *Server) DeleteAccountAccessKey(c *gin.Context, siteId string, accountKe
 
 // ReadAccountAccessKey サイトアカウントのアクセスキーの取得
 // (GET /{site_name}/v2/account/keys/{id})
-func (s *Server) ReadAccountAccessKey(c *gin.Context, siteId string, accountKeyId v1.AccessKeyID) {
+func (s *Server) GetAccountKey(c *gin.Context, siteId string, accountKeyId v1.AccessKeyID) {
 	key, err := s.Engine.ReadAccountAccessKey(siteId, accountKeyId.String())
 	if err != nil {
 		s.handleError(c, err)

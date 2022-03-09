@@ -23,7 +23,7 @@ import (
 
 // ReadSiteStatus サイトのステータスの取得
 // (GET /{site_name}/v2/status)
-func (s *Server) ReadSiteStatus(c *gin.Context, siteId string) {
+func (s *Server) GetStatus(c *gin.Context, siteId string) {
 	status, err := s.Engine.ReadSiteStatus(siteId)
 	if err != nil {
 		s.handleError(c, err)

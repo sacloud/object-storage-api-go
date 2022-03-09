@@ -39,7 +39,7 @@ func Example_basic() {
 		panic(err)
 	}
 
-	resp, err := client.ListClustersWithResponse(context.Background())
+	resp, err := client.GetClustersWithResponse(context.Background())
 	if err != nil {
 		panic(err)
 	}
@@ -71,7 +71,7 @@ func Example_readSiteAccount() {
 	}
 
 	// サイトIDが必要になるためまずサイト一覧を取得
-	sitesResp, err := client.ListClustersWithResponse(context.Background())
+	sitesResp, err := client.GetClustersWithResponse(context.Background())
 	if err != nil {
 		panic(err)
 	}
@@ -83,7 +83,7 @@ func Example_readSiteAccount() {
 	siteId := sites.Data[0].Id
 
 	// サイトアカウントの参照
-	accountResp, err := client.ReadSiteAccountWithResponse(context.Background(), siteId)
+	accountResp, err := client.GetAccountWithResponse(context.Background(), siteId)
 	if err != nil {
 		panic(err)
 	}
@@ -114,7 +114,7 @@ func Example_siteAccountKeys() {
 	}
 
 	// サイトIDが必要になるためまずサイト一覧を取得
-	sitesResp, err := client.ListClustersWithResponse(context.Background())
+	sitesResp, err := client.GetClustersWithResponse(context.Background())
 	if err != nil {
 		panic(err)
 	}
@@ -126,7 +126,7 @@ func Example_siteAccountKeys() {
 	siteId := sites.Data[0].Id
 
 	// サイトアカウントのキーを作成
-	keyResp, err := client.CreateAccountAccessKeyWithResponse(context.Background(), siteId)
+	keyResp, err := client.CreateAccountKeyWithResponse(context.Background(), siteId)
 	if err != nil {
 		panic(err)
 	}
@@ -157,7 +157,7 @@ func Example_bucket() {
 	}
 
 	// サイトIDが必要になるためまずサイト一覧を取得
-	sitesResp, err := client.ListClustersWithResponse(context.Background())
+	sitesResp, err := client.GetClustersWithResponse(context.Background())
 	if err != nil {
 		panic(err)
 	}
@@ -217,7 +217,7 @@ func Example_permissions() {
 	}
 
 	// サイトIDが必要になるためまずサイト一覧を取得
-	sitesResp, err := client.ListClustersWithResponse(context.Background())
+	sitesResp, err := client.GetClustersWithResponse(context.Background())
 	if err != nil {
 		panic(err)
 	}
@@ -279,7 +279,7 @@ func Example_permissionKeys() {
 	}
 
 	// サイトIDが必要になるためまずサイト一覧を取得
-	sitesResp, err := client.ListClustersWithResponse(context.Background())
+	sitesResp, err := client.GetClustersWithResponse(context.Background())
 	if err != nil {
 		panic(err)
 	}
@@ -311,7 +311,7 @@ func Example_permissionKeys() {
 	}
 
 	// パーミッションのキーを作成
-	keyResp, err := client.CreatePermissionAccessKeyWithResponse(context.Background(), siteId, permission.Data.Id)
+	keyResp, err := client.CreatePermissionKeyWithResponse(context.Background(), siteId, permission.Data.Id)
 	if err != nil {
 		panic(err)
 	}
@@ -322,7 +322,7 @@ func Example_permissionKeys() {
 	}
 
 	defer func() {
-		keyDeleteResp, err := client.DeletePermissionAccessKeyWithResponse(context.Background(), siteId, permission.Data.Id, key.Data.Id)
+		keyDeleteResp, err := client.DeletePermissionKeyWithResponse(context.Background(), siteId, permission.Data.Id, key.Data.Id)
 		if err != nil {
 			panic(err)
 		}
@@ -360,7 +360,7 @@ func Example_siteStatus() {
 	}
 
 	// サイトIDが必要になるためまずサイト一覧を取得
-	sitesResp, err := client.ListClustersWithResponse(context.Background())
+	sitesResp, err := client.GetClustersWithResponse(context.Background())
 	if err != nil {
 		panic(err)
 	}
@@ -371,7 +371,7 @@ func Example_siteStatus() {
 	}
 	siteId := sites.Data[0].Id
 
-	statusResp, err := client.ReadSiteStatusWithResponse(context.Background(), siteId)
+	statusResp, err := client.GetStatusWithResponse(context.Background(), siteId)
 	if err != nil {
 		panic(err)
 	}

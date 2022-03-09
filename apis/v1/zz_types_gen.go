@@ -107,14 +107,14 @@ type Cluster struct {
 	// URL of Control Panel
 	ControlPanelUrl string `json:"control_panel_url"`
 
-	// Display Name (en-us)
-	DislpayNameEnUs string `json:"dislpay_name_en_us"`
-
-	// Display Name (ja)
-	DislpayNameJa string `json:"dislpay_name_ja"`
-
 	// Display Name (Depending on Accept-Language)
 	DisplayName string `json:"display_name"`
+
+	// Display Name (en-us)
+	DisplayNameEnUs string `json:"display_name_en_us"`
+
+	// Display Name (ja)
+	DisplayNameJa string `json:"display_name_ja"`
 
 	// Display Order (Can be ignored)
 	DisplayOrder int `json:"display_order"`
