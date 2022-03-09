@@ -114,35 +114,35 @@ type ClientInterface interface {
 
 	CreateBucket(ctx context.Context, bucketName BucketName, body CreateBucketJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// ListClusters request
-	ListClusters(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetClusters request
+	GetClusters(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// ReadCluster request
-	ReadCluster(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetCluster request
+	GetCluster(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// DeleteSiteAccount request
-	DeleteSiteAccount(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// DeleteAccount request
+	DeleteAccount(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// ReadSiteAccount request
-	ReadSiteAccount(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetAccount request
+	GetAccount(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// CreateSiteAccount request
-	CreateSiteAccount(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// CreateAccount request
+	CreateAccount(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// ListAccountAccessKeys request
-	ListAccountAccessKeys(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetAccountKeys request
+	GetAccountKeys(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// CreateAccountAccessKey request
-	CreateAccountAccessKey(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// CreateAccountKey request
+	CreateAccountKey(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// DeleteAccountAccessKey request
-	DeleteAccountAccessKey(ctx context.Context, siteId string, accountKeyId AccessKeyID, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// DeleteAccountKey request
+	DeleteAccountKey(ctx context.Context, siteId string, accountKeyId AccessKeyID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// ReadAccountAccessKey request
-	ReadAccountAccessKey(ctx context.Context, siteId string, accountKeyId AccessKeyID, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetAccountKey request
+	GetAccountKey(ctx context.Context, siteId string, accountKeyId AccessKeyID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// ListPermissions request
-	ListPermissions(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetPermissions request
+	GetPermissions(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// CreatePermission request with any body
 	CreatePermissionWithBody(ctx context.Context, siteId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -152,28 +152,28 @@ type ClientInterface interface {
 	// DeletePermission request
 	DeletePermission(ctx context.Context, siteId string, permissionId PermissionID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// ReadPermission request
-	ReadPermission(ctx context.Context, siteId string, permissionId PermissionID, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetPermission request
+	GetPermission(ctx context.Context, siteId string, permissionId PermissionID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// UpdatePermission request with any body
 	UpdatePermissionWithBody(ctx context.Context, siteId string, permissionId PermissionID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	UpdatePermission(ctx context.Context, siteId string, permissionId PermissionID, body UpdatePermissionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// ListPermissionAccessKeys request
-	ListPermissionAccessKeys(ctx context.Context, siteId string, permissionId PermissionID, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetPermissionKeys request
+	GetPermissionKeys(ctx context.Context, siteId string, permissionId PermissionID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// CreatePermissionAccessKey request
-	CreatePermissionAccessKey(ctx context.Context, siteId string, permissionId PermissionID, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// CreatePermissionKey request
+	CreatePermissionKey(ctx context.Context, siteId string, permissionId PermissionID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// DeletePermissionAccessKey request
-	DeletePermissionAccessKey(ctx context.Context, siteId string, permissionId PermissionID, permissionKeyId AccessKeyID, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// DeletePermissionKey request
+	DeletePermissionKey(ctx context.Context, siteId string, permissionId PermissionID, permissionKeyId AccessKeyID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// ReadPermissionAccessKey request
-	ReadPermissionAccessKey(ctx context.Context, siteId string, permissionId PermissionID, permissionKeyId AccessKeyID, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetPermissionKey request
+	GetPermissionKey(ctx context.Context, siteId string, permissionId PermissionID, permissionKeyId AccessKeyID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// ReadSiteStatus request
-	ReadSiteStatus(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// GetStatus request
+	GetStatus(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
 func (c *Client) DeleteBucketWithBody(ctx context.Context, bucketName BucketName, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -224,8 +224,8 @@ func (c *Client) CreateBucket(ctx context.Context, bucketName BucketName, body C
 	return c.Client.Do(req)
 }
 
-func (c *Client) ListClusters(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewListClustersRequest(c.Server)
+func (c *Client) GetClusters(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetClustersRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -236,8 +236,8 @@ func (c *Client) ListClusters(ctx context.Context, reqEditors ...RequestEditorFn
 	return c.Client.Do(req)
 }
 
-func (c *Client) ReadCluster(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewReadClusterRequest(c.Server, siteId)
+func (c *Client) GetCluster(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetClusterRequest(c.Server, siteId)
 	if err != nil {
 		return nil, err
 	}
@@ -248,8 +248,8 @@ func (c *Client) ReadCluster(ctx context.Context, siteId string, reqEditors ...R
 	return c.Client.Do(req)
 }
 
-func (c *Client) DeleteSiteAccount(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeleteSiteAccountRequest(c.Server, siteId)
+func (c *Client) DeleteAccount(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteAccountRequest(c.Server, siteId)
 	if err != nil {
 		return nil, err
 	}
@@ -260,8 +260,8 @@ func (c *Client) DeleteSiteAccount(ctx context.Context, siteId string, reqEditor
 	return c.Client.Do(req)
 }
 
-func (c *Client) ReadSiteAccount(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewReadSiteAccountRequest(c.Server, siteId)
+func (c *Client) GetAccount(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetAccountRequest(c.Server, siteId)
 	if err != nil {
 		return nil, err
 	}
@@ -272,8 +272,8 @@ func (c *Client) ReadSiteAccount(ctx context.Context, siteId string, reqEditors 
 	return c.Client.Do(req)
 }
 
-func (c *Client) CreateSiteAccount(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateSiteAccountRequest(c.Server, siteId)
+func (c *Client) CreateAccount(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateAccountRequest(c.Server, siteId)
 	if err != nil {
 		return nil, err
 	}
@@ -284,8 +284,8 @@ func (c *Client) CreateSiteAccount(ctx context.Context, siteId string, reqEditor
 	return c.Client.Do(req)
 }
 
-func (c *Client) ListAccountAccessKeys(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewListAccountAccessKeysRequest(c.Server, siteId)
+func (c *Client) GetAccountKeys(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetAccountKeysRequest(c.Server, siteId)
 	if err != nil {
 		return nil, err
 	}
@@ -296,8 +296,8 @@ func (c *Client) ListAccountAccessKeys(ctx context.Context, siteId string, reqEd
 	return c.Client.Do(req)
 }
 
-func (c *Client) CreateAccountAccessKey(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreateAccountAccessKeyRequest(c.Server, siteId)
+func (c *Client) CreateAccountKey(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreateAccountKeyRequest(c.Server, siteId)
 	if err != nil {
 		return nil, err
 	}
@@ -308,8 +308,8 @@ func (c *Client) CreateAccountAccessKey(ctx context.Context, siteId string, reqE
 	return c.Client.Do(req)
 }
 
-func (c *Client) DeleteAccountAccessKey(ctx context.Context, siteId string, accountKeyId AccessKeyID, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeleteAccountAccessKeyRequest(c.Server, siteId, accountKeyId)
+func (c *Client) DeleteAccountKey(ctx context.Context, siteId string, accountKeyId AccessKeyID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteAccountKeyRequest(c.Server, siteId, accountKeyId)
 	if err != nil {
 		return nil, err
 	}
@@ -320,8 +320,8 @@ func (c *Client) DeleteAccountAccessKey(ctx context.Context, siteId string, acco
 	return c.Client.Do(req)
 }
 
-func (c *Client) ReadAccountAccessKey(ctx context.Context, siteId string, accountKeyId AccessKeyID, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewReadAccountAccessKeyRequest(c.Server, siteId, accountKeyId)
+func (c *Client) GetAccountKey(ctx context.Context, siteId string, accountKeyId AccessKeyID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetAccountKeyRequest(c.Server, siteId, accountKeyId)
 	if err != nil {
 		return nil, err
 	}
@@ -332,8 +332,8 @@ func (c *Client) ReadAccountAccessKey(ctx context.Context, siteId string, accoun
 	return c.Client.Do(req)
 }
 
-func (c *Client) ListPermissions(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewListPermissionsRequest(c.Server, siteId)
+func (c *Client) GetPermissions(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetPermissionsRequest(c.Server, siteId)
 	if err != nil {
 		return nil, err
 	}
@@ -380,8 +380,8 @@ func (c *Client) DeletePermission(ctx context.Context, siteId string, permission
 	return c.Client.Do(req)
 }
 
-func (c *Client) ReadPermission(ctx context.Context, siteId string, permissionId PermissionID, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewReadPermissionRequest(c.Server, siteId, permissionId)
+func (c *Client) GetPermission(ctx context.Context, siteId string, permissionId PermissionID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetPermissionRequest(c.Server, siteId, permissionId)
 	if err != nil {
 		return nil, err
 	}
@@ -416,8 +416,8 @@ func (c *Client) UpdatePermission(ctx context.Context, siteId string, permission
 	return c.Client.Do(req)
 }
 
-func (c *Client) ListPermissionAccessKeys(ctx context.Context, siteId string, permissionId PermissionID, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewListPermissionAccessKeysRequest(c.Server, siteId, permissionId)
+func (c *Client) GetPermissionKeys(ctx context.Context, siteId string, permissionId PermissionID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetPermissionKeysRequest(c.Server, siteId, permissionId)
 	if err != nil {
 		return nil, err
 	}
@@ -428,8 +428,8 @@ func (c *Client) ListPermissionAccessKeys(ctx context.Context, siteId string, pe
 	return c.Client.Do(req)
 }
 
-func (c *Client) CreatePermissionAccessKey(ctx context.Context, siteId string, permissionId PermissionID, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewCreatePermissionAccessKeyRequest(c.Server, siteId, permissionId)
+func (c *Client) CreatePermissionKey(ctx context.Context, siteId string, permissionId PermissionID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewCreatePermissionKeyRequest(c.Server, siteId, permissionId)
 	if err != nil {
 		return nil, err
 	}
@@ -440,8 +440,8 @@ func (c *Client) CreatePermissionAccessKey(ctx context.Context, siteId string, p
 	return c.Client.Do(req)
 }
 
-func (c *Client) DeletePermissionAccessKey(ctx context.Context, siteId string, permissionId PermissionID, permissionKeyId AccessKeyID, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewDeletePermissionAccessKeyRequest(c.Server, siteId, permissionId, permissionKeyId)
+func (c *Client) DeletePermissionKey(ctx context.Context, siteId string, permissionId PermissionID, permissionKeyId AccessKeyID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeletePermissionKeyRequest(c.Server, siteId, permissionId, permissionKeyId)
 	if err != nil {
 		return nil, err
 	}
@@ -452,8 +452,8 @@ func (c *Client) DeletePermissionAccessKey(ctx context.Context, siteId string, p
 	return c.Client.Do(req)
 }
 
-func (c *Client) ReadPermissionAccessKey(ctx context.Context, siteId string, permissionId PermissionID, permissionKeyId AccessKeyID, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewReadPermissionAccessKeyRequest(c.Server, siteId, permissionId, permissionKeyId)
+func (c *Client) GetPermissionKey(ctx context.Context, siteId string, permissionId PermissionID, permissionKeyId AccessKeyID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetPermissionKeyRequest(c.Server, siteId, permissionId, permissionKeyId)
 	if err != nil {
 		return nil, err
 	}
@@ -464,8 +464,8 @@ func (c *Client) ReadPermissionAccessKey(ctx context.Context, siteId string, per
 	return c.Client.Do(req)
 }
 
-func (c *Client) ReadSiteStatus(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewReadSiteStatusRequest(c.Server, siteId)
+func (c *Client) GetStatus(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetStatusRequest(c.Server, siteId)
 	if err != nil {
 		return nil, err
 	}
@@ -570,8 +570,8 @@ func NewCreateBucketRequestWithBody(server string, bucketName BucketName, conten
 	return req, nil
 }
 
-// NewListClustersRequest generates requests for ListClusters
-func NewListClustersRequest(server string) (*http.Request, error) {
+// NewGetClustersRequest generates requests for GetClusters
+func NewGetClustersRequest(server string) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -597,8 +597,8 @@ func NewListClustersRequest(server string) (*http.Request, error) {
 	return req, nil
 }
 
-// NewReadClusterRequest generates requests for ReadCluster
-func NewReadClusterRequest(server string, siteId string) (*http.Request, error) {
+// NewGetClusterRequest generates requests for GetCluster
+func NewGetClusterRequest(server string, siteId string) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -631,8 +631,8 @@ func NewReadClusterRequest(server string, siteId string) (*http.Request, error) 
 	return req, nil
 }
 
-// NewDeleteSiteAccountRequest generates requests for DeleteSiteAccount
-func NewDeleteSiteAccountRequest(server string, siteId string) (*http.Request, error) {
+// NewDeleteAccountRequest generates requests for DeleteAccount
+func NewDeleteAccountRequest(server string, siteId string) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -665,8 +665,8 @@ func NewDeleteSiteAccountRequest(server string, siteId string) (*http.Request, e
 	return req, nil
 }
 
-// NewReadSiteAccountRequest generates requests for ReadSiteAccount
-func NewReadSiteAccountRequest(server string, siteId string) (*http.Request, error) {
+// NewGetAccountRequest generates requests for GetAccount
+func NewGetAccountRequest(server string, siteId string) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -699,8 +699,8 @@ func NewReadSiteAccountRequest(server string, siteId string) (*http.Request, err
 	return req, nil
 }
 
-// NewCreateSiteAccountRequest generates requests for CreateSiteAccount
-func NewCreateSiteAccountRequest(server string, siteId string) (*http.Request, error) {
+// NewCreateAccountRequest generates requests for CreateAccount
+func NewCreateAccountRequest(server string, siteId string) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -733,8 +733,8 @@ func NewCreateSiteAccountRequest(server string, siteId string) (*http.Request, e
 	return req, nil
 }
 
-// NewListAccountAccessKeysRequest generates requests for ListAccountAccessKeys
-func NewListAccountAccessKeysRequest(server string, siteId string) (*http.Request, error) {
+// NewGetAccountKeysRequest generates requests for GetAccountKeys
+func NewGetAccountKeysRequest(server string, siteId string) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -767,8 +767,8 @@ func NewListAccountAccessKeysRequest(server string, siteId string) (*http.Reques
 	return req, nil
 }
 
-// NewCreateAccountAccessKeyRequest generates requests for CreateAccountAccessKey
-func NewCreateAccountAccessKeyRequest(server string, siteId string) (*http.Request, error) {
+// NewCreateAccountKeyRequest generates requests for CreateAccountKey
+func NewCreateAccountKeyRequest(server string, siteId string) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -801,8 +801,8 @@ func NewCreateAccountAccessKeyRequest(server string, siteId string) (*http.Reque
 	return req, nil
 }
 
-// NewDeleteAccountAccessKeyRequest generates requests for DeleteAccountAccessKey
-func NewDeleteAccountAccessKeyRequest(server string, siteId string, accountKeyId AccessKeyID) (*http.Request, error) {
+// NewDeleteAccountKeyRequest generates requests for DeleteAccountKey
+func NewDeleteAccountKeyRequest(server string, siteId string, accountKeyId AccessKeyID) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -842,8 +842,8 @@ func NewDeleteAccountAccessKeyRequest(server string, siteId string, accountKeyId
 	return req, nil
 }
 
-// NewReadAccountAccessKeyRequest generates requests for ReadAccountAccessKey
-func NewReadAccountAccessKeyRequest(server string, siteId string, accountKeyId AccessKeyID) (*http.Request, error) {
+// NewGetAccountKeyRequest generates requests for GetAccountKey
+func NewGetAccountKeyRequest(server string, siteId string, accountKeyId AccessKeyID) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -883,8 +883,8 @@ func NewReadAccountAccessKeyRequest(server string, siteId string, accountKeyId A
 	return req, nil
 }
 
-// NewListPermissionsRequest generates requests for ListPermissions
-func NewListPermissionsRequest(server string, siteId string) (*http.Request, error) {
+// NewGetPermissionsRequest generates requests for GetPermissions
+func NewGetPermissionsRequest(server string, siteId string) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1005,8 +1005,8 @@ func NewDeletePermissionRequest(server string, siteId string, permissionId Permi
 	return req, nil
 }
 
-// NewReadPermissionRequest generates requests for ReadPermission
-func NewReadPermissionRequest(server string, siteId string, permissionId PermissionID) (*http.Request, error) {
+// NewGetPermissionRequest generates requests for GetPermission
+func NewGetPermissionRequest(server string, siteId string, permissionId PermissionID) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1100,8 +1100,8 @@ func NewUpdatePermissionRequestWithBody(server string, siteId string, permission
 	return req, nil
 }
 
-// NewListPermissionAccessKeysRequest generates requests for ListPermissionAccessKeys
-func NewListPermissionAccessKeysRequest(server string, siteId string, permissionId PermissionID) (*http.Request, error) {
+// NewGetPermissionKeysRequest generates requests for GetPermissionKeys
+func NewGetPermissionKeysRequest(server string, siteId string, permissionId PermissionID) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1141,8 +1141,8 @@ func NewListPermissionAccessKeysRequest(server string, siteId string, permission
 	return req, nil
 }
 
-// NewCreatePermissionAccessKeyRequest generates requests for CreatePermissionAccessKey
-func NewCreatePermissionAccessKeyRequest(server string, siteId string, permissionId PermissionID) (*http.Request, error) {
+// NewCreatePermissionKeyRequest generates requests for CreatePermissionKey
+func NewCreatePermissionKeyRequest(server string, siteId string, permissionId PermissionID) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1182,8 +1182,8 @@ func NewCreatePermissionAccessKeyRequest(server string, siteId string, permissio
 	return req, nil
 }
 
-// NewDeletePermissionAccessKeyRequest generates requests for DeletePermissionAccessKey
-func NewDeletePermissionAccessKeyRequest(server string, siteId string, permissionId PermissionID, permissionKeyId AccessKeyID) (*http.Request, error) {
+// NewDeletePermissionKeyRequest generates requests for DeletePermissionKey
+func NewDeletePermissionKeyRequest(server string, siteId string, permissionId PermissionID, permissionKeyId AccessKeyID) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1230,8 +1230,8 @@ func NewDeletePermissionAccessKeyRequest(server string, siteId string, permissio
 	return req, nil
 }
 
-// NewReadPermissionAccessKeyRequest generates requests for ReadPermissionAccessKey
-func NewReadPermissionAccessKeyRequest(server string, siteId string, permissionId PermissionID, permissionKeyId AccessKeyID) (*http.Request, error) {
+// NewGetPermissionKeyRequest generates requests for GetPermissionKey
+func NewGetPermissionKeyRequest(server string, siteId string, permissionId PermissionID, permissionKeyId AccessKeyID) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1278,8 +1278,8 @@ func NewReadPermissionAccessKeyRequest(server string, siteId string, permissionI
 	return req, nil
 }
 
-// NewReadSiteStatusRequest generates requests for ReadSiteStatus
-func NewReadSiteStatusRequest(server string, siteId string) (*http.Request, error) {
+// NewGetStatusRequest generates requests for GetStatus
+func NewGetStatusRequest(server string, siteId string) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1365,35 +1365,35 @@ type ClientWithResponsesInterface interface {
 
 	CreateBucketWithResponse(ctx context.Context, bucketName BucketName, body CreateBucketJSONRequestBody, reqEditors ...RequestEditorFn) (*CreateBucketResponse, error)
 
-	// ListClusters request
-	ListClustersWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListClustersResponse, error)
+	// GetClusters request
+	GetClustersWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetClustersResponse, error)
 
-	// ReadCluster request
-	ReadClusterWithResponse(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*ReadClusterResponse, error)
+	// GetCluster request
+	GetClusterWithResponse(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*GetClusterResponse, error)
 
-	// DeleteSiteAccount request
-	DeleteSiteAccountWithResponse(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*DeleteSiteAccountResponse, error)
+	// DeleteAccount request
+	DeleteAccountWithResponse(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*DeleteAccountResponse, error)
 
-	// ReadSiteAccount request
-	ReadSiteAccountWithResponse(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*ReadSiteAccountResponse, error)
+	// GetAccount request
+	GetAccountWithResponse(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*GetAccountResponse, error)
 
-	// CreateSiteAccount request
-	CreateSiteAccountWithResponse(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*CreateSiteAccountResponse, error)
+	// CreateAccount request
+	CreateAccountWithResponse(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*CreateAccountResponse, error)
 
-	// ListAccountAccessKeys request
-	ListAccountAccessKeysWithResponse(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*ListAccountAccessKeysResponse, error)
+	// GetAccountKeys request
+	GetAccountKeysWithResponse(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*GetAccountKeysResponse, error)
 
-	// CreateAccountAccessKey request
-	CreateAccountAccessKeyWithResponse(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*CreateAccountAccessKeyResponse, error)
+	// CreateAccountKey request
+	CreateAccountKeyWithResponse(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*CreateAccountKeyResponse, error)
 
-	// DeleteAccountAccessKey request
-	DeleteAccountAccessKeyWithResponse(ctx context.Context, siteId string, accountKeyId AccessKeyID, reqEditors ...RequestEditorFn) (*DeleteAccountAccessKeyResponse, error)
+	// DeleteAccountKey request
+	DeleteAccountKeyWithResponse(ctx context.Context, siteId string, accountKeyId AccessKeyID, reqEditors ...RequestEditorFn) (*DeleteAccountKeyResponse, error)
 
-	// ReadAccountAccessKey request
-	ReadAccountAccessKeyWithResponse(ctx context.Context, siteId string, accountKeyId AccessKeyID, reqEditors ...RequestEditorFn) (*ReadAccountAccessKeyResponse, error)
+	// GetAccountKey request
+	GetAccountKeyWithResponse(ctx context.Context, siteId string, accountKeyId AccessKeyID, reqEditors ...RequestEditorFn) (*GetAccountKeyResponse, error)
 
-	// ListPermissions request
-	ListPermissionsWithResponse(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*ListPermissionsResponse, error)
+	// GetPermissions request
+	GetPermissionsWithResponse(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*GetPermissionsResponse, error)
 
 	// CreatePermission request with any body
 	CreatePermissionWithBodyWithResponse(ctx context.Context, siteId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*CreatePermissionResponse, error)
@@ -1403,28 +1403,28 @@ type ClientWithResponsesInterface interface {
 	// DeletePermission request
 	DeletePermissionWithResponse(ctx context.Context, siteId string, permissionId PermissionID, reqEditors ...RequestEditorFn) (*DeletePermissionResponse, error)
 
-	// ReadPermission request
-	ReadPermissionWithResponse(ctx context.Context, siteId string, permissionId PermissionID, reqEditors ...RequestEditorFn) (*ReadPermissionResponse, error)
+	// GetPermission request
+	GetPermissionWithResponse(ctx context.Context, siteId string, permissionId PermissionID, reqEditors ...RequestEditorFn) (*GetPermissionResponse, error)
 
 	// UpdatePermission request with any body
 	UpdatePermissionWithBodyWithResponse(ctx context.Context, siteId string, permissionId PermissionID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdatePermissionResponse, error)
 
 	UpdatePermissionWithResponse(ctx context.Context, siteId string, permissionId PermissionID, body UpdatePermissionJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdatePermissionResponse, error)
 
-	// ListPermissionAccessKeys request
-	ListPermissionAccessKeysWithResponse(ctx context.Context, siteId string, permissionId PermissionID, reqEditors ...RequestEditorFn) (*ListPermissionAccessKeysResponse, error)
+	// GetPermissionKeys request
+	GetPermissionKeysWithResponse(ctx context.Context, siteId string, permissionId PermissionID, reqEditors ...RequestEditorFn) (*GetPermissionKeysResponse, error)
 
-	// CreatePermissionAccessKey request
-	CreatePermissionAccessKeyWithResponse(ctx context.Context, siteId string, permissionId PermissionID, reqEditors ...RequestEditorFn) (*CreatePermissionAccessKeyResponse, error)
+	// CreatePermissionKey request
+	CreatePermissionKeyWithResponse(ctx context.Context, siteId string, permissionId PermissionID, reqEditors ...RequestEditorFn) (*CreatePermissionKeyResponse, error)
 
-	// DeletePermissionAccessKey request
-	DeletePermissionAccessKeyWithResponse(ctx context.Context, siteId string, permissionId PermissionID, permissionKeyId AccessKeyID, reqEditors ...RequestEditorFn) (*DeletePermissionAccessKeyResponse, error)
+	// DeletePermissionKey request
+	DeletePermissionKeyWithResponse(ctx context.Context, siteId string, permissionId PermissionID, permissionKeyId AccessKeyID, reqEditors ...RequestEditorFn) (*DeletePermissionKeyResponse, error)
 
-	// ReadPermissionAccessKey request
-	ReadPermissionAccessKeyWithResponse(ctx context.Context, siteId string, permissionId PermissionID, permissionKeyId AccessKeyID, reqEditors ...RequestEditorFn) (*ReadPermissionAccessKeyResponse, error)
+	// GetPermissionKey request
+	GetPermissionKeyWithResponse(ctx context.Context, siteId string, permissionId PermissionID, permissionKeyId AccessKeyID, reqEditors ...RequestEditorFn) (*GetPermissionKeyResponse, error)
 
-	// ReadSiteStatus request
-	ReadSiteStatusWithResponse(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*ReadSiteStatusResponse, error)
+	// GetStatus request
+	GetStatusWithResponse(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*GetStatusResponse, error)
 }
 
 type DeleteBucketResponse struct {
@@ -1501,7 +1501,7 @@ func (r CreateBucketResponse) UndefinedError() error {
 	return nil
 }
 
-type ListClustersResponse struct {
+type GetClustersResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ListClustersResponseBody
@@ -1509,7 +1509,7 @@ type ListClustersResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r ListClustersResponse) Status() string {
+func (r GetClustersResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1517,7 +1517,7 @@ func (r ListClustersResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r ListClustersResponse) StatusCode() int {
+func (r GetClustersResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -1525,19 +1525,19 @@ func (r ListClustersResponse) StatusCode() int {
 }
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-func (r ListClustersResponse) Result() (*ListClustersResponseBody, error) {
+func (r GetClustersResponse) Result() (*ListClustersResponseBody, error) {
 	return r.JSON200, eCoalesce(r.JSON401, r.UndefinedError())
 }
 
 // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-func (r ListClustersResponse) UndefinedError() error {
+func (r GetClustersResponse) UndefinedError() error {
 	if !isOKStatus(r.HTTPResponse.StatusCode) {
 		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
 	}
 	return nil
 }
 
-type ReadClusterResponse struct {
+type GetClusterResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *ReadClusterResponseBody
@@ -1546,7 +1546,7 @@ type ReadClusterResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r ReadClusterResponse) Status() string {
+func (r GetClusterResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1554,7 +1554,7 @@ func (r ReadClusterResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r ReadClusterResponse) StatusCode() int {
+func (r GetClusterResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -1562,19 +1562,19 @@ func (r ReadClusterResponse) StatusCode() int {
 }
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-func (r ReadClusterResponse) Result() (*ReadClusterResponseBody, error) {
+func (r GetClusterResponse) Result() (*ReadClusterResponseBody, error) {
 	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.UndefinedError())
 }
 
 // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-func (r ReadClusterResponse) UndefinedError() error {
+func (r GetClusterResponse) UndefinedError() error {
 	if !isOKStatus(r.HTTPResponse.StatusCode) {
 		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
 	}
 	return nil
 }
 
-type DeleteSiteAccountResponse struct {
+type DeleteAccountResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON401      *Error401
@@ -1582,7 +1582,7 @@ type DeleteSiteAccountResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r DeleteSiteAccountResponse) Status() string {
+func (r DeleteAccountResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1590,7 +1590,7 @@ func (r DeleteSiteAccountResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r DeleteSiteAccountResponse) StatusCode() int {
+func (r DeleteAccountResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -1598,19 +1598,19 @@ func (r DeleteSiteAccountResponse) StatusCode() int {
 }
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-func (r DeleteSiteAccountResponse) Result() error {
+func (r DeleteAccountResponse) Result() error {
 	return eCoalesce(r.JSON401, r.JSON409, r.UndefinedError())
 }
 
 // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-func (r DeleteSiteAccountResponse) UndefinedError() error {
+func (r DeleteAccountResponse) UndefinedError() error {
 	if !isOKStatus(r.HTTPResponse.StatusCode) {
 		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
 	}
 	return nil
 }
 
-type ReadSiteAccountResponse struct {
+type GetAccountResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *AccountResponseBody
@@ -1620,7 +1620,7 @@ type ReadSiteAccountResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r ReadSiteAccountResponse) Status() string {
+func (r GetAccountResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1628,7 +1628,7 @@ func (r ReadSiteAccountResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r ReadSiteAccountResponse) StatusCode() int {
+func (r GetAccountResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -1636,19 +1636,19 @@ func (r ReadSiteAccountResponse) StatusCode() int {
 }
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-func (r ReadSiteAccountResponse) Result() (*AccountResponseBody, error) {
+func (r GetAccountResponse) Result() (*AccountResponseBody, error) {
 	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSONDefault, r.UndefinedError())
 }
 
 // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-func (r ReadSiteAccountResponse) UndefinedError() error {
+func (r GetAccountResponse) UndefinedError() error {
 	if !isOKStatus(r.HTTPResponse.StatusCode) {
 		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
 	}
 	return nil
 }
 
-type CreateSiteAccountResponse struct {
+type CreateAccountResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON201      *AccountResponseBody
@@ -1659,7 +1659,7 @@ type CreateSiteAccountResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r CreateSiteAccountResponse) Status() string {
+func (r CreateAccountResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1667,7 +1667,7 @@ func (r CreateSiteAccountResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r CreateSiteAccountResponse) StatusCode() int {
+func (r CreateAccountResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -1675,19 +1675,19 @@ func (r CreateSiteAccountResponse) StatusCode() int {
 }
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-func (r CreateSiteAccountResponse) Result() (*AccountResponseBody, error) {
+func (r CreateAccountResponse) Result() (*AccountResponseBody, error) {
 	return r.JSON201, eCoalesce(r.JSON401, r.JSON403, r.JSON409, r.JSONDefault, r.UndefinedError())
 }
 
 // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-func (r CreateSiteAccountResponse) UndefinedError() error {
+func (r CreateAccountResponse) UndefinedError() error {
 	if !isOKStatus(r.HTTPResponse.StatusCode) {
 		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
 	}
 	return nil
 }
 
-type ListAccountAccessKeysResponse struct {
+type GetAccountKeysResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *AccountKeysResponseBody
@@ -1697,7 +1697,7 @@ type ListAccountAccessKeysResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r ListAccountAccessKeysResponse) Status() string {
+func (r GetAccountKeysResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1705,7 +1705,7 @@ func (r ListAccountAccessKeysResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r ListAccountAccessKeysResponse) StatusCode() int {
+func (r GetAccountKeysResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -1713,19 +1713,19 @@ func (r ListAccountAccessKeysResponse) StatusCode() int {
 }
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-func (r ListAccountAccessKeysResponse) Result() (*AccountKeysResponseBody, error) {
+func (r GetAccountKeysResponse) Result() (*AccountKeysResponseBody, error) {
 	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSONDefault, r.UndefinedError())
 }
 
 // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-func (r ListAccountAccessKeysResponse) UndefinedError() error {
+func (r GetAccountKeysResponse) UndefinedError() error {
 	if !isOKStatus(r.HTTPResponse.StatusCode) {
 		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
 	}
 	return nil
 }
 
-type CreateAccountAccessKeyResponse struct {
+type CreateAccountKeyResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON201      *AccountKeyResponseBody
@@ -1736,7 +1736,7 @@ type CreateAccountAccessKeyResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r CreateAccountAccessKeyResponse) Status() string {
+func (r CreateAccountKeyResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1744,7 +1744,7 @@ func (r CreateAccountAccessKeyResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r CreateAccountAccessKeyResponse) StatusCode() int {
+func (r CreateAccountKeyResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -1752,26 +1752,26 @@ func (r CreateAccountAccessKeyResponse) StatusCode() int {
 }
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-func (r CreateAccountAccessKeyResponse) Result() (*AccountKeyResponseBody, error) {
+func (r CreateAccountKeyResponse) Result() (*AccountKeyResponseBody, error) {
 	return r.JSON201, eCoalesce(r.JSON401, r.JSON404, r.JSON409, r.JSONDefault, r.UndefinedError())
 }
 
 // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-func (r CreateAccountAccessKeyResponse) UndefinedError() error {
+func (r CreateAccountKeyResponse) UndefinedError() error {
 	if !isOKStatus(r.HTTPResponse.StatusCode) {
 		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
 	}
 	return nil
 }
 
-type DeleteAccountAccessKeyResponse struct {
+type DeleteAccountKeyResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON401      *Error401
 }
 
 // Status returns HTTPResponse.Status
-func (r DeleteAccountAccessKeyResponse) Status() string {
+func (r DeleteAccountKeyResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1779,7 +1779,7 @@ func (r DeleteAccountAccessKeyResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r DeleteAccountAccessKeyResponse) StatusCode() int {
+func (r DeleteAccountKeyResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -1787,19 +1787,19 @@ func (r DeleteAccountAccessKeyResponse) StatusCode() int {
 }
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-func (r DeleteAccountAccessKeyResponse) Result() error {
+func (r DeleteAccountKeyResponse) Result() error {
 	return eCoalesce(r.JSON401, r.UndefinedError())
 }
 
 // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-func (r DeleteAccountAccessKeyResponse) UndefinedError() error {
+func (r DeleteAccountKeyResponse) UndefinedError() error {
 	if !isOKStatus(r.HTTPResponse.StatusCode) {
 		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
 	}
 	return nil
 }
 
-type ReadAccountAccessKeyResponse struct {
+type GetAccountKeyResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *AccountKeyResponseBody
@@ -1809,7 +1809,7 @@ type ReadAccountAccessKeyResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r ReadAccountAccessKeyResponse) Status() string {
+func (r GetAccountKeyResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1817,7 +1817,7 @@ func (r ReadAccountAccessKeyResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r ReadAccountAccessKeyResponse) StatusCode() int {
+func (r GetAccountKeyResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -1825,19 +1825,19 @@ func (r ReadAccountAccessKeyResponse) StatusCode() int {
 }
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-func (r ReadAccountAccessKeyResponse) Result() (*AccountKeyResponseBody, error) {
+func (r GetAccountKeyResponse) Result() (*AccountKeyResponseBody, error) {
 	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSONDefault, r.UndefinedError())
 }
 
 // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-func (r ReadAccountAccessKeyResponse) UndefinedError() error {
+func (r GetAccountKeyResponse) UndefinedError() error {
 	if !isOKStatus(r.HTTPResponse.StatusCode) {
 		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
 	}
 	return nil
 }
 
-type ListPermissionsResponse struct {
+type GetPermissionsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *PermissionsResponseBody
@@ -1846,7 +1846,7 @@ type ListPermissionsResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r ListPermissionsResponse) Status() string {
+func (r GetPermissionsResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1854,7 +1854,7 @@ func (r ListPermissionsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r ListPermissionsResponse) StatusCode() int {
+func (r GetPermissionsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -1862,12 +1862,12 @@ func (r ListPermissionsResponse) StatusCode() int {
 }
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-func (r ListPermissionsResponse) Result() (*PermissionsResponseBody, error) {
+func (r GetPermissionsResponse) Result() (*PermissionsResponseBody, error) {
 	return r.JSON200, eCoalesce(r.JSON401, r.JSONDefault, r.UndefinedError())
 }
 
 // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-func (r ListPermissionsResponse) UndefinedError() error {
+func (r GetPermissionsResponse) UndefinedError() error {
 	if !isOKStatus(r.HTTPResponse.StatusCode) {
 		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
 	}
@@ -1948,7 +1948,7 @@ func (r DeletePermissionResponse) UndefinedError() error {
 	return nil
 }
 
-type ReadPermissionResponse struct {
+type GetPermissionResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *PermissionResponseBody
@@ -1958,7 +1958,7 @@ type ReadPermissionResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r ReadPermissionResponse) Status() string {
+func (r GetPermissionResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -1966,7 +1966,7 @@ func (r ReadPermissionResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r ReadPermissionResponse) StatusCode() int {
+func (r GetPermissionResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -1974,12 +1974,12 @@ func (r ReadPermissionResponse) StatusCode() int {
 }
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-func (r ReadPermissionResponse) Result() (*PermissionResponseBody, error) {
+func (r GetPermissionResponse) Result() (*PermissionResponseBody, error) {
 	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSONDefault, r.UndefinedError())
 }
 
 // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-func (r ReadPermissionResponse) UndefinedError() error {
+func (r GetPermissionResponse) UndefinedError() error {
 	if !isOKStatus(r.HTTPResponse.StatusCode) {
 		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
 	}
@@ -2025,7 +2025,7 @@ func (r UpdatePermissionResponse) UndefinedError() error {
 	return nil
 }
 
-type ListPermissionAccessKeysResponse struct {
+type GetPermissionKeysResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *PermissionKeysResponseBody
@@ -2035,7 +2035,7 @@ type ListPermissionAccessKeysResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r ListPermissionAccessKeysResponse) Status() string {
+func (r GetPermissionKeysResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2043,7 +2043,7 @@ func (r ListPermissionAccessKeysResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r ListPermissionAccessKeysResponse) StatusCode() int {
+func (r GetPermissionKeysResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -2051,19 +2051,19 @@ func (r ListPermissionAccessKeysResponse) StatusCode() int {
 }
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-func (r ListPermissionAccessKeysResponse) Result() (*PermissionKeysResponseBody, error) {
+func (r GetPermissionKeysResponse) Result() (*PermissionKeysResponseBody, error) {
 	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSONDefault, r.UndefinedError())
 }
 
 // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-func (r ListPermissionAccessKeysResponse) UndefinedError() error {
+func (r GetPermissionKeysResponse) UndefinedError() error {
 	if !isOKStatus(r.HTTPResponse.StatusCode) {
 		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
 	}
 	return nil
 }
 
-type CreatePermissionAccessKeyResponse struct {
+type CreatePermissionKeyResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON201      *PermissionKeyResponseBody
@@ -2074,7 +2074,7 @@ type CreatePermissionAccessKeyResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r CreatePermissionAccessKeyResponse) Status() string {
+func (r CreatePermissionKeyResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2082,7 +2082,7 @@ func (r CreatePermissionAccessKeyResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r CreatePermissionAccessKeyResponse) StatusCode() int {
+func (r CreatePermissionKeyResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -2090,19 +2090,19 @@ func (r CreatePermissionAccessKeyResponse) StatusCode() int {
 }
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-func (r CreatePermissionAccessKeyResponse) Result() (*PermissionKeyResponseBody, error) {
+func (r CreatePermissionKeyResponse) Result() (*PermissionKeyResponseBody, error) {
 	return r.JSON201, eCoalesce(r.JSON401, r.JSON404, r.JSON409, r.JSONDefault, r.UndefinedError())
 }
 
 // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-func (r CreatePermissionAccessKeyResponse) UndefinedError() error {
+func (r CreatePermissionKeyResponse) UndefinedError() error {
 	if !isOKStatus(r.HTTPResponse.StatusCode) {
 		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
 	}
 	return nil
 }
 
-type DeletePermissionAccessKeyResponse struct {
+type DeletePermissionKeyResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON401      *Error401
@@ -2110,7 +2110,7 @@ type DeletePermissionAccessKeyResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r DeletePermissionAccessKeyResponse) Status() string {
+func (r DeletePermissionKeyResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2118,7 +2118,7 @@ func (r DeletePermissionAccessKeyResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r DeletePermissionAccessKeyResponse) StatusCode() int {
+func (r DeletePermissionKeyResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -2126,19 +2126,19 @@ func (r DeletePermissionAccessKeyResponse) StatusCode() int {
 }
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-func (r DeletePermissionAccessKeyResponse) Result() error {
+func (r DeletePermissionKeyResponse) Result() error {
 	return eCoalesce(r.JSON401, r.JSON404, r.UndefinedError())
 }
 
 // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-func (r DeletePermissionAccessKeyResponse) UndefinedError() error {
+func (r DeletePermissionKeyResponse) UndefinedError() error {
 	if !isOKStatus(r.HTTPResponse.StatusCode) {
 		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
 	}
 	return nil
 }
 
-type ReadPermissionAccessKeyResponse struct {
+type GetPermissionKeyResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *PermissionKeyResponseBody
@@ -2148,7 +2148,7 @@ type ReadPermissionAccessKeyResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r ReadPermissionAccessKeyResponse) Status() string {
+func (r GetPermissionKeyResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2156,7 +2156,7 @@ func (r ReadPermissionAccessKeyResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r ReadPermissionAccessKeyResponse) StatusCode() int {
+func (r GetPermissionKeyResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -2164,19 +2164,19 @@ func (r ReadPermissionAccessKeyResponse) StatusCode() int {
 }
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-func (r ReadPermissionAccessKeyResponse) Result() (*PermissionKeyResponseBody, error) {
+func (r GetPermissionKeyResponse) Result() (*PermissionKeyResponseBody, error) {
 	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSONDefault, r.UndefinedError())
 }
 
 // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-func (r ReadPermissionAccessKeyResponse) UndefinedError() error {
+func (r GetPermissionKeyResponse) UndefinedError() error {
 	if !isOKStatus(r.HTTPResponse.StatusCode) {
 		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
 	}
 	return nil
 }
 
-type ReadSiteStatusResponse struct {
+type GetStatusResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *StatusResponseBody
@@ -2185,7 +2185,7 @@ type ReadSiteStatusResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r ReadSiteStatusResponse) Status() string {
+func (r GetStatusResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2193,7 +2193,7 @@ func (r ReadSiteStatusResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r ReadSiteStatusResponse) StatusCode() int {
+func (r GetStatusResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -2201,12 +2201,12 @@ func (r ReadSiteStatusResponse) StatusCode() int {
 }
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-func (r ReadSiteStatusResponse) Result() (*StatusResponseBody, error) {
+func (r GetStatusResponse) Result() (*StatusResponseBody, error) {
 	return r.JSON200, eCoalesce(r.JSON401, r.JSONDefault, r.UndefinedError())
 }
 
 // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
-func (r ReadSiteStatusResponse) UndefinedError() error {
+func (r GetStatusResponse) UndefinedError() error {
 	if !isOKStatus(r.HTTPResponse.StatusCode) {
 		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
 	}
@@ -2247,94 +2247,94 @@ func (c *ClientWithResponses) CreateBucketWithResponse(ctx context.Context, buck
 	return ParseCreateBucketResponse(rsp)
 }
 
-// ListClustersWithResponse request returning *ListClustersResponse
-func (c *ClientWithResponses) ListClustersWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ListClustersResponse, error) {
-	rsp, err := c.ListClusters(ctx, reqEditors...)
+// GetClustersWithResponse request returning *GetClustersResponse
+func (c *ClientWithResponses) GetClustersWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetClustersResponse, error) {
+	rsp, err := c.GetClusters(ctx, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseListClustersResponse(rsp)
+	return ParseGetClustersResponse(rsp)
 }
 
-// ReadClusterWithResponse request returning *ReadClusterResponse
-func (c *ClientWithResponses) ReadClusterWithResponse(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*ReadClusterResponse, error) {
-	rsp, err := c.ReadCluster(ctx, siteId, reqEditors...)
+// GetClusterWithResponse request returning *GetClusterResponse
+func (c *ClientWithResponses) GetClusterWithResponse(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*GetClusterResponse, error) {
+	rsp, err := c.GetCluster(ctx, siteId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseReadClusterResponse(rsp)
+	return ParseGetClusterResponse(rsp)
 }
 
-// DeleteSiteAccountWithResponse request returning *DeleteSiteAccountResponse
-func (c *ClientWithResponses) DeleteSiteAccountWithResponse(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*DeleteSiteAccountResponse, error) {
-	rsp, err := c.DeleteSiteAccount(ctx, siteId, reqEditors...)
+// DeleteAccountWithResponse request returning *DeleteAccountResponse
+func (c *ClientWithResponses) DeleteAccountWithResponse(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*DeleteAccountResponse, error) {
+	rsp, err := c.DeleteAccount(ctx, siteId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseDeleteSiteAccountResponse(rsp)
+	return ParseDeleteAccountResponse(rsp)
 }
 
-// ReadSiteAccountWithResponse request returning *ReadSiteAccountResponse
-func (c *ClientWithResponses) ReadSiteAccountWithResponse(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*ReadSiteAccountResponse, error) {
-	rsp, err := c.ReadSiteAccount(ctx, siteId, reqEditors...)
+// GetAccountWithResponse request returning *GetAccountResponse
+func (c *ClientWithResponses) GetAccountWithResponse(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*GetAccountResponse, error) {
+	rsp, err := c.GetAccount(ctx, siteId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseReadSiteAccountResponse(rsp)
+	return ParseGetAccountResponse(rsp)
 }
 
-// CreateSiteAccountWithResponse request returning *CreateSiteAccountResponse
-func (c *ClientWithResponses) CreateSiteAccountWithResponse(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*CreateSiteAccountResponse, error) {
-	rsp, err := c.CreateSiteAccount(ctx, siteId, reqEditors...)
+// CreateAccountWithResponse request returning *CreateAccountResponse
+func (c *ClientWithResponses) CreateAccountWithResponse(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*CreateAccountResponse, error) {
+	rsp, err := c.CreateAccount(ctx, siteId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseCreateSiteAccountResponse(rsp)
+	return ParseCreateAccountResponse(rsp)
 }
 
-// ListAccountAccessKeysWithResponse request returning *ListAccountAccessKeysResponse
-func (c *ClientWithResponses) ListAccountAccessKeysWithResponse(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*ListAccountAccessKeysResponse, error) {
-	rsp, err := c.ListAccountAccessKeys(ctx, siteId, reqEditors...)
+// GetAccountKeysWithResponse request returning *GetAccountKeysResponse
+func (c *ClientWithResponses) GetAccountKeysWithResponse(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*GetAccountKeysResponse, error) {
+	rsp, err := c.GetAccountKeys(ctx, siteId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseListAccountAccessKeysResponse(rsp)
+	return ParseGetAccountKeysResponse(rsp)
 }
 
-// CreateAccountAccessKeyWithResponse request returning *CreateAccountAccessKeyResponse
-func (c *ClientWithResponses) CreateAccountAccessKeyWithResponse(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*CreateAccountAccessKeyResponse, error) {
-	rsp, err := c.CreateAccountAccessKey(ctx, siteId, reqEditors...)
+// CreateAccountKeyWithResponse request returning *CreateAccountKeyResponse
+func (c *ClientWithResponses) CreateAccountKeyWithResponse(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*CreateAccountKeyResponse, error) {
+	rsp, err := c.CreateAccountKey(ctx, siteId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseCreateAccountAccessKeyResponse(rsp)
+	return ParseCreateAccountKeyResponse(rsp)
 }
 
-// DeleteAccountAccessKeyWithResponse request returning *DeleteAccountAccessKeyResponse
-func (c *ClientWithResponses) DeleteAccountAccessKeyWithResponse(ctx context.Context, siteId string, accountKeyId AccessKeyID, reqEditors ...RequestEditorFn) (*DeleteAccountAccessKeyResponse, error) {
-	rsp, err := c.DeleteAccountAccessKey(ctx, siteId, accountKeyId, reqEditors...)
+// DeleteAccountKeyWithResponse request returning *DeleteAccountKeyResponse
+func (c *ClientWithResponses) DeleteAccountKeyWithResponse(ctx context.Context, siteId string, accountKeyId AccessKeyID, reqEditors ...RequestEditorFn) (*DeleteAccountKeyResponse, error) {
+	rsp, err := c.DeleteAccountKey(ctx, siteId, accountKeyId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseDeleteAccountAccessKeyResponse(rsp)
+	return ParseDeleteAccountKeyResponse(rsp)
 }
 
-// ReadAccountAccessKeyWithResponse request returning *ReadAccountAccessKeyResponse
-func (c *ClientWithResponses) ReadAccountAccessKeyWithResponse(ctx context.Context, siteId string, accountKeyId AccessKeyID, reqEditors ...RequestEditorFn) (*ReadAccountAccessKeyResponse, error) {
-	rsp, err := c.ReadAccountAccessKey(ctx, siteId, accountKeyId, reqEditors...)
+// GetAccountKeyWithResponse request returning *GetAccountKeyResponse
+func (c *ClientWithResponses) GetAccountKeyWithResponse(ctx context.Context, siteId string, accountKeyId AccessKeyID, reqEditors ...RequestEditorFn) (*GetAccountKeyResponse, error) {
+	rsp, err := c.GetAccountKey(ctx, siteId, accountKeyId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseReadAccountAccessKeyResponse(rsp)
+	return ParseGetAccountKeyResponse(rsp)
 }
 
-// ListPermissionsWithResponse request returning *ListPermissionsResponse
-func (c *ClientWithResponses) ListPermissionsWithResponse(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*ListPermissionsResponse, error) {
-	rsp, err := c.ListPermissions(ctx, siteId, reqEditors...)
+// GetPermissionsWithResponse request returning *GetPermissionsResponse
+func (c *ClientWithResponses) GetPermissionsWithResponse(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*GetPermissionsResponse, error) {
+	rsp, err := c.GetPermissions(ctx, siteId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseListPermissionsResponse(rsp)
+	return ParseGetPermissionsResponse(rsp)
 }
 
 // CreatePermissionWithBodyWithResponse request with arbitrary body returning *CreatePermissionResponse
@@ -2363,13 +2363,13 @@ func (c *ClientWithResponses) DeletePermissionWithResponse(ctx context.Context, 
 	return ParseDeletePermissionResponse(rsp)
 }
 
-// ReadPermissionWithResponse request returning *ReadPermissionResponse
-func (c *ClientWithResponses) ReadPermissionWithResponse(ctx context.Context, siteId string, permissionId PermissionID, reqEditors ...RequestEditorFn) (*ReadPermissionResponse, error) {
-	rsp, err := c.ReadPermission(ctx, siteId, permissionId, reqEditors...)
+// GetPermissionWithResponse request returning *GetPermissionResponse
+func (c *ClientWithResponses) GetPermissionWithResponse(ctx context.Context, siteId string, permissionId PermissionID, reqEditors ...RequestEditorFn) (*GetPermissionResponse, error) {
+	rsp, err := c.GetPermission(ctx, siteId, permissionId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseReadPermissionResponse(rsp)
+	return ParseGetPermissionResponse(rsp)
 }
 
 // UpdatePermissionWithBodyWithResponse request with arbitrary body returning *UpdatePermissionResponse
@@ -2389,49 +2389,49 @@ func (c *ClientWithResponses) UpdatePermissionWithResponse(ctx context.Context, 
 	return ParseUpdatePermissionResponse(rsp)
 }
 
-// ListPermissionAccessKeysWithResponse request returning *ListPermissionAccessKeysResponse
-func (c *ClientWithResponses) ListPermissionAccessKeysWithResponse(ctx context.Context, siteId string, permissionId PermissionID, reqEditors ...RequestEditorFn) (*ListPermissionAccessKeysResponse, error) {
-	rsp, err := c.ListPermissionAccessKeys(ctx, siteId, permissionId, reqEditors...)
+// GetPermissionKeysWithResponse request returning *GetPermissionKeysResponse
+func (c *ClientWithResponses) GetPermissionKeysWithResponse(ctx context.Context, siteId string, permissionId PermissionID, reqEditors ...RequestEditorFn) (*GetPermissionKeysResponse, error) {
+	rsp, err := c.GetPermissionKeys(ctx, siteId, permissionId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseListPermissionAccessKeysResponse(rsp)
+	return ParseGetPermissionKeysResponse(rsp)
 }
 
-// CreatePermissionAccessKeyWithResponse request returning *CreatePermissionAccessKeyResponse
-func (c *ClientWithResponses) CreatePermissionAccessKeyWithResponse(ctx context.Context, siteId string, permissionId PermissionID, reqEditors ...RequestEditorFn) (*CreatePermissionAccessKeyResponse, error) {
-	rsp, err := c.CreatePermissionAccessKey(ctx, siteId, permissionId, reqEditors...)
+// CreatePermissionKeyWithResponse request returning *CreatePermissionKeyResponse
+func (c *ClientWithResponses) CreatePermissionKeyWithResponse(ctx context.Context, siteId string, permissionId PermissionID, reqEditors ...RequestEditorFn) (*CreatePermissionKeyResponse, error) {
+	rsp, err := c.CreatePermissionKey(ctx, siteId, permissionId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseCreatePermissionAccessKeyResponse(rsp)
+	return ParseCreatePermissionKeyResponse(rsp)
 }
 
-// DeletePermissionAccessKeyWithResponse request returning *DeletePermissionAccessKeyResponse
-func (c *ClientWithResponses) DeletePermissionAccessKeyWithResponse(ctx context.Context, siteId string, permissionId PermissionID, permissionKeyId AccessKeyID, reqEditors ...RequestEditorFn) (*DeletePermissionAccessKeyResponse, error) {
-	rsp, err := c.DeletePermissionAccessKey(ctx, siteId, permissionId, permissionKeyId, reqEditors...)
+// DeletePermissionKeyWithResponse request returning *DeletePermissionKeyResponse
+func (c *ClientWithResponses) DeletePermissionKeyWithResponse(ctx context.Context, siteId string, permissionId PermissionID, permissionKeyId AccessKeyID, reqEditors ...RequestEditorFn) (*DeletePermissionKeyResponse, error) {
+	rsp, err := c.DeletePermissionKey(ctx, siteId, permissionId, permissionKeyId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseDeletePermissionAccessKeyResponse(rsp)
+	return ParseDeletePermissionKeyResponse(rsp)
 }
 
-// ReadPermissionAccessKeyWithResponse request returning *ReadPermissionAccessKeyResponse
-func (c *ClientWithResponses) ReadPermissionAccessKeyWithResponse(ctx context.Context, siteId string, permissionId PermissionID, permissionKeyId AccessKeyID, reqEditors ...RequestEditorFn) (*ReadPermissionAccessKeyResponse, error) {
-	rsp, err := c.ReadPermissionAccessKey(ctx, siteId, permissionId, permissionKeyId, reqEditors...)
+// GetPermissionKeyWithResponse request returning *GetPermissionKeyResponse
+func (c *ClientWithResponses) GetPermissionKeyWithResponse(ctx context.Context, siteId string, permissionId PermissionID, permissionKeyId AccessKeyID, reqEditors ...RequestEditorFn) (*GetPermissionKeyResponse, error) {
+	rsp, err := c.GetPermissionKey(ctx, siteId, permissionId, permissionKeyId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseReadPermissionAccessKeyResponse(rsp)
+	return ParseGetPermissionKeyResponse(rsp)
 }
 
-// ReadSiteStatusWithResponse request returning *ReadSiteStatusResponse
-func (c *ClientWithResponses) ReadSiteStatusWithResponse(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*ReadSiteStatusResponse, error) {
-	rsp, err := c.ReadSiteStatus(ctx, siteId, reqEditors...)
+// GetStatusWithResponse request returning *GetStatusResponse
+func (c *ClientWithResponses) GetStatusWithResponse(ctx context.Context, siteId string, reqEditors ...RequestEditorFn) (*GetStatusResponse, error) {
+	rsp, err := c.GetStatus(ctx, siteId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseReadSiteStatusResponse(rsp)
+	return ParseGetStatusResponse(rsp)
 }
 
 // ParseDeleteBucketResponse parses an HTTP response from a DeleteBucketWithResponse call
@@ -2514,15 +2514,15 @@ func ParseCreateBucketResponse(rsp *http.Response) (*CreateBucketResponse, error
 	return response, nil
 }
 
-// ParseListClustersResponse parses an HTTP response from a ListClustersWithResponse call
-func ParseListClustersResponse(rsp *http.Response) (*ListClustersResponse, error) {
+// ParseGetClustersResponse parses an HTTP response from a GetClustersWithResponse call
+func ParseGetClustersResponse(rsp *http.Response) (*GetClustersResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &ListClustersResponse{
+	response := &GetClustersResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2547,15 +2547,15 @@ func ParseListClustersResponse(rsp *http.Response) (*ListClustersResponse, error
 	return response, nil
 }
 
-// ParseReadClusterResponse parses an HTTP response from a ReadClusterWithResponse call
-func ParseReadClusterResponse(rsp *http.Response) (*ReadClusterResponse, error) {
+// ParseGetClusterResponse parses an HTTP response from a GetClusterWithResponse call
+func ParseGetClusterResponse(rsp *http.Response) (*GetClusterResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &ReadClusterResponse{
+	response := &GetClusterResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2587,15 +2587,15 @@ func ParseReadClusterResponse(rsp *http.Response) (*ReadClusterResponse, error) 
 	return response, nil
 }
 
-// ParseDeleteSiteAccountResponse parses an HTTP response from a DeleteSiteAccountWithResponse call
-func ParseDeleteSiteAccountResponse(rsp *http.Response) (*DeleteSiteAccountResponse, error) {
+// ParseDeleteAccountResponse parses an HTTP response from a DeleteAccountWithResponse call
+func ParseDeleteAccountResponse(rsp *http.Response) (*DeleteAccountResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &DeleteSiteAccountResponse{
+	response := &DeleteAccountResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2620,15 +2620,15 @@ func ParseDeleteSiteAccountResponse(rsp *http.Response) (*DeleteSiteAccountRespo
 	return response, nil
 }
 
-// ParseReadSiteAccountResponse parses an HTTP response from a ReadSiteAccountWithResponse call
-func ParseReadSiteAccountResponse(rsp *http.Response) (*ReadSiteAccountResponse, error) {
+// ParseGetAccountResponse parses an HTTP response from a GetAccountWithResponse call
+func ParseGetAccountResponse(rsp *http.Response) (*GetAccountResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &ReadSiteAccountResponse{
+	response := &GetAccountResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2667,15 +2667,15 @@ func ParseReadSiteAccountResponse(rsp *http.Response) (*ReadSiteAccountResponse,
 	return response, nil
 }
 
-// ParseCreateSiteAccountResponse parses an HTTP response from a CreateSiteAccountWithResponse call
-func ParseCreateSiteAccountResponse(rsp *http.Response) (*CreateSiteAccountResponse, error) {
+// ParseCreateAccountResponse parses an HTTP response from a CreateAccountWithResponse call
+func ParseCreateAccountResponse(rsp *http.Response) (*CreateAccountResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &CreateSiteAccountResponse{
+	response := &CreateAccountResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2721,15 +2721,15 @@ func ParseCreateSiteAccountResponse(rsp *http.Response) (*CreateSiteAccountRespo
 	return response, nil
 }
 
-// ParseListAccountAccessKeysResponse parses an HTTP response from a ListAccountAccessKeysWithResponse call
-func ParseListAccountAccessKeysResponse(rsp *http.Response) (*ListAccountAccessKeysResponse, error) {
+// ParseGetAccountKeysResponse parses an HTTP response from a GetAccountKeysWithResponse call
+func ParseGetAccountKeysResponse(rsp *http.Response) (*GetAccountKeysResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &ListAccountAccessKeysResponse{
+	response := &GetAccountKeysResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2768,15 +2768,15 @@ func ParseListAccountAccessKeysResponse(rsp *http.Response) (*ListAccountAccessK
 	return response, nil
 }
 
-// ParseCreateAccountAccessKeyResponse parses an HTTP response from a CreateAccountAccessKeyWithResponse call
-func ParseCreateAccountAccessKeyResponse(rsp *http.Response) (*CreateAccountAccessKeyResponse, error) {
+// ParseCreateAccountKeyResponse parses an HTTP response from a CreateAccountKeyWithResponse call
+func ParseCreateAccountKeyResponse(rsp *http.Response) (*CreateAccountKeyResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &CreateAccountAccessKeyResponse{
+	response := &CreateAccountKeyResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2822,15 +2822,15 @@ func ParseCreateAccountAccessKeyResponse(rsp *http.Response) (*CreateAccountAcce
 	return response, nil
 }
 
-// ParseDeleteAccountAccessKeyResponse parses an HTTP response from a DeleteAccountAccessKeyWithResponse call
-func ParseDeleteAccountAccessKeyResponse(rsp *http.Response) (*DeleteAccountAccessKeyResponse, error) {
+// ParseDeleteAccountKeyResponse parses an HTTP response from a DeleteAccountKeyWithResponse call
+func ParseDeleteAccountKeyResponse(rsp *http.Response) (*DeleteAccountKeyResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &DeleteAccountAccessKeyResponse{
+	response := &DeleteAccountKeyResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2848,15 +2848,15 @@ func ParseDeleteAccountAccessKeyResponse(rsp *http.Response) (*DeleteAccountAcce
 	return response, nil
 }
 
-// ParseReadAccountAccessKeyResponse parses an HTTP response from a ReadAccountAccessKeyWithResponse call
-func ParseReadAccountAccessKeyResponse(rsp *http.Response) (*ReadAccountAccessKeyResponse, error) {
+// ParseGetAccountKeyResponse parses an HTTP response from a GetAccountKeyWithResponse call
+func ParseGetAccountKeyResponse(rsp *http.Response) (*GetAccountKeyResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &ReadAccountAccessKeyResponse{
+	response := &GetAccountKeyResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -2895,15 +2895,15 @@ func ParseReadAccountAccessKeyResponse(rsp *http.Response) (*ReadAccountAccessKe
 	return response, nil
 }
 
-// ParseListPermissionsResponse parses an HTTP response from a ListPermissionsWithResponse call
-func ParseListPermissionsResponse(rsp *http.Response) (*ListPermissionsResponse, error) {
+// ParseGetPermissionsResponse parses an HTTP response from a GetPermissionsWithResponse call
+func ParseGetPermissionsResponse(rsp *http.Response) (*GetPermissionsResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &ListPermissionsResponse{
+	response := &GetPermissionsResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -3015,15 +3015,15 @@ func ParseDeletePermissionResponse(rsp *http.Response) (*DeletePermissionRespons
 	return response, nil
 }
 
-// ParseReadPermissionResponse parses an HTTP response from a ReadPermissionWithResponse call
-func ParseReadPermissionResponse(rsp *http.Response) (*ReadPermissionResponse, error) {
+// ParseGetPermissionResponse parses an HTTP response from a GetPermissionWithResponse call
+func ParseGetPermissionResponse(rsp *http.Response) (*GetPermissionResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &ReadPermissionResponse{
+	response := &GetPermissionResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -3116,15 +3116,15 @@ func ParseUpdatePermissionResponse(rsp *http.Response) (*UpdatePermissionRespons
 	return response, nil
 }
 
-// ParseListPermissionAccessKeysResponse parses an HTTP response from a ListPermissionAccessKeysWithResponse call
-func ParseListPermissionAccessKeysResponse(rsp *http.Response) (*ListPermissionAccessKeysResponse, error) {
+// ParseGetPermissionKeysResponse parses an HTTP response from a GetPermissionKeysWithResponse call
+func ParseGetPermissionKeysResponse(rsp *http.Response) (*GetPermissionKeysResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &ListPermissionAccessKeysResponse{
+	response := &GetPermissionKeysResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -3163,15 +3163,15 @@ func ParseListPermissionAccessKeysResponse(rsp *http.Response) (*ListPermissionA
 	return response, nil
 }
 
-// ParseCreatePermissionAccessKeyResponse parses an HTTP response from a CreatePermissionAccessKeyWithResponse call
-func ParseCreatePermissionAccessKeyResponse(rsp *http.Response) (*CreatePermissionAccessKeyResponse, error) {
+// ParseCreatePermissionKeyResponse parses an HTTP response from a CreatePermissionKeyWithResponse call
+func ParseCreatePermissionKeyResponse(rsp *http.Response) (*CreatePermissionKeyResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &CreatePermissionAccessKeyResponse{
+	response := &CreatePermissionKeyResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -3217,15 +3217,15 @@ func ParseCreatePermissionAccessKeyResponse(rsp *http.Response) (*CreatePermissi
 	return response, nil
 }
 
-// ParseDeletePermissionAccessKeyResponse parses an HTTP response from a DeletePermissionAccessKeyWithResponse call
-func ParseDeletePermissionAccessKeyResponse(rsp *http.Response) (*DeletePermissionAccessKeyResponse, error) {
+// ParseDeletePermissionKeyResponse parses an HTTP response from a DeletePermissionKeyWithResponse call
+func ParseDeletePermissionKeyResponse(rsp *http.Response) (*DeletePermissionKeyResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &DeletePermissionAccessKeyResponse{
+	response := &DeletePermissionKeyResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -3250,15 +3250,15 @@ func ParseDeletePermissionAccessKeyResponse(rsp *http.Response) (*DeletePermissi
 	return response, nil
 }
 
-// ParseReadPermissionAccessKeyResponse parses an HTTP response from a ReadPermissionAccessKeyWithResponse call
-func ParseReadPermissionAccessKeyResponse(rsp *http.Response) (*ReadPermissionAccessKeyResponse, error) {
+// ParseGetPermissionKeyResponse parses an HTTP response from a GetPermissionKeyWithResponse call
+func ParseGetPermissionKeyResponse(rsp *http.Response) (*GetPermissionKeyResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &ReadPermissionAccessKeyResponse{
+	response := &GetPermissionKeyResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -3297,15 +3297,15 @@ func ParseReadPermissionAccessKeyResponse(rsp *http.Response) (*ReadPermissionAc
 	return response, nil
 }
 
-// ParseReadSiteStatusResponse parses an HTTP response from a ReadSiteStatusWithResponse call
-func ParseReadSiteStatusResponse(rsp *http.Response) (*ReadSiteStatusResponse, error) {
+// ParseGetStatusResponse parses an HTTP response from a GetStatusWithResponse call
+func ParseGetStatusResponse(rsp *http.Response) (*GetStatusResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &ReadSiteStatusResponse{
+	response := &GetStatusResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

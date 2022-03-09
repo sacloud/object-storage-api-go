@@ -41,7 +41,7 @@ type PermissionAPI interface {
 	// ReadAccessKey アクセスキーの参照
 	//
 	// Secretは常に空文字になっている
-	ReadAccessKey(ctx context.Context, siteId string, permissonId int64, accessKeyId string) (*v1.PermissionKey, error)
+	ReadAccessKey(ctx context.Context, siteId string, permissionId int64, accessKeyId string) (*v1.PermissionKey, error)
 	// DeleteAccessKey アクセスキーの削除
 	DeleteAccessKey(ctx context.Context, siteId string, permissionId int64, accessKeyId string) error
 }
@@ -58,7 +58,7 @@ func NewPermissionOp(client *Client) PermissionAPI {
 }
 
 func (op *permissionOp) List(ctx context.Context, siteId string) ([]*v1.Permission, error) {
-	resp, err := op.client.apiClient().ListPermissionsWithResponse(ctx, siteId)
+	resp, err := op.client.apiClient().GetPermissionsWithResponse(ctx, siteId)
 	if err != nil {
 		return nil, err
 	}
@@ -86,7 +86,7 @@ func (op *permissionOp) Create(ctx context.Context, siteId string, params *v1.Cr
 }
 
 func (op *permissionOp) Read(ctx context.Context, siteId string, permissionId int64) (*v1.Permission, error) {
-	resp, err := op.client.apiClient().ReadPermissionWithResponse(ctx, siteId, v1.PermissionID(permissionId))
+	resp, err := op.client.apiClient().GetPermissionWithResponse(ctx, siteId, v1.PermissionID(permissionId))
 	if err != nil {
 		return nil, err
 	}
@@ -119,7 +119,7 @@ func (op *permissionOp) Delete(ctx context.Context, siteId string, permissionId 
 }
 
 func (op *permissionOp) ListAccessKeys(ctx context.Context, siteId string, permissionId int64) ([]*v1.PermissionKey, error) {
-	resp, err := op.client.apiClient().ListPermissionAccessKeysWithResponse(ctx, siteId, v1.PermissionID(permissionId))
+	resp, err := op.client.apiClient().GetPermissionKeysWithResponse(ctx, siteId, v1.PermissionID(permissionId))
 	if err != nil {
 		return nil, err
 	}
@@ -135,7 +135,7 @@ func (op *permissionOp) ListAccessKeys(ctx context.Context, siteId string, permi
 }
 
 func (op *permissionOp) CreateAccessKey(ctx context.Context, siteId string, permissionId int64) (*v1.PermissionKey, error) {
-	resp, err := op.client.apiClient().CreatePermissionAccessKeyWithResponse(ctx, siteId, v1.PermissionID(permissionId))
+	resp, err := op.client.apiClient().CreatePermissionKeyWithResponse(ctx, siteId, v1.PermissionID(permissionId))
 	if err != nil {
 		return nil, err
 	}
@@ -147,7 +147,7 @@ func (op *permissionOp) CreateAccessKey(ctx context.Context, siteId string, perm
 }
 
 func (op *permissionOp) ReadAccessKey(ctx context.Context, siteId string, permissionId int64, accessKeyId string) (*v1.PermissionKey, error) {
-	resp, err := op.client.apiClient().ReadPermissionAccessKeyWithResponse(ctx, siteId,
+	resp, err := op.client.apiClient().GetPermissionKeyWithResponse(ctx, siteId,
 		v1.PermissionID(permissionId), v1.AccessKeyID(accessKeyId))
 	if err != nil {
 		return nil, err
@@ -160,7 +160,7 @@ func (op *permissionOp) ReadAccessKey(ctx context.Context, siteId string, permis
 }
 
 func (op *permissionOp) DeleteAccessKey(ctx context.Context, siteId string, permissionId int64, accessKeyId string) error {
-	resp, err := op.client.apiClient().DeletePermissionAccessKeyWithResponse(ctx, siteId,
+	resp, err := op.client.apiClient().DeletePermissionKeyWithResponse(ctx, siteId,
 		v1.PermissionID(permissionId), v1.AccessKeyID(accessKeyId))
 	if err != nil {
 		return err

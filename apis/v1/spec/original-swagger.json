@@ -3,6 +3,9 @@
   "info": {
     "version": "1.0.0",
     "title": "さくらのオブジェクトストレージ APIドキュメント",
+    "contact": {
+      "name": "SAKURA internet Inc."
+    },
     "license": {
       "name": "Copyright(C) 2021 SAKURA internet Inc. all rights reserved."
     },
@@ -10,11 +13,12 @@
       "url": "logo.svg",
       "altText": "さくらのオブジェクトストレージ：APIドキュメント"
     },
-    "description": "\n---\n\n「さくらのオブジェクトストレージ」が提供するAPIの利用方法とサンプルを公開しております。\n\n# 基本的な使い方\n\n## APIキーの発行\n\nAPIを利用するためには、認証のための「APIキー」が必要です。事前にキーを発行しておきます。\nAPIキーは「ユーザーID」「パスワード」に相当する「トークン」と呼ばれる認証情報で構成されています。\n\n|   項目名   | APIキー発行時の項目名        | このドキュメント内での例             |\n|------------|------------------------------|--------------------------------------|\n| ユーザーID | アクセストークン(UUID)       | 01234567-89ab-cdef-0123-456789abcdef |\n| パスワード | アクセストークンシークレット | SAMPLETOKENSAMPLETOKENSAMPLETOKENSAM |\n\n<div class=\"warning\">\n<b>操作マニュアル</b><br />\n<ul><li><a href=\"https://manual.sakura.ad.jp/cloud/api/apikey.html\">APIキー | さくらのクラウド ドキュメント</a></li></ul>\n</div>\n\n## 入力パラメータ\n\nAPIの入力には送信先URLに対して、いくつかのヘッダーとAPIキーを送信します。\n\n* APIのURLは以下の2つが存在します。※ 各APIの使い分けは後述します。\n  * `https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/fed/v1/(エンドポイント)`\n  * `https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/（サイト名）/v2/(エンドポイント)`\n* 認証方式はHTTP Basic認証です。APIキーのアクセストークンをユーザーID、アクセストークンシークレットをパスワードとして指定します。\n\n```\n# 入力サンプル\ncurl -u '01234567-89ab-cdef-0123-456789abcdef:SAMPLETOKENSAMPLETOKENSAMPLETOKENSAM' \\\n     'https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/fed/v1/clusters'\n```\n\n## 出力結果と応答コード（HTTPステータスコード）\n\nAPIからの結果は、「応答コード（HTTPステータスコード）」と、「JSON形式(UTF-8)の結果」として出力されます。\n\n応答コードは、リクエストが成功したのか、失敗したのか大まかな情報を判断することができるもので、例えば失敗したときには、なぜこのような結果になったのかなど、具体的な情報は応答コードと主に返された本文を見ることで把握することができます。\n\n| 結果                                | 応答コード/status   |\n|-------------------------------------|---------------------|\n| 成功（要求を受け付けた）             | 2xx                 |\n| 失敗（要求が受け付けられなかった）  | 4xx, 5xx            |\n\n```\n# 出力結果サンプル（レスポンスヘッダ）\nHTTP/1.1 200 OK\nServer: nginx\nDate: Tue, 16 Nov 2021 12:39:48 GMT\nContent-Type: application/json; charset=UTF-8\nContent-Length: 443\nConnection: keep-alive\nStatus: 200 OK\nPragma: no-cache\nCache-Control: no-cache\nX-Sakura-Proxy-Microtime: 66245\nX-Sakura-Proxy-Decode-Microtime: 62\nX-Sakura-Content-Length: 443\nX-Sakura-Serial: 86ab6c743f72aa5ea6f17e254fd5f803\nX-Content-Type-Options: nosniff\nX-XSS-Protection: 1; mode=block\nX-Frame-Options: DENY\nX-Sakura-Encode-Microtime: 260\nVary: Accept-Encoding\n```\n\n```\n# 出力結果サンプル（レスポンスボディー）\n{\n  \"error\": {\n    \"code\": 404,\n    \"errors\": [\n      {\n        \"domain\": \"fed.objectstorage.sacloud\",\n        \"location\": \"clusters\",\n        \"location_type\": \"path_parameter\",\n        \"message\": \"Cluster was not found\",\n        \"reason\": \"not_found\"\n      }\n    ],\n    \"message\": \"Cluster was not found\",\n    \"trace_id\": \"0f36837633984f3fc8871f515e8efa24\"\n  }\n}\n```\n\n# 利用例\n\n## 1.接続先サイト一覧の取得\n\nさくらのオブジェクトストレージを利用するには、まずバケット作成先となる**サイト**を取得・選択します。\n\nサイト一覧を取得するには、以下のような入力を行います。\n\n```\n# 入力サンプル\ncurl -u '01234567-89ab-cdef-0123-456789abcdef:SAMPLETOKENSAMPLETOKENSAMPLETOKENSAM' \\\n     'https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/fed/v1/clusters'\n```\n\n実行結果として、サイトのリストが返却されます。\n\n```\n# 出力結果サンプル\n{\n  \"data\": [\n    {\n      \"api_zone\": [],\n      \"control_panel_url\": \"https://secure.sakura.ad.jp/objectstorage/\",\n      \"dislpay_name_en_us\": \"Ishikari Site #1\",\n      \"dislpay_name_ja\": \"石狩第1サイト\",\n      \"display_name\": \"石狩第1サイト\",\n      \"display_order\": 1,\n      \"endpoint_base\": \"isk01.sakurastorage.jp\",\n      \"id\": \"isk01\",\n      \"s3_endpoint\": \"s3.isk01.sakurastorage.jp\",\n      \"s3_endpoint_for_control_panel\": \"s3.cp.isk01.sakurastorage.jp\",\n      \"storage_zone\": []\n    }\n  ]\n}\n```\n\n得られたサイトID（上記の`id`フィールド）を確認します。これは後続の利用例で使用します。\n\n## 2.サイトアカウントの作成\n\n上記のサイトから利用したいサイトIDを選択し（ここではisk01を選択することにします）、**サイトアカウント**を作成します。\n\nサイトアカウントとは、サイトを利用するための独立したアカウントであり、サイトアカウント作成・削除による料金の発生はございません。\nなお、すでにサイトアカウントを作成済みの場合は、再度サイトアカウントの作成は不要です。\n\nサイトアカウントを作成するには以下のような入力を行います。\n\n```\n# 入力サンプル\ncurl -u '01234567-89ab-cdef-0123-456789abcdef:SAMPLETOKENSAMPLETOKENSAMPLETOKENSAM' \\\n     -X POST \\\n     https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/isk01/v2/account\n```\n\nサイトアカウントの作成が完了すると、選択したサイトにて\n\n* バケットの作成・削除\n* アクセスキーの発行・削除\n* パーミッションキーの発行・削除\n\nなどの操作が可能になります。\n\n## 3.バケットの作成・削除\n\n選択したサイトにてサイトアカウントを作成後、**バケット**の作成・削除が可能です。\n\nバケットを作成するには以下のような入力を行います。    \nこの時、選択したサイト（ここではisk01とします）をリクエストボディーに入れ、作成したいバケット名をパスパラメータに入れる必要があります。\n\n```\n# 入力サンプル\ncurl -u '01234567-89ab-cdef-0123-456789abcdef:SAMPLETOKENSAMPLETOKENSAMPLETOKENSAM' \\\n     -X PUT \\\n     -d '{\"cluster_id\": \"isk01\"}' \\\n     https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/fed/v1/buckets/sample\n```\n\n上記で作成したバケットを削除するには以下のような入力を行います。\n\n```\n# 入力サンプル\ncurl -u '01234567-89ab-cdef-0123-456789abcdef:SAMPLETOKENSAMPLETOKENSAMPLETOKENSAM' \\\n     -X DELETE \\\n     -d '{\"cluster_id\": \"isk01\"}' \\\n     https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/fed/v1/buckets/sample\n```\n\n## 4.アクセスキーの発行・削除\n\n選択したサイトにてサイトアカウントを作成後、**アクセスキー**の発行・削除が可能です。\n\nアクセスキーを発行するには以下のような入力を行います。    \n\n```\n# 入力サンプル\ncurl -u '01234567-89ab-cdef-0123-456789abcdef:SAMPLETOKENSAMPLETOKENSAMPLETOKENSAM' \\\n     -X POST \\\n     https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/isk01/v2/account/keys\n```\n\nコマンド結果には以下のフィールドが含まれます。\n\n* `created_at` : 作成日時\n* `id` : アクセスキーID\n* `secret` : シークレットアクセスキー\n\n```\n# 出力結果サンプル\n{\n  \"data\": {\n    \"created_at\": \"2021-11-04T07:42:41.121418479Z\",\n    \"id\": \"XPJK4SC9883N91RHR253\",\n    \"secret\": \"jqRaUo5l+EiEYqP8wos9exbmFfq4/vG8CLPYI2XN\"\n  }\n}\n```\n\n上記で作成したアクセスキーを削除するには以下のような入力を行います。    \nこの時、削除したいアクセスキーIDをパスパラメータに入れる必要があります。\n\n```\n# 入力サンプル\ncurl -u '01234567-89ab-cdef-0123-456789abcdef:SAMPLETOKENSAMPLETOKENSAMPLETOKENSAM' \\\n     -X DELETE \\\n     https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/isk01/v2/account/keys/XPJK4SC9883N91RHR253\n```\n\n## 5.パーミッション及びパーミッションアクセスキーの発行・削除\n\n選択したサイトにてサイトアカウントを作成後且つバケットが1つ以上ある場合、**パーミッション**の発行・削除が可能です。\n\nパーミッションを作成するには以下のような入力を行います。\nこの時、パーミッション名、パーミッションで制御したいバケットとそれに対する操作をリクエストボディーに入れる必要があります。\n\n```\n# 入力サンプル\ncurl -u '01234567-89ab-cdef-0123-456789abcdef:SAMPLETOKENSAMPLETOKENSAMPLETOKENSAM' \\\n     -X POST \\\n     -d '{\"display_name\": \"sample_permission\", \"bucket_controls\": [{\"bucket_name\": \"sample\", \"can_read\": true, \"can_write\": true}]}' \\\n     https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/isk01/v2/permissions\n```\n\n作成が完了すると、パーミッションIDが含まれたレスポンスを受け取ります。\n```\n# 出力サンプル\n{\n  \"data\":{\n    \"bucket_controls\":[\n      {\n        \"bucket_name\":\"sample\",\n        \"can_read\":true,\n        \"can_write\":true,\n        \"created_at\":\"2021-11-11T13:36:08.767118492Z\"\n      }\n    ],\n    \"created_at\":\"2021-11-11T13:36:08.690384415Z\",\n    \"display_name\":\"sample_permission\",\n    \"id\":619\n  }\n}\n```\n\nこのパーミッションのアクセスキーを発行するには以下のような入力を行います。\nこの時、パーミッション作成時に発行されたID（ここでは619とします）をパスパラメータに含める必要があります。\n\n```\n# 入力サンプル\ncurl -u '01234567-89ab-cdef-0123-456789abcdef:SAMPLETOKENSAMPLETOKENSAMPLETOKENSAM' \\\n     -X POST \\\n     https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/isk01/v2/permissions/619/keys\n```\n\nコマンド結果には以下のフィールドが含まれます。\n\n* `created_at` : 作成日時\n* `id` : アクセスキーID\n* `secret` : シークレットアクセスキー\n\n```\n# 出力結果サンプル\n{\n  \"data\": {\n    \"created_at\": \"2021-11-04T07:42:41.121418479Z\",\n    \"id\": \"XPJK4SC9883N91RHR253\",\n    \"secret\": \"jqRaUo5l+EiEYqP8wos9exbmFfq4/vG8CLPYI2XN\"\n  }\n}\n```\n\nパーミッションアクセスキーを削除するには以下のような入力を行います。\nこの時、パーミッションアクセスキー発行時に出力されたIDをパスパラメータに含める必要があります。\n```\n# 入力サンプル\ncurl -u '01234567-89ab-cdef-0123-456789abcdef:SAMPLETOKENSAMPLETOKENSAMPLETOKENSAM' \\\n     -X DELETE \\\n     https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/isk01/v2/permissions/619/keys/XPJK4SC9883N91RHR253\n```\n\nパーミッションを削除するには以下のような入力を行います。\nこの時、パーミッション作成時に発行されたID（ここでは619とします）をパスパラメータに含める必要があります。\n```\n# 入力サンプル\ncurl -u '01234567-89ab-cdef-0123-456789abcdef:SAMPLETOKENSAMPLETOKENSAMPLETOKENSAM' \\\n     -X DELETE \\\n     https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/isk01/v2/permissions/619\n```\n----\n\n# Authentication\n\n<!-- ReDoc-Inject: <security-definitions> -->"
+    "description": "\n---\n\n「さくらのオブジェクトストレージ」が提供するAPIの利用方法とサンプルを公開しております。\n\n# 基本的な使い方\n\n## APIキーの発行\n\nAPIを利用するためには、認証のための「APIキー」が必要です。事前にキーを発行しておきます。\nAPIキーは「ユーザーID」「パスワード」に相当する「トークン」と呼ばれる認証情報で構成されています。\n\n|   項目名   | APIキー発行時の項目名        | このドキュメント内での例             |\n|------------|------------------------------|--------------------------------------|\n| ユーザーID | アクセストークン(UUID)       | 01234567-89ab-cdef-0123-456789abcdef |\n| パスワード | アクセストークンシークレット | SAMPLETOKENSAMPLETOKENSAMPLETOKENSAM |\n\n<div class=\"warning\">\n<b>操作マニュアル</b><br />\n<ul><li><a href=\"https://manual.sakura.ad.jp/cloud/api/apikey.html\">APIキー | さくらのクラウド ドキュメント</a></li></ul>\n</div>\n\n## 入力パラメータ\n\nAPIの入力には送信先URLに対して、いくつかのヘッダーとAPIキーを送信します。\n\n* APIのURLは以下の2つが存在します。※ 各APIの使い分けは後述します。\n  * `https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/fed/v1/(エンドポイント)`\n  * `https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/（サイト名）/v2/(エンドポイント)`\n* 認証方式はHTTP Basic認証です。APIキーのアクセストークンをユーザーID、アクセストークンシークレットをパスワードとして指定します。\n\n```\n# 入力サンプル\ncurl -u '01234567-89ab-cdef-0123-456789abcdef:SAMPLETOKENSAMPLETOKENSAMPLETOKENSAM' \\\n     'https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/fed/v1/clusters'\n```\n\n## 出力結果と応答コード（HTTPステータスコード）\n\nAPIからの結果は、「応答コード（HTTPステータスコード）」と、「JSON形式(UTF-8)の結果」として出力されます。\n\n応答コードは、リクエストが成功したのか、失敗したのか大まかな情報を判断することができるもので、例えば失敗したときには、なぜこのような結果になったのかなど、具体的な情報は応答コードと主に返された本文を見ることで把握することができます。\n\n| 結果                                | 応答コード/status   |\n|-------------------------------------|---------------------|\n| 成功（要求を受け付けた）             | 2xx                 |\n| 失敗（要求が受け付けられなかった）  | 4xx, 5xx            |\n\n```\n# 出力結果サンプル（レスポンスヘッダ）\nHTTP/1.1 200 OK\nServer: nginx\nDate: Tue, 16 Nov 2021 12:39:48 GMT\nContent-Type: application/json; charset=UTF-8\nContent-Length: 443\nConnection: keep-alive\nStatus: 200 OK\nPragma: no-cache\nCache-Control: no-cache\nX-Sakura-Proxy-Microtime: 66245\nX-Sakura-Proxy-Decode-Microtime: 62\nX-Sakura-Content-Length: 443\nX-Sakura-Serial: 86ab6c743f72aa5ea6f17e254fd5f803\nX-Content-Type-Options: nosniff\nX-XSS-Protection: 1; mode=block\nX-Frame-Options: DENY\nX-Sakura-Encode-Microtime: 260\nVary: Accept-Encoding\n```\n\n```\n# 出力結果サンプル（レスポンスボディー）\n{\n  \"error\": {\n    \"code\": 404,\n    \"errors\": [\n      {\n        \"domain\": \"fed.objectstorage.sacloud\",\n        \"location\": \"clusters\",\n        \"location_type\": \"path_parameter\",\n        \"message\": \"Cluster was not found\",\n        \"reason\": \"not_found\"\n      }\n    ],\n    \"message\": \"Cluster was not found\",\n    \"trace_id\": \"0f36837633984f3fc8871f515e8efa24\"\n  }\n}\n```\n\n# 利用例\n\n## 1.接続先サイト一覧の取得\n\nさくらのオブジェクトストレージを利用するには、まずバケット作成先となる**サイト**を取得・選択します。\n\nサイト一覧を取得するには、以下のような入力を行います。\n\n```\n# 入力サンプル\ncurl -u '01234567-89ab-cdef-0123-456789abcdef:SAMPLETOKENSAMPLETOKENSAMPLETOKENSAM' \\\n     'https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/fed/v1/clusters'\n```\n\n実行結果として、サイトのリストが返却されます。\n\n```\n# 出力結果サンプル\n{\n  \"data\": [\n    {\n      \"api_zone\": [],\n      \"control_panel_url\": \"https://secure.sakura.ad.jp/objectstorage/\",\n      \"display_name_en_us\": \"Ishikari Site #1\",\n      \"display_name_ja\": \"石狩第1サイト\",\n      \"display_name\": \"石狩第1サイト\",\n      \"display_order\": 1,\n      \"endpoint_base\": \"isk01.sakurastorage.jp\",\n      \"id\": \"isk01\",\n      \"s3_endpoint\": \"s3.isk01.sakurastorage.jp\",\n      \"s3_endpoint_for_control_panel\": \"s3.cp.isk01.sakurastorage.jp\",\n      \"storage_zone\": []\n    }\n  ]\n}\n```\n\n得られたサイトID（上記の`id`フィールド）を確認します。これは後続の利用例で使用します。\n\n## 2.サイトアカウントの作成\n\n上記のサイトから利用したいサイトIDを選択し（ここではisk01を選択することにします）、**サイトアカウント**を作成します。\n\nサイトアカウントとは、サイトを利用するための独立したアカウントであり、サイトアカウント作成・削除による料金の発生はございません。\nなお、すでにサイトアカウントを作成済みの場合は、再度サイトアカウントの作成は不要です。\n\nサイトアカウントを作成するには以下のような入力を行います。\n\n```\n# 入力サンプル\ncurl -u '01234567-89ab-cdef-0123-456789abcdef:SAMPLETOKENSAMPLETOKENSAMPLETOKENSAM' \\\n     -X POST \\\n     https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/isk01/v2/account\n```\n\nサイトアカウントの作成が完了すると、選択したサイトにて\n\n* バケットの作成・削除\n* アクセスキーの発行・削除\n* パーミッションキーの発行・削除\n\nなどの操作が可能になります。\n\n## 3.バケットの作成・削除\n\n選択したサイトにてサイトアカウントを作成後、**バケット**の作成・削除が可能です。\n\nバケットを作成するには以下のような入力を行います。    \nこの時、選択したサイト（ここではisk01とします）をリクエストボディーに入れ、作成したいバケット名をパスパラメータに入れる必要があります。\n\n```\n# 入力サンプル\ncurl -u '01234567-89ab-cdef-0123-456789abcdef:SAMPLETOKENSAMPLETOKENSAMPLETOKENSAM' \\\n     -X PUT \\\n     -d '{\"cluster_id\": \"isk01\"}' \\\n     https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/fed/v1/buckets/sample\n```\n\n上記で作成したバケットを削除するには以下のような入力を行います。\n\n```\n# 入力サンプル\ncurl -u '01234567-89ab-cdef-0123-456789abcdef:SAMPLETOKENSAMPLETOKENSAMPLETOKENSAM' \\\n     -X DELETE \\\n     -d '{\"cluster_id\": \"isk01\"}' \\\n     https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/fed/v1/buckets/sample\n```\n\n## 4.アクセスキーの発行・削除\n\n選択したサイトにてサイトアカウントを作成後、**アクセスキー**の発行・削除が可能です。\n\nアクセスキーを発行するには以下のような入力を行います。    \n\n```\n# 入力サンプル\ncurl -u '01234567-89ab-cdef-0123-456789abcdef:SAMPLETOKENSAMPLETOKENSAMPLETOKENSAM' \\\n     -X POST \\\n     https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/isk01/v2/account/keys\n```\n\nコマンド結果には以下のフィールドが含まれます。\n\n* `created_at` : 作成日時\n* `id` : アクセスキーID\n* `secret` : シークレットアクセスキー\n\n```\n# 出力結果サンプル\n{\n  \"data\": {\n    \"created_at\": \"2021-11-04T07:42:41.121418479Z\",\n    \"id\": \"XPJK4SC9883N91RHR253\",\n    \"secret\": \"jqRaUo5l+EiEYqP8wos9exbmFfq4/vG8CLPYI2XN\"\n  }\n}\n```\n\n上記で作成したアクセスキーを削除するには以下のような入力を行います。    \nこの時、削除したいアクセスキーIDをパスパラメータに入れる必要があります。\n\n```\n# 入力サンプル\ncurl -u '01234567-89ab-cdef-0123-456789abcdef:SAMPLETOKENSAMPLETOKENSAMPLETOKENSAM' \\\n     -X DELETE \\\n     https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/isk01/v2/account/keys/XPJK4SC9883N91RHR253\n```\n\n## 5.パーミッション及びパーミッションアクセスキーの発行・削除\n\n選択したサイトにてサイトアカウントを作成後且つバケットが1つ以上ある場合、**パーミッション**の発行・削除が可能です。\n\nパーミッションを作成するには以下のような入力を行います。\nこの時、パーミッション名、パーミッションで制御したいバケットとそれに対する操作をリクエストボディーに入れる必要があります。\n\n```\n# 入力サンプル\ncurl -u '01234567-89ab-cdef-0123-456789abcdef:SAMPLETOKENSAMPLETOKENSAMPLETOKENSAM' \\\n     -X POST \\\n     -d '{\"display_name\": \"sample_permission\", \"bucket_controls\": [{\"bucket_name\": \"sample\", \"can_read\": true, \"can_write\": true}]}' \\\n     https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/isk01/v2/permissions\n```\n\n作成が完了すると、パーミッションIDが含まれたレスポンスを受け取ります。\n```\n# 出力サンプル\n{\n  \"data\": {\n    \"bucket_controls\": [\n      {\n        \"bucket_name\":\"sample\",\n        \"can_read\":true,\n        \"can_write\":true,\n        \"created_at\":\"2021-11-11T13:36:08.767118492Z\"\n      }\n    ],\n    \"created_at\":\"2021-11-11T13:36:08.690384415Z\",\n    \"display_name\":\"sample_permission\",\n    \"id\":619\n  }\n}\n```\n\nこのパーミッションのアクセスキーを発行するには以下のような入力を行います。\nこの時、パーミッション作成時に発行されたID（ここでは619とします）をパスパラメータに含める必要があります。\n\n```\n# 入力サンプル\ncurl -u '01234567-89ab-cdef-0123-456789abcdef:SAMPLETOKENSAMPLETOKENSAMPLETOKENSAM' \\\n     -X POST \\\n     https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/isk01/v2/permissions/619/keys\n```\n\nコマンド結果には以下のフィールドが含まれます。\n\n* `created_at` : 作成日時\n* `id` : アクセスキーID\n* `secret` : シークレットアクセスキー\n\n```\n# 出力結果サンプル\n{\n  \"data\": {\n    \"created_at\": \"2021-11-04T07:42:41.121418479Z\",\n    \"id\": \"XPJK4SC9883N91RHR253\",\n    \"secret\": \"jqRaUo5l+EiEYqP8wos9exbmFfq4/vG8CLPYI2XN\"\n  }\n}\n```\n\nパーミッションアクセスキーを削除するには以下のような入力を行います。\nこの時、パーミッションアクセスキー発行時に出力されたIDをパスパラメータに含める必要があります。\n```\n# 入力サンプル\ncurl -u '01234567-89ab-cdef-0123-456789abcdef:SAMPLETOKENSAMPLETOKENSAMPLETOKENSAM' \\\n     -X DELETE \\\n     https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/isk01/v2/permissions/619/keys/XPJK4SC9883N91RHR253\n```\n\nパーミッションを削除するには以下のような入力を行います。\nこの時、パーミッション作成時に発行されたID（ここでは619とします）をパスパラメータに含める必要があります。\n```\n# 入力サンプル\ncurl -u '01234567-89ab-cdef-0123-456789abcdef:SAMPLETOKENSAMPLETOKENSAMPLETOKENSAM' \\\n     -X DELETE \\\n     https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/isk01/v2/permissions/619\n```\n----\n\n# Authentication\n\n<!-- ReDoc-Inject: <security-definitions> -->"
   },
   "paths": {
     "/clusters": {
       "get": {
+        "operationId": "getClusters",
         "tags": [
           "サイト"
         ],
@@ -51,6 +55,7 @@
     },
     "/clusters/{id}": {
       "get": {
+        "operationId": "getCluster",
         "tags": [
           "サイト"
         ],
@@ -108,6 +113,7 @@
     },
     "/buckets/{name}": {
       "put": {
+        "operationId": "createBucket",
         "tags": [
           "バケット"
         ],
@@ -184,6 +190,7 @@
         }
       },
       "delete": {
+        "operationId": "deleteBucket",
         "tags": [
           "バケット"
         ],
@@ -205,27 +212,9 @@
             "description": "バケット名"
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/handler.PutBucketReqBody"
-              }
-            }
-          },
-          "description": "作成したいバケット情報",
-          "required": true
-        },
         "responses": {
-          "201": {
-            "description": "バケット作成に成功しました",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/handler.putBucketRes"
-                }
-              }
-            }
+          "204": {
+            "description": "バケット削除に成功しました"
           },
           "400": {
             "description": "バケット名が不正です",
@@ -252,6 +241,7 @@
     },
     "/account": {
       "get": {
+        "operationId": "getAccount",
         "tags": [
           "サイトアカウント"
         ],
@@ -306,6 +296,7 @@
         }
       },
       "post": {
+        "operationId": "createAccount",
         "tags": [
           "サイトアカウント"
         ],
@@ -370,6 +361,7 @@
         }
       },
       "delete": {
+        "operationId": "deleteAccount",
         "tags": [
           "サイトアカウント"
         ],
@@ -419,6 +411,7 @@
     },
     "/account/keys": {
       "get": {
+        "operationId": "getAccountKeys",
         "tags": [
           "サイトアカウント"
         ],
@@ -473,6 +466,7 @@
         }
       },
       "post": {
+        "operationId": "createAccountKey",
         "tags": [
           "サイトアカウント"
         ],
@@ -539,6 +533,7 @@
     },
     "/account/keys/{id}": {
       "get": {
+        "operationId": "getAccountKey",
         "tags": [
           "サイトアカウント"
         ],
@@ -604,6 +599,7 @@
         }
       },
       "delete": {
+        "operationId": "deleteAccountKey",
         "tags": [
           "サイトアカウント"
         ],
@@ -654,6 +650,7 @@
     },
     "/permissions": {
       "get": {
+        "operationId": "getPermissions",
         "tags": [
           "パーミッション"
         ],
@@ -670,7 +667,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Permission"
+                  "$ref": "#/components/schemas/Permissions"
                 }
               }
             }
@@ -698,6 +695,7 @@
         }
       },
       "post": {
+        "operationId": "createPermission",
         "tags": [
           "パーミッション"
         ],
@@ -776,6 +774,7 @@
     },
     "/permissions/{id}": {
       "get": {
+        "operationId": "getPermission",
         "tags": [
           "パーミッション"
         ],
@@ -841,6 +840,7 @@
         }
       },
       "put": {
+        "operationId": "updatePermission",
         "tags": [
           "パーミッション"
         ],
@@ -927,6 +927,7 @@
         }
       },
       "delete": {
+        "operationId": "deletePermission",
         "tags": [
           "パーミッション"
         ],
@@ -977,6 +978,7 @@
     },
     "/permissions/{id}/keys": {
       "get": {
+        "operationId": "getPermissionKeys",
         "tags": [
           "パーミッション"
         ],
@@ -1004,7 +1006,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PermissionKey"
+                  "$ref": "#/components/schemas/PermissionKeys"
                 }
               }
             }
@@ -1042,6 +1044,7 @@
         }
       },
       "post": {
+        "operationId": "createPermissionKey",
         "tags": [
           "パーミッション"
         ],
@@ -1119,6 +1122,7 @@
     },
     "/permissions/{id}/keys/{key_id}": {
       "get": {
+        "operationId": "getPermissionKey",
         "tags": [
           "パーミッション"
         ],
@@ -1193,6 +1197,7 @@
         }
       },
       "delete": {
+        "operationId": "deletePermissionKey",
         "tags": [
           "パーミッション"
         ],
@@ -1262,6 +1267,7 @@
     },
     "/status": {
       "get": {
+        "operationId": "getStatus",
         "tags": [
           "ステータス"
         ],
@@ -1312,14 +1318,14 @@
       "url": "/objectstorage/fed/api/v1"
     },
     {
-      "url": "/objectstorage/1.0/{site_name}/v2/"
+      "url": "/objectstorage/1.0/{site_name}/v2"
     }
   ],
   "components": {
     "securitySchemes": {
-      "Account_api_key": {
-        "type": "HTTP",
-        "schema": "basic",
+      "BasicAuth": {
+        "type": "http",
+        "scheme": "basic",
         "description": "[クラウドコントロールパネル](https://secure.sakura.ad.jp/cloud/)で発行したAPIキーを利用します。\n\n `アクセストークン(UUID)` を「ユーザーID」、`アクセストークンシークレット` を「パスワード」として指定します。"
       }
     },
@@ -1392,12 +1398,12 @@
             "type": "string",
             "example": "secure.sakura.ad.jp/objectstorage/isk01"
           },
-          "dislpay_name_en_us": {
+          "display_name_en_us": {
             "description": "Display Name (en-us)",
             "type": "string",
             "example": "Ishikari Cluster #1"
           },
-          "dislpay_name_ja": {
+          "display_name_ja": {
             "description": "Display Name (ja)",
             "type": "string",
             "example": "石狩第1サイト"
@@ -1454,66 +1460,6 @@
           }
         }
       },
-      "model.HTTPErr": {
-        "type": "object",
-        "properties": {
-          "error": {
-            "$ref": "#/components/schemas/model.HTTPErrDoc"
-          }
-        }
-      },
-      "model.HTTPErrDoc": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "example": 429
-          },
-          "errors": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/model.InnerErr"
-            }
-          },
-          "message": {
-            "type": "string",
-            "example": "Rate Limit Exceeded"
-          },
-          "trace_id": {
-            "description": "X-Sakura-Internal-Serial-ID",
-            "type": "string",
-            "example": "0f36837633984f3fc8871f515e8efa24"
-          }
-        }
-      },
-      "model.InnerErr": {
-        "type": "object",
-        "properties": {
-          "domain": {
-            "description": "global, usage,...",
-            "type": "string",
-            "example": "usage"
-          },
-          "location": {
-            "description": "Authorization, {paramName},...",
-            "type": "string"
-          },
-          "location_type": {
-            "description": "header, parameter,...",
-            "type": "string"
-          },
-          "message": {
-            "description": "{description}",
-            "type": "string",
-            "example": "Rate Limit Exceeded"
-          },
-          "reason": {
-            "description": "invalidParameter, required,...",
-            "type": "string",
-            "example": "rateLimitExceeded"
-          }
-        }
-      },
       "PermissionID": {
         "description": "Permission ID",
         "type": "integer",
@@ -1529,7 +1475,7 @@
       "Code": {
         "description": "Code",
         "type": "string",
-        "pattern": "^\\w+$",
+        "pattern": "^[\\w@]+$",
         "example": "abc01234@foo@isk01"
       },
       "CreatedAt": {
@@ -1557,20 +1503,20 @@
       "DisplayName": {
         "description": "Display name",
         "type": "string",
-        "pattern": "^\\w+$",
+        "pattern": "^.+$",
         "example": "abc012345-"
       },
       "AccessKeyID": {
         "description": "Access key ID",
         "type": "string",
-        "pattern": "^[\\w\\d\\/]{40}$",
+        "pattern": "^[\\w\\d\\/]{1,40}$",
         "example": "abcdefABCDEF0123456789"
       },
       "SecretAccessKey": {
         "description": "Secret Access key",
         "type": "string",
-        "pattern": "^[\\w\\d\\/]{40}$",
-        "example": "NOTICE: EXISTS ONLY WHEN JUST CREATED"
+        "pattern": "^[\\w\\d\\/+=]{1,40}$",
+        "example": "/NOTICE==EXISTS+ONLY+WHEN+JUST+CREATED/"
       },
       "accountKeys": {
         "description": "Root user access keys",
@@ -1665,14 +1611,8 @@
       "PermissionSecret": {
         "description": "Permission secret key",
         "type": "string",
-        "pattern": "^[\\w\\d\\/]{40}$",
-        "example": "NOTICE: EXISTS ONLY WHEN JUST CREATED"
-      },
-      "BucketGrantFullControl": {
-        "description": "Bucket Grant Full Control",
-        "type": "string",
-        "pattern": "^[\\w\\d-_]+$",
-        "example": "grantfullControl"
+        "pattern": "^[\\w\\d\\/+=]{1,40}$",
+        "example": "/NOTICE==EXISTS+ONLY+WHEN+JUST+CREATED/"
       },
       "Account": {
         "description": "Account info",
@@ -1707,155 +1647,7 @@
           }
         }
       },
-      "BucketGrantRead": {
-        "description": "Bucket Grant Read",
-        "type": "boolean",
-        "example": true
-      },
-      "BucketGrantReadAcp": {
-        "description": "Bucket Grant Read ACP",
-        "type": "string",
-        "example": "Bucket Grant Read ACP"
-      },
-      "BucketGrantWrite": {
-        "description": "Bcuket Grant Write",
-        "type": "boolean",
-        "example": true
-      },
-      "BucketGrantWriteAcp": {
-        "description": "Bucket Grant Write ACP",
-        "type": "string",
-        "example": "Bucket Grant Write ACP"
-      },
-      "BucketBody": {
-        "description": "Request body for bucket",
-        "type": "object",
-        "properties": {
-          "acl": {
-            "type": "string",
-            "example": "{\n  \"Owner\": {\n    \"DisplayName\": \"123456789012\",\n    \"ID\": \"abcdefABCDEF0123456789\"\n  },\n  \"Grants\": [\n    {\n      \"Grantee\": {\n        \"DisplayName\": \"113100030424\",\n        \"ID\": \"abcedefABCDEF0123456789\",\n        \"Type\": \"CanonicalUser\"\n      },\n      \"Permission\": \"FULL_CONTROL\"\n    }\n  ]\n}\n"
-          },
-          "grant_full_control": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BucketGrantFullControl"
-              }
-            ]
-          },
-          "grant_read": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BucketGrantRead"
-              }
-            ]
-          },
-          "grnat_read_acp": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BucketGrantReadAcp"
-              }
-            ]
-          },
-          "grant_write": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BucketGrantWrite"
-              }
-            ]
-          },
-          "grant_write_acp": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BucketGrantWriteAcp"
-              }
-            ]
-          }
-        }
-      },
-      "Bucket": {
-        "description": "Bucket",
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "object",
-            "properties": {
-              "name": {
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/BucketName"
-                  }
-                ]
-              },
-              "resource_id": {
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/ResourceID"
-                  }
-                ]
-              }
-            }
-          }
-        }
-      },
-      "BucketForGetACL": {
-        "description": "Bucket",
-        "type": "object",
-        "properties": {
-          "data": {
-            "description": "data type",
-            "type": "object",
-            "properties": {
-              "owner": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "string",
-                    "example": "123456789012"
-                  },
-                  "display_name": {
-                    "type": "string",
-                    "example": "display_name"
-                  }
-                }
-              },
-              "grants": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "grantee": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "string",
-                          "example": "abcedefABCDEF0123456789"
-                        },
-                        "display_name": {
-                          "type": "string",
-                          "example": "113100030424"
-                        },
-                        "type": {
-                          "type": "string",
-                          "example": "CanonicalUser"
-                        },
-                        "uri": {
-                          "type": "string",
-                          "example": "uri"
-                        }
-                      }
-                    },
-                    "permission": {
-                      "type": "string",
-                      "example": "permission"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "Permission": {
+      "Permissions": {
         "description": "Permission",
         "type": "object",
         "properties": {
@@ -1898,6 +1690,46 @@
           }
         }
       },
+      "Permission": {
+        "description": "Permission",
+        "type": "object",
+        "properties": {
+          "data": {
+            "description": "data type",
+            "type": "object",
+            "properties": {
+              "id": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/PermissionID"
+                  }
+                ]
+              },
+              "display_name": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/DisplayName"
+                  }
+                ]
+              },
+              "bucket_controls": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/BucketControls"
+                  }
+                ]
+              },
+              "created_at": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CreatedAt"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
       "PermissionBucketControlsBody": {
         "description": "Request body for bucket controls for Permission",
         "type": "object",
@@ -1915,6 +1747,42 @@
                 "$ref": "#/components/schemas/BucketControls"
               }
             ]
+          }
+        }
+      },
+      "PermissionKeys": {
+        "description": "Permission Key",
+        "type": "object",
+        "properties": {
+          "data": {
+            "description": "data type",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/PermissionID"
+                    }
+                  ]
+                },
+                "secret": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/PermissionSecret"
+                    }
+                  ]
+                },
+                "created_at": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/CreatedAt"
+                    }
+                  ]
+                }
+              }
+            }
           }
         }
       },
@@ -1948,61 +1816,6 @@
                 ]
               }
             }
-          }
-        }
-      },
-      "Session": {
-        "description": "Session",
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "object",
-            "properties": {
-              "access_key_id": {
-                "type": "string",
-                "example": "abcdefABCDEF0123456789"
-              },
-              "access_key_secret": {
-                "type": "string",
-                "pattern": "^[\\w\\d\\/]{40}$",
-                "example": "abcdefABCDEF0123456789"
-              },
-              "user": {
-                "type": "string",
-                "example": "user_name"
-              },
-              "created_at": {
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/CreatedAt"
-                  }
-                ]
-              },
-              "expired_at": {
-                "type": "string",
-                "format": "date-time",
-                "example": "2021-01-11T01:11:23.123456+09:00"
-              }
-            }
-          }
-        }
-      },
-      "SessionBody": {
-        "description": "Session body",
-        "type": "object",
-        "properties": {
-          "expires_at": {
-            "type": "string",
-            "format": "date-time",
-            "example": "2020-01-11T01:11:23.123456+09:00"
-          },
-          "token": {
-            "type": "string",
-            "example": "abcdefABCDEF0123456789"
-          },
-          "user": {
-            "type": "string",
-            "example": "user_name"
           }
         }
       },
@@ -2379,5 +2192,27 @@
         }
       }
     }
-  }
+  },
+  "tags": [
+    {
+      "name": "サイト",
+      "description": "サイトに関する情報"
+    },
+    {
+      "name": "バケット",
+      "description": "バケットに関する情報"
+    },
+    {
+      "name": "サイトアカウント",
+      "description": "サイトアカウントに関する情報"
+    },
+    {
+      "name": "パーミッション",
+      "description": "パーミッションに関する情報"
+    },
+    {
+      "name": "ステータス",
+      "description": "ステータスに関する情報"
+    }
+  ]
 }

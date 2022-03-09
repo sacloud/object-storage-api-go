@@ -53,7 +53,7 @@ func NewAccountOp(client *Client) AccountAPI {
 }
 
 func (op *accountOp) Create(ctx context.Context, siteId string) (*v1.Account, error) {
-	resp, err := op.client.apiClient().CreateSiteAccountWithResponse(ctx, siteId)
+	resp, err := op.client.apiClient().CreateAccountWithResponse(ctx, siteId)
 	if err != nil {
 		return nil, err
 	}
@@ -65,7 +65,7 @@ func (op *accountOp) Create(ctx context.Context, siteId string) (*v1.Account, er
 }
 
 func (op *accountOp) Read(ctx context.Context, siteId string) (*v1.Account, error) {
-	resp, err := op.client.apiClient().ReadSiteAccountWithResponse(ctx, siteId)
+	resp, err := op.client.apiClient().GetAccountWithResponse(ctx, siteId)
 	if err != nil {
 		return nil, err
 	}
@@ -77,7 +77,7 @@ func (op *accountOp) Read(ctx context.Context, siteId string) (*v1.Account, erro
 }
 
 func (op *accountOp) Delete(ctx context.Context, siteId string) error {
-	resp, err := op.client.apiClient().DeleteSiteAccountWithResponse(ctx, siteId)
+	resp, err := op.client.apiClient().DeleteAccountWithResponse(ctx, siteId)
 	if err != nil {
 		return err
 	}
@@ -85,7 +85,7 @@ func (op *accountOp) Delete(ctx context.Context, siteId string) error {
 }
 
 func (op *accountOp) CreateAccessKey(ctx context.Context, siteId string) (*v1.AccountKey, error) {
-	resp, err := op.client.apiClient().CreateAccountAccessKeyWithResponse(ctx, siteId)
+	resp, err := op.client.apiClient().CreateAccountKeyWithResponse(ctx, siteId)
 	if err != nil {
 		return nil, err
 	}
@@ -97,7 +97,7 @@ func (op *accountOp) CreateAccessKey(ctx context.Context, siteId string) (*v1.Ac
 }
 
 func (op *accountOp) ReadAccessKey(ctx context.Context, siteId, accessKeyId string) (*v1.AccountKey, error) {
-	resp, err := op.client.apiClient().ReadAccountAccessKeyWithResponse(ctx, siteId, v1.AccessKeyID(accessKeyId))
+	resp, err := op.client.apiClient().GetAccountKeyWithResponse(ctx, siteId, v1.AccessKeyID(accessKeyId))
 	if err != nil {
 		return nil, err
 	}
@@ -109,7 +109,7 @@ func (op *accountOp) ReadAccessKey(ctx context.Context, siteId, accessKeyId stri
 }
 
 func (op *accountOp) DeleteAccessKey(ctx context.Context, siteId, accessKeyId string) error {
-	resp, err := op.client.apiClient().DeleteAccountAccessKeyWithResponse(ctx, siteId, v1.AccessKeyID(accessKeyId))
+	resp, err := op.client.apiClient().DeleteAccountKeyWithResponse(ctx, siteId, v1.AccessKeyID(accessKeyId))
 	if err != nil {
 		return err
 	}

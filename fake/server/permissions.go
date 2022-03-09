@@ -23,7 +23,7 @@ import (
 
 // ListPermissions パーミッション一覧の取得
 // (GET /{site_name}/v2/permissions)
-func (s *Server) ListPermissions(c *gin.Context, siteId string) {
+func (s *Server) GetPermissions(c *gin.Context, siteId string) {
 	permissions, err := s.Engine.ListPermissions(siteId)
 	if err != nil {
 		s.handleError(c, err)
@@ -66,7 +66,7 @@ func (s *Server) DeletePermission(c *gin.Context, siteId string, permissionId v1
 
 // ReadPermission パーミッションの取得
 // (GET /{site_name}/v2/permissions/{id})
-func (s *Server) ReadPermission(c *gin.Context, siteId string, permissionId v1.PermissionID) {
+func (s *Server) GetPermission(c *gin.Context, siteId string, permissionId v1.PermissionID) {
 	permission, err := s.Engine.ReadPermission(siteId, permissionId.Int64())
 	if err != nil {
 		s.handleError(c, err)
