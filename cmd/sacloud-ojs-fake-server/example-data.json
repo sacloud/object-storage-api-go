@@ -3,8 +3,8 @@
     {
       "api_zone": null,
       "control_panel_url": "https://secure.sakura.ad.jp/objectstorage/",
-      "dislpay_name_en_us": "Ishikari Site #1(fake)",
-      "dislpay_name_ja": "石狩第1サイト(fake)",
+      "display_name_en_us": "Ishikari Site #1(fake)",
+      "display_name_ja": "石狩第1サイト(fake)",
       "display_name": "石狩第1サイト(fake)",
       "display_order": 1,
       "endpoint_base": "isk01.sakurastorage.jp",
