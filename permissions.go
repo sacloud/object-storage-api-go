@@ -58,7 +58,11 @@ func NewPermissionOp(client *Client) PermissionAPI {
 }
 
 func (op *permissionOp) List(ctx context.Context, siteId string) ([]*v1.Permission, error) {
-	resp, err := op.client.apiClient().GetPermissionsWithResponse(ctx, siteId)
+	apiClient, err := op.client.apiClient()
+	if err != nil {
+		return nil, err
+	}
+	resp, err := apiClient.GetPermissionsWithResponse(ctx, siteId)
 	if err != nil {
 		return nil, err
 	}
@@ -74,7 +78,11 @@ func (op *permissionOp) List(ctx context.Context, siteId string) ([]*v1.Permissi
 }
 
 func (op *permissionOp) Create(ctx context.Context, siteId string, params *v1.CreatePermissionParams) (*v1.Permission, error) {
-	resp, err := op.client.apiClient().CreatePermissionWithResponse(ctx, siteId, v1.CreatePermissionJSONRequestBody(*params))
+	apiClient, err := op.client.apiClient()
+	if err != nil {
+		return nil, err
+	}
+	resp, err := apiClient.CreatePermissionWithResponse(ctx, siteId, v1.CreatePermissionJSONRequestBody(*params))
 	if err != nil {
 		return nil, err
 	}
@@ -86,7 +94,11 @@ func (op *permissionOp) Create(ctx context.Context, siteId string, params *v1.Cr
 }
 
 func (op *permissionOp) Read(ctx context.Context, siteId string, permissionId int64) (*v1.Permission, error) {
-	resp, err := op.client.apiClient().GetPermissionWithResponse(ctx, siteId, v1.PermissionID(permissionId))
+	apiClient, err := op.client.apiClient()
+	if err != nil {
+		return nil, err
+	}
+	resp, err := apiClient.GetPermissionWithResponse(ctx, siteId, v1.PermissionID(permissionId))
 	if err != nil {
 		return nil, err
 	}
@@ -98,7 +110,11 @@ func (op *permissionOp) Read(ctx context.Context, siteId string, permissionId in
 }
 
 func (op *permissionOp) Update(ctx context.Context, siteId string, permissionId int64, params *v1.UpdatePermissionParams) (*v1.Permission, error) {
-	resp, err := op.client.apiClient().UpdatePermissionWithResponse(ctx, siteId,
+	apiClient, err := op.client.apiClient()
+	if err != nil {
+		return nil, err
+	}
+	resp, err := apiClient.UpdatePermissionWithResponse(ctx, siteId,
 		v1.PermissionID(permissionId), v1.UpdatePermissionJSONRequestBody(*params))
 	if err != nil {
 		return nil, err
@@ -111,7 +127,11 @@ func (op *permissionOp) Update(ctx context.Context, siteId string, permissionId 
 }
 
 func (op *permissionOp) Delete(ctx context.Context, siteId string, permissionId int64) error {
-	resp, err := op.client.apiClient().DeletePermissionWithResponse(ctx, siteId, v1.PermissionID(permissionId))
+	apiClient, err := op.client.apiClient()
+	if err != nil {
+		return err
+	}
+	resp, err := apiClient.DeletePermissionWithResponse(ctx, siteId, v1.PermissionID(permissionId))
 	if err != nil {
 		return err
 	}
@@ -119,7 +139,11 @@ func (op *permissionOp) Delete(ctx context.Context, siteId string, permissionId 
 }
 
 func (op *permissionOp) ListAccessKeys(ctx context.Context, siteId string, permissionId int64) ([]*v1.PermissionKey, error) {
-	resp, err := op.client.apiClient().GetPermissionKeysWithResponse(ctx, siteId, v1.PermissionID(permissionId))
+	apiClient, err := op.client.apiClient()
+	if err != nil {
+		return nil, err
+	}
+	resp, err := apiClient.GetPermissionKeysWithResponse(ctx, siteId, v1.PermissionID(permissionId))
 	if err != nil {
 		return nil, err
 	}
@@ -135,7 +159,11 @@ func (op *permissionOp) ListAccessKeys(ctx context.Context, siteId string, permi
 }
 
 func (op *permissionOp) CreateAccessKey(ctx context.Context, siteId string, permissionId int64) (*v1.PermissionKey, error) {
-	resp, err := op.client.apiClient().CreatePermissionKeyWithResponse(ctx, siteId, v1.PermissionID(permissionId))
+	apiClient, err := op.client.apiClient()
+	if err != nil {
+		return nil, err
+	}
+	resp, err := apiClient.CreatePermissionKeyWithResponse(ctx, siteId, v1.PermissionID(permissionId))
 	if err != nil {
 		return nil, err
 	}
@@ -147,7 +175,11 @@ func (op *permissionOp) CreateAccessKey(ctx context.Context, siteId string, perm
 }
 
 func (op *permissionOp) ReadAccessKey(ctx context.Context, siteId string, permissionId int64, accessKeyId string) (*v1.PermissionKey, error) {
-	resp, err := op.client.apiClient().GetPermissionKeyWithResponse(ctx, siteId,
+	apiClient, err := op.client.apiClient()
+	if err != nil {
+		return nil, err
+	}
+	resp, err := apiClient.GetPermissionKeyWithResponse(ctx, siteId,
 		v1.PermissionID(permissionId), v1.AccessKeyID(accessKeyId))
 	if err != nil {
 		return nil, err
@@ -160,7 +192,11 @@ func (op *permissionOp) ReadAccessKey(ctx context.Context, siteId string, permis
 }
 
 func (op *permissionOp) DeleteAccessKey(ctx context.Context, siteId string, permissionId int64, accessKeyId string) error {
-	resp, err := op.client.apiClient().DeletePermissionKeyWithResponse(ctx, siteId,
+	apiClient, err := op.client.apiClient()
+	if err != nil {
+		return err
+	}
+	resp, err := apiClient.DeletePermissionKeyWithResponse(ctx, siteId,
 		v1.PermissionID(permissionId), v1.AccessKeyID(accessKeyId))
 	if err != nil {
 		return err

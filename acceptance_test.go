@@ -21,11 +21,8 @@ import (
 	"bytes"
 	"context"
 	"io"
-	"math/rand"
-	"net/http"
 	"os"
 	"testing"
-	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
@@ -33,17 +30,14 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	objectstorage "github.com/sacloud/object-storage-api-go"
 	v1 "github.com/sacloud/object-storage-api-go/apis/v1"
+	"github.com/sacloud/sacloud-go/pkg/envvar"
+	"github.com/sacloud/sacloud-go/pkg/testutil"
 	"github.com/stretchr/testify/require"
 )
 
 const (
-	siteId  = "isk01"                               // Note: 本来はサイトAPI経由で取得すべきだが現状ではサイトが1つしかないため定数として保持/利用する
-	charSet = "abcdefghijklmnopqrstuvwxyz012346789" // ランダム名生成で利用する文字
+	siteId = "isk01" // Note: 本来はサイトAPI経由で取得すべきだが現状ではサイトが1つしかないため定数として保持/利用する
 )
-
-func init() {
-	rand.Seed(time.Now().UTC().UnixNano())
-}
 
 // TestAccSiteAndStatusAPI サイト/ステータス関連APIの疎通確認
 func TestAccSiteAndStatusAPI(t *testing.T) {
@@ -83,7 +77,7 @@ func TestAccBucketHandling(t *testing.T) {
 	skipIfNoEnv(t, "SACLOUD_OJS_ACCESS_KEY_ID", "SACLOUD_OJS_SECRET_ACCESS_KEY")
 
 	ctx := context.Background()
-	bucketName := randomName(28)
+	bucketName := testutil.Random(28, testutil.CharSetAlpha)
 
 	// Step1: バケット作成
 	bucketOp := objectstorage.NewBucketOp(accTestClient)
@@ -145,7 +139,7 @@ func TestAccAccessToBucketObjectWithPermissionKey(t *testing.T) {
 	skipIfNoAPIKey(t)
 
 	ctx := context.Background()
-	bucketName := randomName(28)
+	bucketName := testutil.Random(28, testutil.CharSetAlpha)
 
 	// Step1: バケット作成
 	bucketOp := objectstorage.NewBucketOp(accTestClient)
@@ -248,27 +242,9 @@ func TestAccAccessToBucketObjectWithPermissionKey(t *testing.T) {
 	require.NoError(t, bucketOp.Delete(ctx, siteId, bucketName))
 }
 
-var accTestClient = func() *objectstorage.Client {
-	token := os.Getenv("SAKURACLOUD_ACCESS_TOKEN")
-	secret := os.Getenv("SAKURACLOUD_ACCESS_TOKEN_SECRET")
-	rootURL := os.Getenv("SAKURACLOUD_OJS_ROOT_URL")
-
-	if rootURL == "" {
-		rootURL = defaultServerURL
-	}
-
-	httpClient := &http.Client{}
-
-	client := &objectstorage.Client{
-		Token:      token,
-		Secret:     secret,
-		APIRootURL: serverURL,
-		Trace:      os.Getenv("SAKURACLOUD_TRACE") != "",
-		HTTPClient: httpClient,
-	}
-
-	return client
-}()
+var accTestClient = &objectstorage.Client{
+	APIRootURL: envvar.StringFromEnv("SAKURACLOUD_OJS_ROOT_URL", defaultServerURL),
+}
 
 // skipIfNoEnv 指定の環境変数のいずれかが空の場合はt.SkipNow()する
 func skipIfNoEnv(t *testing.T, envs ...string) {
@@ -288,12 +264,4 @@ func skipIfNoEnv(t *testing.T, envs ...string) {
 
 func skipIfNoAPIKey(t *testing.T) {
 	skipIfNoEnv(t, "SAKURACLOUD_ACCESS_TOKEN", "SAKURACLOUD_ACCESS_TOKEN_SECRET")
-}
-
-func randomName(strlen int) string {
-	result := make([]byte, strlen)
-	for i := 0; i < strlen; i++ {
-		result[i] = charSet[rand.Intn(len(charSet))]
-	}
-	return string(result)
 }

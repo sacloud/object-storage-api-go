@@ -17,7 +17,6 @@ package objectstorage_test
 import (
 	"context"
 	"fmt"
-	"os"
 
 	objectstorage "github.com/sacloud/object-storage-api-go"
 	v1 "github.com/sacloud/object-storage-api-go/apis/v1"
@@ -29,12 +28,7 @@ var serverURL = defaultServerURL
 
 // Example_clusterAPI サイト(クラスタ)APIの利用例
 func Example_clusterAPI() {
-	token := os.Getenv("SAKURACLOUD_ACCESS_TOKEN")
-	secret := os.Getenv("SAKURACLOUD_ACCESS_TOKEN_SECRET")
-
 	client := &objectstorage.Client{
-		Token:      token,
-		Secret:     secret,
 		APIRootURL: serverURL, // 省略可能
 	}
 
@@ -52,12 +46,7 @@ func Example_clusterAPI() {
 
 // Example_bucketAPI バケットAPIの利用例
 func Example_bucketAPI() {
-	token := os.Getenv("SAKURACLOUD_ACCESS_TOKEN")
-	secret := os.Getenv("SAKURACLOUD_ACCESS_TOKEN_SECRET")
-
 	client := &objectstorage.Client{
-		Token:      token,
-		Secret:     secret,
 		APIRootURL: serverURL, // 省略可能
 	}
 	ctx := context.Background()
@@ -92,12 +81,7 @@ func Example_bucketAPI() {
 
 // Example_accountAPI アカウントAPIの利用例
 func Example_accountAPI() {
-	token := os.Getenv("SAKURACLOUD_ACCESS_TOKEN")
-	secret := os.Getenv("SAKURACLOUD_ACCESS_TOKEN_SECRET")
-
 	client := &objectstorage.Client{
-		Token:      token,
-		Secret:     secret,
 		APIRootURL: serverURL, // 省略可能
 	}
 	ctx := context.Background()
@@ -137,12 +121,7 @@ func Example_accountAPI() {
 
 // Example_permissionAPI パーミッションAPIの利用例
 func Example_permissionAPI() {
-	token := os.Getenv("SAKURACLOUD_ACCESS_TOKEN")
-	secret := os.Getenv("SAKURACLOUD_ACCESS_TOKEN_SECRET")
-
 	client := &objectstorage.Client{
-		Token:      token,
-		Secret:     secret,
 		APIRootURL: serverURL, // 省略可能
 	}
 	ctx := context.Background()
@@ -194,12 +173,7 @@ func Example_permissionAPI() {
 
 // Example_siteStatusAPI サイトステータスAPIの利用例
 func Example_siteStatusAPI() {
-	token := os.Getenv("SAKURACLOUD_ACCESS_TOKEN")
-	secret := os.Getenv("SAKURACLOUD_ACCESS_TOKEN_SECRET")
-
 	client := &objectstorage.Client{
-		Token:      token,
-		Secret:     secret,
 		APIRootURL: serverURL, // 省略可能
 	}
 	ctx := context.Background()
