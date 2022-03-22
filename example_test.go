@@ -19,9 +19,8 @@ import (
 	"fmt"
 	"os"
 
-	v1 "github.com/sacloud/object-storage-api-go/apis/v1"
-
 	objectstorage "github.com/sacloud/object-storage-api-go"
+	v1 "github.com/sacloud/object-storage-api-go/apis/v1"
 )
 
 const defaultServerURL = "https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0"

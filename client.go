@@ -23,9 +23,8 @@ import (
 	"sync"
 
 	"github.com/hashicorp/go-retryablehttp"
-	v1 "github.com/sacloud/object-storage-api-go/apis/v1"
-
 	sacloudhttp "github.com/sacloud/go-http"
+	v1 "github.com/sacloud/object-storage-api-go/apis/v1"
 )
 
 // DefaultAPIRootURL デフォルトのAPIルートURL
