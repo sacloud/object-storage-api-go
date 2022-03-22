@@ -40,7 +40,7 @@ testacc:
 .PHONY: tools
 tools:
 	npm install -g @apidevtools/swagger-cli
-	go install golang.org/x/tools/cmd/goimports@latest
+	go install github.com/rinchsan/gosimports/cmd/gosimports@latest
 	go install golang.org/x/tools/cmd/stringer@latest
 	go install github.com/sacloud/addlicense@latest
 	go install github.com/client9/misspell/cmd/misspell@latest
@@ -76,9 +76,10 @@ apis/v1/zz_client_gen.go: apis/v1/spec/swagger.yaml apis/v1/spec/codegen/client.
 apis/v1/zz_server_gen.go: apis/v1/spec/swagger.yaml apis/v1/spec/codegen/gin.yaml
 	oapi-codegen -config apis/v1/spec/codegen/gin.yaml apis/v1/spec/swagger.yaml
 
-.PHONY: goimports
-goimports: fmt
-	goimports -l -w .
+.PHONY: goimports gosimports
+goimports: gosimports
+gosimports: fmt
+	gosimports -l -w .
 
 .PHONY: fmt
 fmt:
