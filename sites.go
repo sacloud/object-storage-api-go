@@ -40,7 +40,11 @@ func NewSiteOp(client *Client) SiteAPI {
 }
 
 func (op *siteOp) List(ctx context.Context) ([]*v1.Cluster, error) {
-	resp, err := op.client.apiClient().GetClustersWithResponse(ctx)
+	apiClient, err := op.client.apiClient()
+	if err != nil {
+		return nil, err
+	}
+	resp, err := apiClient.GetClustersWithResponse(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -57,7 +61,11 @@ func (op *siteOp) List(ctx context.Context) ([]*v1.Cluster, error) {
 }
 
 func (op *siteOp) Read(ctx context.Context, id string) (*v1.Cluster, error) {
-	resp, err := op.client.apiClient().GetClusterWithResponse(ctx, id)
+	apiClient, err := op.client.apiClient()
+	if err != nil {
+		return nil, err
+	}
+	resp, err := apiClient.GetClusterWithResponse(ctx, id)
 	if err != nil {
 		return nil, err
 	}

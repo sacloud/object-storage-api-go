@@ -15,15 +15,12 @@
 package objectstorage
 
 import (
-	"context"
 	"fmt"
-	"net/http"
 	"runtime"
 	"strings"
 	"sync"
 
-	"github.com/hashicorp/go-retryablehttp"
-	sacloudhttp "github.com/sacloud/go-http"
+	client "github.com/sacloud/api-client-go"
 	v1 "github.com/sacloud/object-storage-api-go/apis/v1"
 )
 
@@ -36,34 +33,32 @@ var UserAgent = fmt.Sprintf(
 	Version,
 	runtime.GOOS,
 	runtime.GOARCH,
-	sacloudhttp.DefaultUserAgent,
+	client.DefaultUserAgent,
 )
 
 // Client APIクライアント
 type Client struct {
+	// Profile usacloud互換プロファイル名
+	Profile string
+
 	// Token APIキー: トークン
 	Token string
 	// Token APIキー: シークレット
 	Secret string
 
-	// AcceptLanguage APIリクエスト時のAccept-Languageヘッダーの値
-	AcceptLanguage string
-
-	// Gzip APIリクエストでgzipを有効にするかのフラグ
-	Gzip bool
-
 	// APIRootURL APIのリクエスト先URLプレフィックス、省略可能
 	APIRootURL string
 
-	// Trace トレースログ出力フラグ
-	Trace bool
+	// Options HTTPクライアント関連オプション
+	Options *client.Options
 
-	// HTTPClient APIリクエストで使用されるHTTPクライアント
-	//
-	// 省略した場合はhttp.DefaultClientが使用される
-	HTTPClient *http.Client
+	// DisableProfile usacloud互換プロファイルからの設定読み取りを無効化
+	DisableProfile bool
+	// DisableEnv 環境変数からの設定読み取りを無効化
+	DisableEnv bool
 
 	initOnce sync.Once
+	factory  *client.Factory
 }
 
 func (c *Client) serverURL() string {
@@ -77,47 +72,55 @@ func (c *Client) serverURL() string {
 	return v
 }
 
-func (c *Client) httpClient() *http.Client {
-	client := http.DefaultClient
-	if c.HTTPClient != nil {
-		client = c.HTTPClient
-	}
-
+func (c *Client) init() error {
+	var initError error
 	c.initOnce.Do(func() {
-		if c.Trace {
-			client.Transport = &sacloudhttp.TracingRoundTripper{
-				Transport: client.Transport,
+		var opts []*client.Options
+		// 1: Profile
+		if !c.DisableProfile {
+			o, err := client.OptionsFromProfile(c.Profile)
+			if err != nil {
+				initError = err
+				return
 			}
+			opts = append(opts, o)
 		}
+
+		// 2: Env
+		if !c.DisableEnv {
+			opts = append(opts, client.OptionsFromEnv())
+		}
+
+		// 3: UserAgent
+		opts = append(opts, &client.Options{
+			UserAgent: UserAgent,
+		})
+
+		// 4: Options
+		if c.Options != nil {
+			opts = append(opts, c.Options)
+		}
+
+		// 5: フィールドのAPIキー
+		opts = append(opts, &client.Options{
+			AccessToken:       c.Token,
+			AccessTokenSecret: c.Secret,
+		})
+
+		c.factory = client.NewFactory(opts...)
 	})
-	return client
+	return initError
 }
 
-func (c *Client) apiClient() *v1.ClientWithResponses {
-	httpClient := &sacloudhttp.Client{
-		AccessToken:       c.Token,
-		AccessTokenSecret: c.Secret,
-		UserAgent:         UserAgent,
-		AcceptLanguage:    c.AcceptLanguage,
-		Gzip:              c.Gzip,
-		CheckRetryFunc: func(ctx context.Context, resp *http.Response, err error) (bool, error) {
-			if ctx.Err() != nil {
-				return false, ctx.Err()
-			}
-			if err != nil {
-				return retryablehttp.DefaultRetryPolicy(ctx, resp, err)
-			}
-			if resp.StatusCode == 0 { // ステータスコードに応じてリトライしたい場合はここで対応
-				return true, nil
-			}
-			return false, nil
-		},
-		HTTPClient: c.httpClient(),
+func (c *Client) apiClient() (*v1.ClientWithResponses, error) {
+	if err := c.init(); err != nil {
+		return nil, err
 	}
+
 	return &v1.ClientWithResponses{
 		ClientInterface: &v1.Client{
 			Server: c.serverURL(),
-			Client: httpClient,
+			Client: c.factory.NewHttpRequestDoer(),
 		},
-	}
+	}, nil
 }

@@ -26,14 +26,8 @@ import (
 )
 
 func main() {
-	token := os.Getenv("SAKURACLOUD_ACCESS_TOKEN")
-	secret := os.Getenv("SAKURACLOUD_ACCESS_TOKEN_SECRET")
-
-	client := &objectstorage.Client{
-		Token:      token,
-		Secret:     secret,
-	}
-	ctx := context.Background()
+    ctx := context.Background()
+    client := &objectstorage.Client{} // デフォルトでusacloud互換プロファイル or 環境変数(SAKURACLOUD_ACCESS_TOKEN{_SECRET})が利用される
 
 	// サイト一覧を取得
 	siteOp := objectstorage.NewSiteOp(client)

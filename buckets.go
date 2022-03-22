@@ -44,7 +44,11 @@ func (op *bucketOp) Create(ctx context.Context, siteId, bucketName string) (*v1.
 		ClusterId: siteId,
 	}
 
-	resp, err := op.client.apiClient().CreateBucketWithResponse(ctx, v1.BucketName(bucketName), params)
+	apiClient, err := op.client.apiClient()
+	if err != nil {
+		return nil, err
+	}
+	resp, err := apiClient.CreateBucketWithResponse(ctx, v1.BucketName(bucketName), params)
 	if err != nil {
 		return nil, err
 	}
@@ -60,7 +64,11 @@ func (op *bucketOp) Delete(ctx context.Context, siteId, bucketName string) error
 		ClusterId: siteId,
 	}
 
-	resp, err := op.client.apiClient().DeleteBucketWithResponse(ctx, v1.BucketName(bucketName), params)
+	apiClient, err := op.client.apiClient()
+	if err != nil {
+		return err
+	}
+	resp, err := apiClient.DeleteBucketWithResponse(ctx, v1.BucketName(bucketName), params)
 	if err != nil {
 		return err
 	}
