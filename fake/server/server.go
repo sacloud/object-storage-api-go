@@ -64,6 +64,7 @@ func (s *Server) handleError(c *gin.Context, err error) {
 					Message: v1.ErrorMessage(engineErr.Error()),
 				},
 			})
+			return
 		case fake.ErrorTypeNotFound:
 			c.JSON(http.StatusNotFound, &v1.Error404{
 				Error: v1.ErrorDetail{
@@ -71,6 +72,7 @@ func (s *Server) handleError(c *gin.Context, err error) {
 					Message: v1.ErrorMessage(engineErr.Error()),
 				},
 			})
+			return
 		case fake.ErrorTypeConflict:
 			c.JSON(http.StatusConflict, &v1.Error409{
 				Error: v1.ErrorDetail{
@@ -78,6 +80,7 @@ func (s *Server) handleError(c *gin.Context, err error) {
 					Message: v1.ErrorMessage(engineErr.Error()),
 				},
 			})
+			return
 		}
 	}
 
