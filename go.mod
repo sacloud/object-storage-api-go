@@ -10,8 +10,8 @@ require (
 	github.com/deepmap/oapi-codegen v1.9.1
 	github.com/getlantern/deepcopy v0.0.0-20160317154340-7f45deb8130a
 	github.com/gin-gonic/gin v1.7.4
-	github.com/sacloud/api-client-go v0.0.1
-	github.com/sacloud/sacloud-go/pkg v0.0.0-20220317060010-e514788840a8
+	github.com/sacloud/api-client-go v0.0.3
+	github.com/sacloud/packages-go v0.0.2
 	github.com/spf13/cobra v1.3.0
 	github.com/stretchr/testify v1.7.0
 )
@@ -34,7 +34,7 @@ require (
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/go-playground/locales v0.14.0 // indirect
 	github.com/go-playground/universal-translator v0.18.0 // indirect
-	github.com/go-playground/validator/v10 v10.9.0 // indirect
+	github.com/go-playground/validator/v10 v10.10.1 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/hashicorp/go-retryablehttp v0.7.0 // indirect
@@ -49,7 +49,7 @@ require (
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/ugorji/go/codec v1.2.6 // indirect
 	go.uber.org/ratelimit v0.2.0 // indirect
-	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519 // indirect
+	golang.org/x/crypto v0.0.0-20211215153901-e495a2d5b3d3 // indirect
 	golang.org/x/sys v0.0.0-20211205182925-97ca703d548d // indirect
 	golang.org/x/text v0.3.7 // indirect
 	google.golang.org/protobuf v1.27.1 // indirect

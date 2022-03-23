@@ -30,8 +30,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	objectstorage "github.com/sacloud/object-storage-api-go"
 	v1 "github.com/sacloud/object-storage-api-go/apis/v1"
-	"github.com/sacloud/sacloud-go/pkg/envvar"
-	"github.com/sacloud/sacloud-go/pkg/testutil"
+	"github.com/sacloud/packages-go/envvar"
+	"github.com/sacloud/packages-go/testutil"
 	"github.com/stretchr/testify/require"
 )
 
