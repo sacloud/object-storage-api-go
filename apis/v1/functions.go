@@ -35,8 +35,6 @@ func toError(v interface{}) error {
 	switch err := v.(type) {
 	case error:
 		return err
-	case errorResponser:
-		return err.ActualError()
 	default:
 		msg := fmt.Sprintf("invalid arg: %#+v", v)
 		panic(msg)

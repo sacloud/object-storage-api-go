@@ -186,31 +186,31 @@ type Error struct {
 // Error400 defines model for Error400.
 type Error400 struct {
 	// error
-	Error ErrorDetail `json:"error"`
+	Detail ErrorDetail `json:"error"`
 }
 
 // Error401 defines model for Error401.
 type Error401 struct {
 	// error
-	Error ErrorDetail `json:"error"`
+	Detail ErrorDetail `json:"error"`
 }
 
 // Error403 defines model for Error403.
 type Error403 struct {
 	// error
-	Error ErrorDetail `json:"error"`
+	Detail ErrorDetail `json:"error"`
 }
 
 // Error404 defines model for Error404.
 type Error404 struct {
 	// error
-	Error ErrorDetail `json:"error"`
+	Detail ErrorDetail `json:"error"`
 }
 
 // Error409 defines model for Error409.
 type Error409 struct {
 	// error
-	Error ErrorDetail `json:"error"`
+	Detail ErrorDetail `json:"error"`
 }
 
 // エラーコード。
@@ -219,7 +219,7 @@ type ErrorCode int32
 // ErrorDefault defines model for ErrorDefault.
 type ErrorDefault struct {
 	// error
-	Error ErrorDetail `json:"error"`
+	Detail ErrorDetail `json:"error"`
 }
 
 // error
