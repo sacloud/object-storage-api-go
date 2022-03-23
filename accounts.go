@@ -29,6 +29,11 @@ type AccountAPI interface {
 	// Delete アカウントの削除
 	Delete(ctx context.Context, siteId string) error
 
+	// ListAccessKeys アクセスキーの参照
+	//
+	// Secretは常に空文字になっている
+	ListAccessKeys(ctx context.Context, siteId string) ([]*v1.AccountKey, error)
+
 	// CreateAccessKey アクセスキーの作成
 	//
 	// Secretはこの戻り値でのみ参照可能
@@ -94,6 +99,26 @@ func (op *accountOp) Delete(ctx context.Context, siteId string) error {
 		return err
 	}
 	return resp.Result()
+}
+
+func (op *accountOp) ListAccessKeys(ctx context.Context, siteId string) ([]*v1.AccountKey, error) {
+	apiClient, err := op.client.apiClient()
+	if err != nil {
+		return nil, err
+	}
+	resp, err := apiClient.GetAccountKeysWithResponse(ctx, siteId)
+	if err != nil {
+		return nil, err
+	}
+	keys, err := resp.Result()
+	if err != nil {
+		return nil, err
+	}
+	var results []*v1.AccountKey
+	for _, p := range keys.Data {
+		results = append(results, &p)
+	}
+	return results, nil
 }
 
 func (op *accountOp) CreateAccessKey(ctx context.Context, siteId string) (*v1.AccountKey, error) {
