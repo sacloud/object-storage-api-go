@@ -1858,50 +1858,52 @@ components:
     Error400:
       type: object
       properties:
-        error:
+        detail:
           $ref: "#/components/schemas/ErrorDetail"
       required:
-        - error
+        - detail
     Error401:
       type: object
       properties:
-        error:
+        detail:
           $ref: "#/components/schemas/ErrorDetail"
       required:
-        - error
+        - detail
     Error403:
       type: object
       properties:
-        error:
+        detail:
           $ref: "#/components/schemas/ErrorDetail"
       required:
-        - error
+        - detail
     Error404:
       type: object
       properties:
-        error:
+        detail:
           $ref: "#/components/schemas/ErrorDetail"
       required:
-        - error
+        - detail
     Error409:
       type: object
       properties:
-        error:
+        detail:
           $ref: "#/components/schemas/ErrorDetail"
       required:
-        - error
+        - detail
     ErrorDefault:
       type: object
       properties:
-        error:
+        detail:
           $ref: "#/components/schemas/ErrorDetail"
       required:
-        - error
+        - detail
 
     # ErrorNNNから切り出し
     ErrorDetail:
       description: error
       type: object
+      x-oapi-codegen-extra-tags:
+        json: "error"
       properties:
         code:
           $ref: '#/components/schemas/ErrorCode'

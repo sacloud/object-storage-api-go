@@ -20,60 +20,50 @@ import (
 	"strings"
 )
 
-// errorResponser APIレスポンスが返すエラー型が実装すべきインターフェース
-//
-// Note: 本来は各エラー型(ErrorNNN)でerrorインターフェースを実装させたかったが、
-//       各エラー型にはswagger.yamlでErrorというフィールドが定義されているため実装できない。
-//       このため別途errorを返すためのインターフェースとしてerrorResponserを用いている。
-type errorResponser interface {
-	// ActualError ErrorNNNが示すerrorを組み立てて返す
-	ActualError() error
-}
-
 var (
-	_ errorResponser = (*Error400)(nil)
-	_ errorResponser = (*Error401)(nil)
-	_ errorResponser = (*Error403)(nil)
-	_ errorResponser = (*Error404)(nil)
-	_ errorResponser = (*Error409)(nil)
-	_ errorResponser = (*ErrorDefault)(nil)
+	_ error = (*Error400)(nil)
+	_ error = (*Error401)(nil)
+	_ error = (*Error403)(nil)
+	_ error = (*Error404)(nil)
+	_ error = (*Error409)(nil)
+	_ error = (*ErrorDefault)(nil)
 )
 
 var commonErrorFormat = "status: %d, message: %s, trace: %s, inner_error: %s"
 
 // ActualError ErrorNNNが示すerrorを組み立てて返す
-func (e Error400) ActualError() error {
-	return fmt.Errorf(commonErrorFormat, http.StatusBadRequest, e.Error.Message, e.Error.TraceId, e.Error.Errors)
+func (e Error400) Error() string {
+	return fmt.Sprintf(commonErrorFormat, http.StatusBadRequest, e.Detail.Message, e.Detail.TraceId, e.Detail.Errors)
 }
 
 // ActualError ErrorNNNが示すerrorを組み立てて返す
-func (e Error401) ActualError() error {
-	return fmt.Errorf(commonErrorFormat, http.StatusUnauthorized, e.Error.Message, e.Error.TraceId, e.Error.Errors)
+func (e Error401) Error() string {
+	return fmt.Sprintf(commonErrorFormat, http.StatusUnauthorized, e.Detail.Message, e.Detail.TraceId, e.Detail.Errors)
 }
 
 // ActualError ErrorNNNが示すerrorを組み立てて返す
-func (e Error403) ActualError() error {
-	return fmt.Errorf(commonErrorFormat, http.StatusForbidden, e.Error.Message, e.Error.TraceId, e.Error.Errors)
+func (e Error403) Error() string {
+	return fmt.Sprintf(commonErrorFormat, http.StatusForbidden, e.Detail.Message, e.Detail.TraceId, e.Detail.Errors)
 }
 
 // ActualError ErrorNNNが示すerrorを組み立てて返す
-func (e Error404) ActualError() error {
-	return fmt.Errorf(commonErrorFormat, http.StatusNotFound, e.Error.Message, e.Error.TraceId, e.Error.Errors)
+func (e Error404) Error() string {
+	return fmt.Sprintf(commonErrorFormat, http.StatusNotFound, e.Detail.Message, e.Detail.TraceId, e.Detail.Errors)
 }
 
 // ActualError ErrorNNNが示すerrorを組み立てて返す
-func (e Error409) ActualError() error {
-	return fmt.Errorf(commonErrorFormat, http.StatusConflict, e.Error.Message, e.Error.TraceId, e.Error.Errors)
+func (e Error409) Error() string {
+	return fmt.Sprintf(commonErrorFormat, http.StatusConflict, e.Detail.Message, e.Detail.TraceId, e.Detail.Errors)
 }
 
 // ActualError ErrorNNNが示すerrorを組み立てて返す
-func (e ErrorDefault) ActualError() error {
-	status := e.Error.Code
+func (e ErrorDefault) Error() string {
+	status := e.Detail.Code
 	if status == 0 {
 		// この段階までに既知のステータスコード判定はされている。ここで不明な場合は500にしておく
 		status = http.StatusInternalServerError
 	}
-	return fmt.Errorf(commonErrorFormat, status, e.Error.Message, e.Error.TraceId, e.Error.Errors)
+	return fmt.Sprintf(commonErrorFormat, status, e.Detail.Message, e.Detail.TraceId, e.Detail.Errors)
 }
 
 // String Stringer実装

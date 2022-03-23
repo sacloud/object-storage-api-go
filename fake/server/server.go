@@ -59,7 +59,7 @@ func (s *Server) handleError(c *gin.Context, err error) {
 		switch engineErr.Type {
 		case fake.ErrorTypeInvalidRequest:
 			c.JSON(http.StatusBadRequest, &v1.Error400{
-				Error: v1.ErrorDetail{
+				Detail: v1.ErrorDetail{
 					Code:    http.StatusBadRequest,
 					Message: v1.ErrorMessage(engineErr.Error()),
 				},
@@ -67,7 +67,7 @@ func (s *Server) handleError(c *gin.Context, err error) {
 			return
 		case fake.ErrorTypeNotFound:
 			c.JSON(http.StatusNotFound, &v1.Error404{
-				Error: v1.ErrorDetail{
+				Detail: v1.ErrorDetail{
 					Code:    http.StatusNotFound,
 					Message: v1.ErrorMessage(engineErr.Error()),
 				},
@@ -75,7 +75,7 @@ func (s *Server) handleError(c *gin.Context, err error) {
 			return
 		case fake.ErrorTypeConflict:
 			c.JSON(http.StatusConflict, &v1.Error409{
-				Error: v1.ErrorDetail{
+				Detail: v1.ErrorDetail{
 					Code:    http.StatusConflict,
 					Message: v1.ErrorMessage(engineErr.Error()),
 				},
