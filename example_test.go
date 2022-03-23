@@ -107,6 +107,15 @@ func Example_accountAPI() {
 		panic(err)
 	}
 
+	// アクセスキーの一覧
+	accessKeys, err := accountOp.ListAccessKeys(ctx, siteId)
+	if err != nil {
+		panic(err)
+	}
+	if len(accessKeys) == 0 {
+		panic("ListAccessKeys failed")
+	}
+
 	// アクセスキーの削除
 	defer func() {
 		if err := accountOp.DeleteAccessKey(ctx, siteId, accessKey.Id.String()); err != nil {
