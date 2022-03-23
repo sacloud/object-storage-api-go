@@ -20,6 +20,46 @@ import (
 	"strings"
 )
 
+func IsError400(err error) bool {
+	if err == nil {
+		return false
+	}
+	_, ok := err.(*Error400)
+	return ok
+}
+
+func IsError401(err error) bool {
+	if err == nil {
+		return false
+	}
+	_, ok := err.(*Error401)
+	return ok
+}
+
+func IsError403(err error) bool {
+	if err == nil {
+		return false
+	}
+	_, ok := err.(*Error403)
+	return ok
+}
+
+func IsError404(err error) bool {
+	if err == nil {
+		return false
+	}
+	_, ok := err.(*Error404)
+	return ok
+}
+
+func IsError409(err error) bool {
+	if err == nil {
+		return false
+	}
+	_, ok := err.(*Error409)
+	return ok
+}
+
 var (
 	_ error = (*Error400)(nil)
 	_ error = (*Error401)(nil)
