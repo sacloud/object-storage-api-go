@@ -1361,6 +1361,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error401'
+        '404':
+          description: サイトが見つかりませんでした
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error404'
         default:
           description: 不明なエラーです
           content:

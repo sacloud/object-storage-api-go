@@ -2181,6 +2181,7 @@ type GetStatusResponse struct {
 	HTTPResponse *http.Response
 	JSON200      *StatusResponseBody
 	JSON401      *Error401
+	JSON404      *Error404
 	JSONDefault  *ErrorDefault
 }
 
@@ -2202,7 +2203,7 @@ func (r GetStatusResponse) StatusCode() int {
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
 func (r GetStatusResponse) Result() (*StatusResponseBody, error) {
-	return r.JSON200, eCoalesce(r.JSON401, r.JSONDefault, r.UndefinedError())
+	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSONDefault, r.UndefinedError())
 }
 
 // UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
@@ -3324,6 +3325,13 @@ func ParseGetStatusResponse(rsp *http.Response) (*GetStatusResponse, error) {
 			return nil, err
 		}
 		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest Error404
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
 		var dest ErrorDefault
