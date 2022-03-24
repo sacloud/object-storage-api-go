@@ -64,7 +64,7 @@ func (s *Server) DeletePermission(c *gin.Context, siteId string, permissionId v1
 	c.Status(http.StatusNoContent)
 }
 
-// ReadPermission パーミッションの取得
+// GetPermission パーミッションの取得
 // (GET /{site_name}/v2/permissions/{id})
 func (s *Server) GetPermission(c *gin.Context, siteId string, permissionId v1.PermissionID) {
 	permission, err := s.Engine.ReadPermission(siteId, permissionId.Int64())
@@ -72,7 +72,7 @@ func (s *Server) GetPermission(c *gin.Context, siteId string, permissionId v1.Pe
 		s.handleError(c, err)
 		return
 	}
-	c.JSON(http.StatusCreated, &v1.PermissionResponseBody{
+	c.JSON(http.StatusOK, &v1.PermissionResponseBody{
 		Data: *permission,
 	})
 }
