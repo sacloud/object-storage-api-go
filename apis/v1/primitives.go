@@ -95,3 +95,13 @@ func (v PermissionID) String() string {
 func (v PermissionID) Int64() int64 {
 	return int64(v)
 }
+
+// Bool .
+func (v CanRead) Bool() bool {
+	return bool(v)
+}
+
+// Bool .
+func (v CanWrite) Bool() bool {
+	return bool(v)
+}
