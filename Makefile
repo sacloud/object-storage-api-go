@@ -17,6 +17,7 @@
 AUTHOR          ?="The sacloud/object-storage-api-go authors"
 COPYRIGHT_YEAR  ?="2022"
 COPYRIGHT_FILES ?=$$(find . -name "*.go" -print | grep -v "/vendor/")
+TEXTLINT_ACTION_VERSION ?=v0.0.1
 
 default: gen fmt set-license goimports lint test
 
@@ -90,7 +91,7 @@ set-license:
 	@addlicense -c $(AUTHOR) -y $(COPYRIGHT_YEAR) $(COPYRIGHT_FILES)
 
 .PHONY: lint
-lint: lint-go lint-def textlint
+lint: lint-go lint-def lint-text
 
 .PHONY: lint-go
 lint-go:
@@ -100,9 +101,11 @@ lint-go:
 lint-def:
 	docker run --rm -v $$PWD:$$PWD -w $$PWD stoplight/spectral:latest lint -F warn apis/v1/spec/swagger.yaml
 
-.PHONY: textlint
-textlint:
-	@docker run --rm -v $$PWD:/work -w /work ghcr.io/sacloud/textlint-action:v0.0.1 .
+.PHONY: textlint lint-text
+textlint: lint-text
+lint-text:
+	@echo "running textlint..."
+	@docker run -it --rm -v $$PWD:/work -w /work ghcr.io/sacloud/textlint-action:$(TEXTLINT_ACTION_VERSION) .
 
 .PHONY: godoc
 godoc:
