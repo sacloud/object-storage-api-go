@@ -64,5 +64,4 @@ func TestEngine_Accounts(t *testing.T) {
 		require.NoError(t, err)
 		require.Nil(t, engine.Account)
 	})
-
 }

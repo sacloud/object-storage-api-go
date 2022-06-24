@@ -71,8 +71,8 @@ func (op *permissionOp) List(ctx context.Context, siteId string) ([]*v1.Permissi
 		return nil, err
 	}
 	var results []*v1.Permission
-	for _, p := range permissions.Data {
-		results = append(results, &p)
+	for i := range permissions.Data {
+		results = append(results, &permissions.Data[i])
 	}
 	return results, nil
 }
@@ -82,7 +82,7 @@ func (op *permissionOp) Create(ctx context.Context, siteId string, params *v1.Cr
 	if err != nil {
 		return nil, err
 	}
-	resp, err := apiClient.CreatePermissionWithResponse(ctx, siteId, v1.CreatePermissionJSONRequestBody(*params))
+	resp, err := apiClient.CreatePermissionWithResponse(ctx, siteId, *params)
 	if err != nil {
 		return nil, err
 	}
@@ -152,8 +152,8 @@ func (op *permissionOp) ListAccessKeys(ctx context.Context, siteId string, permi
 		return nil, err
 	}
 	var results []*v1.PermissionKey
-	for _, p := range permissions.Data {
-		results = append(results, &p)
+	for i := range permissions.Data {
+		results = append(results, &permissions.Data[i])
 	}
 	return results, nil
 }

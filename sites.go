@@ -54,8 +54,8 @@ func (op *siteOp) List(ctx context.Context) ([]*v1.Cluster, error) {
 	}
 
 	var results []*v1.Cluster
-	for _, c := range clusters.Data {
-		results = append(results, &c)
+	for i := range clusters.Data {
+		results = append(results, &clusters.Data[i])
 	}
 	return results, nil
 }

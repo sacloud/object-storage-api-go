@@ -76,7 +76,6 @@ func (engine *Engine) DeleteAccountAccessKey(siteId string, id string) error {
 		return nil
 	}
 	return newError(ErrorTypeNotFound, "account_key", id, "アカウントキーが存在しません。id: %s", id)
-
 }
 
 // ReadAccountAccessKey サイトアカウントのアクセスキーの取得
