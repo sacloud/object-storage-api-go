@@ -55,8 +55,7 @@ func init() {
 }
 
 func main() {
-	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
-	defer stop()
+	ctx, _ := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 
 	if err := cmd.ExecuteContext(ctx); err != nil {
 		os.Exit(1)
@@ -81,7 +80,7 @@ func run(cmd *cobra.Command, _ []string) error {
 	case err := <-errCh:
 		return err
 	case <-ctx.Done():
-		fmt.Println("shutting down") // nolint
+		fmt.Println("shutting down")
 	}
 	return ctx.Err()
 }

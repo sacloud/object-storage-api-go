@@ -45,7 +45,7 @@ tools:
 	go install github.com/sacloud/addlicense@latest
 	go install github.com/client9/misspell/cmd/misspell@latest
 	go install github.com/deepmap/oapi-codegen/cmd/oapi-codegen@v1.9.0
-	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/v1.44.2/install.sh | sh -s -- -b $$(go env GOPATH)/bin v1.44.2
+	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/v1.46.2/install.sh | sh -s -- -b $$(go env GOPATH)/bin v1.46.2
 
 .PHONY: clean
 clean:

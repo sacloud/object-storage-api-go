@@ -83,7 +83,6 @@ func TestEngine_Permissions(t *testing.T) {
 		permissions, err = engine.ListPermissions(siteId)
 		require.NoError(t, err)
 		require.Len(t, permissions, 1)
-
 	})
 
 	t.Run("read permission", func(t *testing.T) {

@@ -115,8 +115,8 @@ func (op *accountOp) ListAccessKeys(ctx context.Context, siteId string) ([]*v1.A
 		return nil, err
 	}
 	var results []*v1.AccountKey
-	for _, p := range keys.Data {
-		results = append(results, &p)
+	for i := range keys.Data {
+		results = append(results, &keys.Data[i])
 	}
 	return results, nil
 }
