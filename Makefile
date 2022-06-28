@@ -14,46 +14,31 @@
 # limitations under the License.
 #
 
-AUTHOR          ?="The sacloud/object-storage-api-go authors"
-COPYRIGHT_YEAR  ?="2022"
-COPYRIGHT_FILES ?=$$(find . -name "*.go" -print | grep -v "/vendor/")
-TEXTLINT_ACTION_VERSION ?=v0.0.1
+#====================
+AUTHOR         ?= The sacloud/object-storage-api-go authors
+COPYRIGHT_YEAR ?= 2022
 
-default: gen fmt set-license goimports lint test
+BIN            ?= dist/sacloud-ojs-fake-server
+GO_ENTRY_FILE  ?= cmd/sacloud-ojs-fake-server/*.go
+BUILD_LDFLAGS  ?=
 
-.PHONY: all
-all: dist/sacloud-ojs-fake-server
+include includes/go/common.mk
+include includes/go/single.mk
+#====================
 
-.PHONY: bin
-bin: all
-
-dist/sacloud-ojs-fake-server:
-	go build -o dist/sacloud-ojs-fake-server cmd/sacloud-ojs-fake-server/*.go
-
-.PHONY: test
-test:
-	TESTACC= go test ./... $(TESTARGS) -v -timeout=120m -parallel=8 -race;
-
-.PHONY: testacc
-testacc:
-	TESTACC=1 go test ./... $(TESTARGS) --tags=acctest -v -timeout=120m -parallel=8 ;
+default: $(DEFAULT_GOALS)
+tools: dev-tools
 
 .PHONY: tools
-tools:
+tools: dev-tools
 	npm install -g @apidevtools/swagger-cli
-	go install github.com/rinchsan/gosimports/cmd/gosimports@latest
-	go install golang.org/x/tools/cmd/stringer@latest
-	go install github.com/sacloud/addlicense@latest
-	go install github.com/client9/misspell/cmd/misspell@latest
 	go install github.com/deepmap/oapi-codegen/cmd/oapi-codegen@v1.9.0
-	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/v1.46.2/install.sh | sh -s -- -b $$(go env GOPATH)/bin v1.46.2
 
-.PHONY: clean
-clean:
+.PHONY: clean-all
+clean-all:
 	find . -type f -name "*_gen.go" -delete
 	rm -f apis/v1/spec/original-swagger.yaml
 	rm -f apis/v1/spec/swagger.json
-	rm -rf dist/
 
 .PHONY: gen
 gen: _gen fmt goimports set-license
@@ -77,38 +62,6 @@ apis/v1/zz_client_gen.go: apis/v1/spec/swagger.yaml apis/v1/spec/codegen/client.
 apis/v1/zz_server_gen.go: apis/v1/spec/swagger.yaml apis/v1/spec/codegen/gin.yaml
 	oapi-codegen -config apis/v1/spec/codegen/gin.yaml apis/v1/spec/swagger.yaml
 
-.PHONY: goimports gosimports
-goimports: gosimports
-gosimports: fmt
-	gosimports -l -w .
-
-.PHONY: fmt
-fmt:
-	find . -name '*.go' | grep -v vendor | xargs gofmt -s -w
-
-.PHONY: set-license
-set-license:
-	@addlicense -c $(AUTHOR) -y $(COPYRIGHT_YEAR) $(COPYRIGHT_FILES)
-
-.PHONY: lint
-lint: lint-go lint-def lint-text
-
-.PHONY: lint-go
-lint-go:
-	golangci-lint run ./...
-
 .PHONY: lint-def
 lint-def:
 	docker run --rm -v $$PWD:$$PWD -w $$PWD stoplight/spectral:latest lint -F warn apis/v1/spec/swagger.yaml
-
-.PHONY: textlint lint-text
-textlint: lint-text
-lint-text:
-	@echo "running textlint..."
-	@docker run -it --rm -v $$PWD:/work -w /work ghcr.io/sacloud/textlint-action:$(TEXTLINT_ACTION_VERSION) .
-
-.PHONY: godoc
-godoc:
-	echo "URL: http://localhost:6060/pkg/github.com/sacloud/object-storage-api-go/"
-	godoc -http=localhost:6060
-
