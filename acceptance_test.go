@@ -24,10 +24,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/config"
-	"github.com/aws/aws-sdk-go-v2/credentials"
-	"github.com/aws/aws-sdk-go-v2/service/s3"
+	"github.com/minio/minio-go/v7"
+	"github.com/minio/minio-go/v7/pkg/credentials"
 	objectstorage "github.com/sacloud/object-storage-api-go"
 	v1 "github.com/sacloud/object-storage-api-go/apis/v1"
 	"github.com/sacloud/packages-go/envvar"
@@ -38,6 +36,26 @@ import (
 const (
 	siteId = "isk01" // Note: 本来はサイトAPI経由で取得すべきだが現状ではサイトが1つしかないため定数として保持/利用する
 )
+
+func s3Client(t *testing.T, token, secret string) *minio.Client {
+	t.Helper()
+
+	endpoint := "s3.isk01.sakurastorage.jp"
+	s3Client, err := minio.New(endpoint, &minio.Options{
+		Creds:        credentials.NewStaticV4(token, secret, ""),
+		Region:       "jp-north-1",
+		Secure:       true,
+		BucketLookup: minio.BucketLookupPath,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	return s3Client
+}
+
+func s3ClientFromEnv(t *testing.T) *minio.Client {
+	return s3Client(t, os.Getenv("SACLOUD_OJS_ACCESS_KEY_ID"), os.Getenv("SACLOUD_OJS_SECRET_ACCESS_KEY"))
+}
 
 // TestAccSiteAndStatusAPI サイト/ステータス関連APIの疎通確認
 func TestAccSiteAndStatusAPI(t *testing.T) {
@@ -89,40 +107,15 @@ func TestAccBucketHandling(t *testing.T) {
 
 	// Step2: バケットにアクセス
 	{
-		cred := credentials.NewStaticCredentialsProvider(
-			os.Getenv("SACLOUD_OJS_ACCESS_KEY_ID"),
-			os.Getenv("SACLOUD_OJS_SECRET_ACCESS_KEY"),
-			"",
-		)
-		endpoint := aws.EndpointResolverWithOptionsFunc(
-			func(service, region string, options ...interface{}) (aws.Endpoint, error) {
-				return aws.Endpoint{
-					URL:               "https://s3.isk01.sakurastorage.jp/",
-					HostnameImmutable: true,
-					SigningRegion:     region,
-				}, nil
-			},
-		)
+		s3Client := s3ClientFromEnv(t)
 
-		cfg, err := config.LoadDefaultConfig(ctx,
-			config.WithRegion("jp-north-1"),
-			config.WithCredentialsProvider(cred),
-			config.WithEndpointResolverWithOptions(endpoint),
-		)
-		if err != nil {
-			t.Fatal(err)
-		}
-		s3Client := s3.NewFromConfig(cfg, func(o *s3.Options) {
-			o.UsePathStyle = true
-		})
-
-		output, err := s3Client.ListBuckets(ctx, nil)
+		output, err := s3Client.ListBuckets(ctx)
 		require.NoError(t, err)
 		require.NotEmpty(t, output)
 
 		exist := false
-		for _, b := range output.Buckets {
-			if b.Name != nil && *b.Name == bucketName {
+		for _, b := range output {
+			if b.Name == bucketName {
 				exist = true
 				break
 			}
@@ -176,64 +169,29 @@ func TestAccAccessToBucketObjectWithPermissionKey(t *testing.T) {
 
 	// Step3: 作成したアクセスキーでバケットにアクセス
 	{
-		cred := credentials.NewStaticCredentialsProvider(
-			key.Id.String(), key.Secret.String(),
-			"",
-		)
-		endpoint := aws.EndpointResolverWithOptionsFunc(
-			func(service, region string, options ...interface{}) (aws.Endpoint, error) {
-				return aws.Endpoint{
-					URL:               "https://s3.isk01.sakurastorage.jp/",
-					HostnameImmutable: true,
-					SigningRegion:     region,
-				}, nil
-			},
-		)
-
-		cfg, err := config.LoadDefaultConfig(ctx,
-			config.WithRegion("jp-north-1"),
-			config.WithCredentialsProvider(cred),
-			config.WithEndpointResolverWithOptions(endpoint),
-		)
-		if err != nil {
-			t.Fatal(err)
-		}
-		s3Client := s3.NewFromConfig(cfg, func(o *s3.Options) {
-			o.UsePathStyle = true
-		})
+		s3Client := s3Client(t, key.Id.String(), key.Secret.String())
 
 		objectKey := "foobar"
 		objectBodyText := "body of s3://[bucket_name]/foobar"
 		objectBody := bytes.NewBufferString(objectBodyText)
 
 		// オブジェクトの作成
-		created, err := s3Client.PutObject(ctx, &s3.PutObjectInput{
-			Bucket: &bucketName,
-			Key:    &objectKey,
-			Body:   objectBody,
-		})
+		created, err := s3Client.PutObject(ctx, bucketName, objectKey, objectBody, int64(objectBody.Len()), minio.PutObjectOptions{})
 		require.NoError(t, err)
 		require.NotEmpty(t, created)
 
 		// オブジェクトの読み込み
-		read, err := s3Client.GetObject(ctx, &s3.GetObjectInput{
-			Bucket: &bucketName,
-			Key:    &objectKey,
-		})
+		read, err := s3Client.GetObject(ctx, bucketName, objectKey, minio.GetObjectOptions{})
 		require.NoError(t, err)
 		require.NotEmpty(t, read)
 
-		readText, err := io.ReadAll(read.Body)
+		readText, err := io.ReadAll(read)
 		require.NoError(t, err)
 		require.Equal(t, objectBodyText, string(readText))
 
 		// オブジェクトの削除
-		deleted, err := s3Client.DeleteObject(ctx, &s3.DeleteObjectInput{
-			Bucket: &bucketName,
-			Key:    &objectKey,
-		})
+		err = s3Client.RemoveObject(ctx, bucketName, objectKey, minio.RemoveObjectOptions{})
 		require.NoError(t, err)
-		require.NotEmpty(t, deleted)
 	}
 
 	// Step4: クリーンアップ
