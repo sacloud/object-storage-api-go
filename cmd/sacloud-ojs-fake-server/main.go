@@ -24,6 +24,7 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 
 	objectstorage "github.com/sacloud/object-storage-api-go"
 	"github.com/sacloud/object-storage-api-go/fake"
@@ -104,7 +105,8 @@ func startServer(addr, dataFile string) error {
 		Engine: &engine,
 	}
 	httpServer := &http.Server{
-		Handler: fakeServer.Handler(),
+		Handler:           fakeServer.Handler(),
+		ReadHeaderTimeout: time.Second,
 	}
 
 	listener, err := net.Listen("tcp", addr)
