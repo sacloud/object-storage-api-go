@@ -1,6 +1,6 @@
 module github.com/sacloud/object-storage-api-go
 
-go 1.18
+go 1.19
 
 require (
 	github.com/deepmap/oapi-codegen v1.11.0
