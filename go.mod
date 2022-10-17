@@ -7,7 +7,7 @@ require (
 	github.com/getlantern/deepcopy v0.0.0-20160317154340-7f45deb8130a
 	github.com/gin-gonic/gin v1.8.1
 	github.com/minio/minio-go/v7 v7.0.41
-	github.com/sacloud/api-client-go v0.2.2
+	github.com/sacloud/api-client-go v0.2.3
 	github.com/sacloud/packages-go v0.0.6
 	github.com/spf13/cobra v1.5.0
 	github.com/stretchr/testify v1.8.0
@@ -39,7 +39,7 @@ require (
 	github.com/pelletier/go-toml/v2 v2.0.2 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rs/xid v1.4.0 // indirect
-	github.com/sacloud/go-http v0.1.2 // indirect
+	github.com/sacloud/go-http v0.1.3 // indirect
 	github.com/sirupsen/logrus v1.9.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/ugorji/go/codec v1.2.7 // indirect
