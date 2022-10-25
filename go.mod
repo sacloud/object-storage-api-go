@@ -10,7 +10,7 @@ require (
 	github.com/sacloud/api-client-go v0.2.3
 	github.com/sacloud/packages-go v0.0.6
 	github.com/spf13/cobra v1.6.0
-	github.com/stretchr/testify v1.8.0
+	github.com/stretchr/testify v1.8.1
 )
 
 require (
