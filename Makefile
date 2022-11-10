@@ -32,7 +32,7 @@ tools: dev-tools
 .PHONY: tools
 tools: dev-tools
 	npm install -g @apidevtools/swagger-cli
-	go install github.com/deepmap/oapi-codegen/cmd/oapi-codegen@v1.11.0
+	go install github.com/deepmap/oapi-codegen/cmd/oapi-codegen@v1.12.2
 
 .PHONY: clean-all
 clean-all:
