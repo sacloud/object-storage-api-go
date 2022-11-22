@@ -3,7 +3,7 @@ module github.com/sacloud/object-storage-api-go
 go 1.19
 
 require (
-	github.com/deepmap/oapi-codegen v1.12.2
+	github.com/deepmap/oapi-codegen v1.12.3
 	github.com/getlantern/deepcopy v0.0.0-20160317154340-7f45deb8130a
 	github.com/gin-gonic/gin v1.8.1
 	github.com/minio/minio-go/v7 v7.0.43
