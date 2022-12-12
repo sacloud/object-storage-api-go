@@ -8,7 +8,7 @@ require (
 	github.com/gin-gonic/gin v1.8.1
 	github.com/minio/minio-go/v7 v7.0.44
 	github.com/sacloud/api-client-go v0.2.4
-	github.com/sacloud/packages-go v0.0.6
+	github.com/sacloud/packages-go v0.0.7
 	github.com/spf13/cobra v1.6.1
 	github.com/stretchr/testify v1.8.1
 )
