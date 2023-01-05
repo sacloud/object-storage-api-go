@@ -1,5 +1,5 @@
 #
-# Copyright 2022 The sacloud/object-storage-api-go Authors
+# Copyright 2022-2023 The sacloud/object-storage-api-go Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 #====================
 AUTHOR         ?= The sacloud/object-storage-api-go authors
-COPYRIGHT_YEAR ?= 2022
+COPYRIGHT_YEAR ?= 2022-2023
 
 BIN            ?= dist/sacloud-ojs-fake-server
 GO_ENTRY_FILE  ?= cmd/sacloud-ojs-fake-server/*.go
