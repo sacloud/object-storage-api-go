@@ -6,7 +6,7 @@ require (
 	github.com/deepmap/oapi-codegen v1.12.4
 	github.com/getlantern/deepcopy v0.0.0-20160317154340-7f45deb8130a
 	github.com/gin-gonic/gin v1.9.1
-	github.com/minio/minio-go/v7 v7.0.57
+	github.com/minio/minio-go/v7 v7.0.60
 	github.com/sacloud/api-client-go v0.2.8
 	github.com/sacloud/packages-go v0.0.9
 	github.com/spf13/cobra v1.7.0
