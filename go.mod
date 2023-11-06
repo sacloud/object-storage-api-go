@@ -9,7 +9,7 @@ require (
 	github.com/minio/minio-go/v7 v7.0.63
 	github.com/sacloud/api-client-go v0.2.9
 	github.com/sacloud/packages-go v0.0.9
-	github.com/spf13/cobra v1.7.0
+	github.com/spf13/cobra v1.8.0
 	github.com/stretchr/testify v1.8.4
 )
 
