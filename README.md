@@ -65,6 +65,6 @@ func main() {
 
 ## License
 
-`sacloud/object-storage-api-go` Copyright (C) 2022-2023 [The sacloud/object-storage-api-go Authors](AUTHORS).
+`sacloud/object-storage-api-go` Copyright (C) 2022-2025 [The sacloud/object-storage-api-go Authors](AUTHORS).
 
 This project is published under [Apache 2.0 License](LICENSE).
