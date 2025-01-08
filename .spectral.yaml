@@ -4,3 +4,4 @@ rules:
   operation-tag-defined: false
   path-keys-no-trailing-slash: false
   oas3-server-trailing-slash: false
+  oas3-server-variables: false
