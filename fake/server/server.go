@@ -47,7 +47,8 @@ func (s *Server) Handler() http.Handler {
 	engine.GET("/ping", func(c *gin.Context) {
 		c.String(200, "pong")
 	})
-	return v1.RegisterHandlers(engine, s)
+	v1.RegisterHandlers(engine, s)
+	return engine
 }
 
 func (s *Server) handleError(c *gin.Context, err error) {
