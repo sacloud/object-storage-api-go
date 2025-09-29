@@ -9,7 +9,7 @@ require (
 	github.com/oapi-codegen/runtime v1.1.2
 	github.com/sacloud/api-client-go v0.3.3
 	github.com/sacloud/packages-go v0.0.11
-	github.com/spf13/cobra v1.8.0
+	github.com/spf13/cobra v1.10.1
 	github.com/stretchr/testify v1.11.1
 )
 
@@ -63,7 +63,7 @@ require (
 	github.com/sacloud/go-http v0.1.9 // indirect
 	github.com/speakeasy-api/jsonpath v0.6.0 // indirect
 	github.com/speakeasy-api/openapi-overlay v0.10.2 // indirect
-	github.com/spf13/pflag v1.0.5 // indirect
+	github.com/spf13/pflag v1.0.9 // indirect
 	github.com/tinylib/msgp v1.3.0 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.3.0 // indirect
