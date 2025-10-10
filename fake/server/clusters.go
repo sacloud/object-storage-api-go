@@ -15,35 +15,46 @@
 package server
 
 import (
+	"encoding/json"
 	"net/http"
 
-	"github.com/gin-gonic/gin"
 	v1 "github.com/sacloud/object-storage-api-go/apis/v1"
+	"github.com/sacloud/object-storage-api-go/fake"
 )
 
 // ListClusters サイト一覧の取得
 // (GET /fed/v1/clusters)
-func (s *Server) GetClusters(c *gin.Context) {
+func (s *Server) GetClusters(w http.ResponseWriter, r *http.Request) {
 	clusters, err := s.Engine.ListClusters()
 	if err != nil {
-		s.handleError(c, err)
-		return
+		switch e := err.(type) {
+		case *fake.Error:
+			http.Error(w, e.Error(), http.StatusBadRequest)
+			return
+		default:
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 	}
 
-	c.JSON(http.StatusOK, &v1.ListClustersResponseBody{
-		Data: clusters,
-	})
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(&v1.ListClustersResponseBody{Data: clusters})
 }
 
 // ReadCluster サイトの取得
 // (GET /fed/v1/clusters/{id})
-func (s *Server) GetCluster(c *gin.Context, siteId string) {
+func (s *Server) GetCluster(w http.ResponseWriter, r *http.Request, siteId string) {
 	cluster, err := s.Engine.ReadCluster(siteId)
 	if err != nil {
-		s.handleError(c, err)
-		return
+		switch e := err.(type) {
+		case *fake.Error:
+			http.Error(w, e.Error(), http.StatusNotFound)
+			return
+		default:
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 	}
-	c.JSON(http.StatusOK, &v1.ReadClusterResponseBody{
-		Data: cluster,
-	})
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(&v1.ReadClusterResponseBody{Data: cluster})
 }

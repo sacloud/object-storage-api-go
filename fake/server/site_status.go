@@ -15,22 +15,28 @@
 package server
 
 import (
+	"encoding/json"
 	"net/http"
 
-	"github.com/gin-gonic/gin"
 	v1 "github.com/sacloud/object-storage-api-go/apis/v1"
+	"github.com/sacloud/object-storage-api-go/fake"
 )
 
 // ReadSiteStatus サイトのステータスの取得
 // (GET /{site_name}/v2/status)
-func (s *Server) GetStatus(c *gin.Context, siteId string) {
+func (s *Server) GetStatus(w http.ResponseWriter, r *http.Request, siteId string) {
 	status, err := s.Engine.ReadSiteStatus(siteId)
 	if err != nil {
-		s.handleError(c, err)
-		return
+		switch e := err.(type) {
+		case *fake.Error:
+			http.Error(w, e.Error(), http.StatusNotFound)
+			return
+		default:
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 	}
 
-	c.JSON(http.StatusOK, &v1.StatusResponseBody{
-		Data: *status,
-	})
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(&v1.StatusResponseBody{Data: *status})
 }

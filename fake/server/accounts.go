@@ -15,47 +15,73 @@
 package server
 
 import (
+	"encoding/json"
 	"net/http"
 
-	"github.com/gin-gonic/gin"
 	v1 "github.com/sacloud/object-storage-api-go/apis/v1"
+	"github.com/sacloud/object-storage-api-go/fake"
 )
 
 // DeleteSiteAccount サイトアカウントの削除
 // (DELETE /{site_name}/v2/account)
-func (s *Server) DeleteAccount(c *gin.Context, siteId string) {
+func (s *Server) DeleteAccount(w http.ResponseWriter, r *http.Request, siteId string) {
 	if err := s.Engine.DeleteSiteAccount(siteId); err != nil {
-		s.handleError(c, err)
-		return
+		switch e := err.(type) {
+		case *fake.Error:
+			if e.Type == fake.ErrorTypeNotFound {
+				http.Error(w, e.Error(), http.StatusNotFound)
+				return
+			}
+			http.Error(w, e.Error(), http.StatusBadRequest)
+			return
+		default:
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 	}
 
-	c.Status(http.StatusNoContent)
+	w.WriteHeader(http.StatusNoContent)
 }
 
 // ReadSiteAccount サイトアカウントの取得
 // (GET /{site_name}/v2/account)
-func (s *Server) GetAccount(c *gin.Context, siteId string) {
+func (s *Server) GetAccount(w http.ResponseWriter, r *http.Request, siteId string) {
 	account, err := s.Engine.ReadSiteAccount(siteId)
 	if err != nil {
-		s.handleError(c, err)
-		return
+		switch e := err.(type) {
+		case *fake.Error:
+			if e.Type == fake.ErrorTypeNotFound {
+				http.Error(w, e.Error(), http.StatusNotFound)
+				return
+			}
+			http.Error(w, e.Error(), http.StatusBadRequest)
+			return
+		default:
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 	}
 
-	c.JSON(http.StatusOK, &v1.AccountResponseBody{
-		Data: *account,
-	})
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(&v1.AccountResponseBody{Data: *account})
 }
 
 // CreateSiteAccount サイトアカウントの作成
 // (POST /{site_name}/v2/account)
-func (s *Server) CreateAccount(c *gin.Context, siteId string) {
+func (s *Server) CreateAccount(w http.ResponseWriter, r *http.Request, siteId string) {
 	account, err := s.Engine.CreateSiteAccount(siteId)
 	if err != nil {
-		s.handleError(c, err)
-		return
+		switch e := err.(type) {
+		case *fake.Error:
+			http.Error(w, e.Error(), http.StatusBadRequest)
+			return
+		default:
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 	}
 
-	c.JSON(http.StatusCreated, &v1.AccountResponseBody{
-		Data: *account,
-	})
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusCreated)
+	_ = json.NewEncoder(w).Encode(&v1.AccountResponseBody{Data: *account})
 }

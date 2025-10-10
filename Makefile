@@ -59,8 +59,8 @@ apis/v1/zz_types_gen.go: apis/v1/spec/swagger.yaml apis/v1/spec/codegen/types.ya
 apis/v1/zz_client_gen.go: apis/v1/spec/swagger.yaml apis/v1/spec/codegen/client.yaml
 	oapi-codegen --old-config-style  -config apis/v1/spec/codegen/client.yaml apis/v1/spec/swagger.yaml
 
-apis/v1/zz_server_gen.go: apis/v1/spec/swagger.yaml apis/v1/spec/codegen/gin.yaml
-	oapi-codegen --old-config-style  -config apis/v1/spec/codegen/gin.yaml apis/v1/spec/swagger.yaml
+apis/v1/zz_server_gen.go: apis/v1/spec/swagger.yaml apis/v1/spec/codegen/server.yaml
+	oapi-codegen --old-config-style  -config apis/v1/spec/codegen/server.yaml apis/v1/spec/swagger.yaml
 
 .PHONY: lint-def
 lint-def:

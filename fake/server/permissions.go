@@ -15,83 +15,119 @@
 package server
 
 import (
+	"encoding/json"
 	"net/http"
 
-	"github.com/gin-gonic/gin"
 	v1 "github.com/sacloud/object-storage-api-go/apis/v1"
+	"github.com/sacloud/object-storage-api-go/fake"
 )
 
 // ListPermissions パーミッション一覧の取得
 // (GET /{site_name}/v2/permissions)
-func (s *Server) GetPermissions(c *gin.Context, siteId string) {
+func (s *Server) GetPermissions(w http.ResponseWriter, r *http.Request, siteId string) {
 	permissions, err := s.Engine.ListPermissions(siteId)
 	if err != nil {
-		s.handleError(c, err)
-		return
+		switch e := err.(type) {
+		case *fake.Error:
+			http.Error(w, e.Error(), http.StatusBadRequest)
+			return
+		default:
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 	}
 
-	c.JSON(http.StatusOK, &v1.PermissionsResponseBody{
-		Data: permissions,
-	})
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(&v1.PermissionsResponseBody{Data: permissions})
 }
 
 // CreatePermission パーミッションの作成
 // (POST /{site_name}/v2/permissions)
-func (s *Server) CreatePermission(c *gin.Context, siteId string) {
+func (s *Server) CreatePermission(w http.ResponseWriter, r *http.Request, siteId string) {
 	var paramJSON v1.PermissionRequestBody
-	if err := c.ShouldBindJSON(&paramJSON); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	if err := json.NewDecoder(r.Body).Decode(&paramJSON); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
 	permission, err := s.Engine.CreatePermission(siteId, &paramJSON)
 	if err != nil {
-		s.handleError(c, err)
-		return
+		switch e := err.(type) {
+		case *fake.Error:
+			http.Error(w, e.Error(), http.StatusBadRequest)
+			return
+		default:
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 	}
-	c.JSON(http.StatusCreated, &v1.PermissionResponseBody{
-		Data: *permission,
-	})
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusCreated)
+	_ = json.NewEncoder(w).Encode(&v1.PermissionResponseBody{Data: *permission})
 }
 
 // DeletePermission パーミッションの削除
 // (DELETE /{site_name}/v2/permissions/{id})
-func (s *Server) DeletePermission(c *gin.Context, siteId string, permissionId v1.PermissionID) {
+func (s *Server) DeletePermission(w http.ResponseWriter, r *http.Request, siteId string, permissionId v1.PermissionID) {
 	if err := s.Engine.DeletePermission(siteId, permissionId.Int64()); err != nil {
-		s.handleError(c, err)
-		return
+		switch e := err.(type) {
+		case *fake.Error:
+			if e.Type == fake.ErrorTypeNotFound {
+				http.Error(w, e.Error(), http.StatusNotFound)
+				return
+			}
+			http.Error(w, e.Error(), http.StatusBadRequest)
+			return
+		default:
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 	}
-	c.Status(http.StatusNoContent)
+	w.WriteHeader(http.StatusNoContent)
 }
 
 // GetPermission パーミッションの取得
 // (GET /{site_name}/v2/permissions/{id})
-func (s *Server) GetPermission(c *gin.Context, siteId string, permissionId v1.PermissionID) {
+func (s *Server) GetPermission(w http.ResponseWriter, r *http.Request, siteId string, permissionId v1.PermissionID) {
 	permission, err := s.Engine.ReadPermission(siteId, permissionId.Int64())
 	if err != nil {
-		s.handleError(c, err)
-		return
+		switch e := err.(type) {
+		case *fake.Error:
+			if e.Type == fake.ErrorTypeNotFound {
+				http.Error(w, e.Error(), http.StatusNotFound)
+				return
+			}
+			http.Error(w, e.Error(), http.StatusBadRequest)
+			return
+		default:
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 	}
-	c.JSON(http.StatusOK, &v1.PermissionResponseBody{
-		Data: *permission,
-	})
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(&v1.PermissionResponseBody{Data: *permission})
 }
 
 // UpdatePermission パーミッションの更新
 // (PUT /{site_name}/v2/permissions/{id})
-func (s *Server) UpdatePermission(c *gin.Context, siteId string, permissionId v1.PermissionID) {
+func (s *Server) UpdatePermission(w http.ResponseWriter, r *http.Request, siteId string, permissionId v1.PermissionID) {
 	var paramJSON v1.PermissionRequestBody
-	if err := c.ShouldBindJSON(&paramJSON); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	if err := json.NewDecoder(r.Body).Decode(&paramJSON); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
 	permission, err := s.Engine.UpdatePermission(siteId, permissionId.Int64(), &paramJSON)
 	if err != nil {
-		s.handleError(c, err)
-		return
+		switch e := err.(type) {
+		case *fake.Error:
+			http.Error(w, e.Error(), http.StatusBadRequest)
+			return
+		default:
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 	}
-	c.JSON(http.StatusOK, &v1.PermissionResponseBody{
-		Data: *permission,
-	})
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(&v1.PermissionResponseBody{Data: *permission})
 }
