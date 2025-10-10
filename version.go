@@ -16,7 +16,7 @@ package objectstorage
 
 var (
 	// Version app version
-	Version = "v0.0.11"
+	Version = "v0.0.12"
 	// Revision git commit short commit hash
 	Revision = "xxxxxx" // set on build time
 )

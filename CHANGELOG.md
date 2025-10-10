@@ -1,5 +1,8 @@
 # Changelog
 
+## [v0.0.12](https://github.com/sacloud/object-storage-api-go/compare/v0.0.11...v0.0.12) - 2025-10-10
+- Use net/http instead of gin for fake server by @repeatedly in https://github.com/sacloud/object-storage-api-go/pull/191
+
 ## [v0.0.11](https://github.com/sacloud/object-storage-api-go/compare/v0.0.10...v0.0.11) - 2025-09-29
 - update dependencies by @yamamoto-febc in https://github.com/sacloud/object-storage-api-go/pull/172
 - go: bump github.com/stretchr/testify from 1.8.4 to 1.9.0 by @dependabot[bot] in https://github.com/sacloud/object-storage-api-go/pull/171
