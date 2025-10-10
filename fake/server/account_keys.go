@@ -15,61 +15,92 @@
 package server
 
 import (
+	"encoding/json"
 	"net/http"
 
-	"github.com/gin-gonic/gin"
 	v1 "github.com/sacloud/object-storage-api-go/apis/v1"
+	"github.com/sacloud/object-storage-api-go/fake"
 )
 
 // ListAccountAccessKeys サイトアカウントのアクセスキーの取得
 // (GET /{site_name}/v2/account/keys)
-func (s *Server) GetAccountKeys(c *gin.Context, siteId string) {
+func (s *Server) GetAccountKeys(w http.ResponseWriter, r *http.Request, siteId string) {
 	keys, err := s.Engine.ListAccountAccessKeys(siteId)
 	if err != nil {
-		s.handleError(c, err)
-		return
+		switch e := err.(type) {
+		case *fake.Error:
+			http.Error(w, e.Error(), http.StatusBadRequest)
+			return
+		default:
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 	}
 
-	c.JSON(http.StatusOK, &v1.AccountKeysResponseBody{
-		Data: keys,
-	})
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(&v1.AccountKeysResponseBody{Data: keys})
 }
 
 // CreateAccountAccessKey サイトアカウントのアクセスキーの発行
 // (POST /{site_name}/v2/account/keys)
-func (s *Server) CreateAccountKey(c *gin.Context, siteId string) {
+func (s *Server) CreateAccountKey(w http.ResponseWriter, r *http.Request, siteId string) {
 	key, err := s.Engine.CreateAccountAccessKey(siteId)
 	if err != nil {
-		s.handleError(c, err)
-		return
+		switch e := err.(type) {
+		case *fake.Error:
+			http.Error(w, e.Error(), http.StatusBadRequest)
+			return
+		default:
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 	}
 
-	c.JSON(http.StatusCreated, &v1.AccountKeyResponseBody{
-		Data: *key,
-	})
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusCreated)
+	_ = json.NewEncoder(w).Encode(&v1.AccountKeyResponseBody{Data: *key})
 }
 
 // DeleteAccountAccessKey サイトアカウントのアクセスキーの削除
 // (DELETE /{site_name}/v2/account/keys/{id})
-func (s *Server) DeleteAccountKey(c *gin.Context, siteId string, accountKeyId v1.AccessKeyID) {
+func (s *Server) DeleteAccountKey(w http.ResponseWriter, r *http.Request, siteId string, accountKeyId v1.AccessKeyID) {
 	if err := s.Engine.DeleteAccountAccessKey(siteId, accountKeyId.String()); err != nil {
-		s.handleError(c, err)
-		return
+		switch e := err.(type) {
+		case *fake.Error:
+			if e.Type == fake.ErrorTypeNotFound {
+				http.Error(w, e.Error(), http.StatusNotFound)
+				return
+			}
+			http.Error(w, e.Error(), http.StatusBadRequest)
+			return
+		default:
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 	}
 
-	c.Status(http.StatusNoContent)
+	w.WriteHeader(http.StatusNoContent)
 }
 
 // ReadAccountAccessKey サイトアカウントのアクセスキーの取得
 // (GET /{site_name}/v2/account/keys/{id})
-func (s *Server) GetAccountKey(c *gin.Context, siteId string, accountKeyId v1.AccessKeyID) {
+func (s *Server) GetAccountKey(w http.ResponseWriter, r *http.Request, siteId string, accountKeyId v1.AccessKeyID) {
 	key, err := s.Engine.ReadAccountAccessKey(siteId, accountKeyId.String())
 	if err != nil {
-		s.handleError(c, err)
-		return
+		switch e := err.(type) {
+		case *fake.Error:
+			if e.Type == fake.ErrorTypeNotFound {
+				http.Error(w, e.Error(), http.StatusNotFound)
+				return
+			}
+			http.Error(w, e.Error(), http.StatusBadRequest)
+			return
+		default:
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 	}
 
-	c.JSON(http.StatusOK, &v1.AccountKeyResponseBody{
-		Data: *key,
-	})
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(&v1.AccountKeyResponseBody{Data: *key})
 }

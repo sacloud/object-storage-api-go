@@ -1,6 +1,7 @@
 output: apis/v1/zz_server_gen.go
 generate:
-  - gin
+  std-http-server: true
+  models: true
 package: v1
 compatibility:
   old-merge-schemas: true

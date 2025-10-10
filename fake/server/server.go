@@ -17,9 +17,7 @@ package server
 import (
 	"fmt"
 	"net/http"
-	"os"
 
-	"github.com/gin-gonic/gin"
 	v1 "github.com/sacloud/object-storage-api-go/apis/v1"
 	"github.com/sacloud/object-storage-api-go/fake"
 )
@@ -34,57 +32,42 @@ type Server struct {
 
 // Handler http.Handlerを返す
 func (s *Server) Handler() http.Handler {
-	gin.SetMode(gin.ReleaseMode)
-	if os.Getenv("OJS_SERVER_DEBUG") != "" {
-		gin.SetMode(gin.DebugMode)
-	}
-	engine := gin.New()
-	engine.Use(gin.Recovery())
-	if os.Getenv("OJS_SERVER_LOGGING") != "" {
-		engine.Use(gin.Logger())
-	}
+	// Build a std http handler using generated HandlerWithOptions
+	// Provide middleware and error handler if needed via options.
+	// Add a simple ping handler and then register generated handlers.
 
-	engine.GET("/ping", func(c *gin.Context) {
-		c.String(200, "pong")
+	// Create base mux
+	mux := http.NewServeMux()
+	// ping endpoint
+	mux.HandleFunc("/ping", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write([]byte("pong"))
 	})
-	v1.RegisterHandlers(engine, s)
-	return engine
-}
 
-func (s *Server) handleError(c *gin.Context, err error) {
-	if c == nil || err == nil {
-		panic("invalid arguments")
-	}
+	// Use generated handler with base router
+	h := v1.HandlerWithOptions(s, v1.StdHTTPServerOptions{
+		BaseRouter: mux,
+		ErrorHandlerFunc: func(w http.ResponseWriter, r *http.Request, err error) {
+			// Map fake.Error to proper responses similar to previous implementation
+			if engineErr, ok := err.(*fake.Error); ok {
+				switch engineErr.Type {
+				case fake.ErrorTypeInvalidRequest:
+					w.WriteHeader(http.StatusBadRequest)
+					_, _ = w.Write([]byte(fmt.Sprintf("invalid request: %s", engineErr.Error())))
+					return
+				case fake.ErrorTypeNotFound:
+					w.WriteHeader(http.StatusNotFound)
+					_, _ = w.Write([]byte(fmt.Sprintf("not found: %s", engineErr.Error())))
+					return
+				case fake.ErrorTypeConflict:
+					w.WriteHeader(http.StatusConflict)
+					_, _ = w.Write([]byte(fmt.Sprintf("conflict: %s", engineErr.Error())))
+					return
+				}
+			}
+			http.Error(w, fmt.Sprintf("unknown error: %s", err), http.StatusInternalServerError)
+		},
+	})
 
-	if engineErr, ok := err.(*fake.Error); ok {
-		switch engineErr.Type {
-		case fake.ErrorTypeInvalidRequest:
-			c.JSON(http.StatusBadRequest, &v1.Error400{
-				Detail: v1.ErrorDetail{
-					Code:    http.StatusBadRequest,
-					Message: v1.ErrorMessage(engineErr.Error()),
-				},
-			})
-			return
-		case fake.ErrorTypeNotFound:
-			c.JSON(http.StatusNotFound, &v1.Error404{
-				Detail: v1.ErrorDetail{
-					Code:    http.StatusNotFound,
-					Message: v1.ErrorMessage(engineErr.Error()),
-				},
-			})
-			return
-		case fake.ErrorTypeConflict:
-			c.JSON(http.StatusConflict, &v1.Error409{
-				Detail: v1.ErrorDetail{
-					Code:    http.StatusConflict,
-					Message: v1.ErrorMessage(engineErr.Error()),
-				},
-			})
-			return
-		}
-	}
-
-	// Note: この実装ではfake.Errorで未知のステータスコードについて全てInternalServerErrorとして扱う
-	c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Errorf("unknown error: %s", err)})
+	return h
 }
