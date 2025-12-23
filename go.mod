@@ -1,13 +1,13 @@
 module github.com/sacloud/object-storage-api-go
 
-go 1.24.0
+go 1.25
 
 require (
 	github.com/getlantern/deepcopy v0.0.0-20160317154340-7f45deb8130a
 	github.com/minio/minio-go/v7 v7.0.97
 	github.com/oapi-codegen/runtime v1.1.2
-	github.com/sacloud/api-client-go v0.3.3
-	github.com/sacloud/packages-go v0.0.11
+	github.com/sacloud/api-client-go v0.3.4
+	github.com/sacloud/packages-go v0.0.12
 	github.com/spf13/cobra v1.10.1
 	github.com/stretchr/testify v1.11.1
 )
