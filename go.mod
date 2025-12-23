@@ -8,7 +8,7 @@ require (
 	github.com/oapi-codegen/runtime v1.1.2
 	github.com/sacloud/api-client-go v0.3.4
 	github.com/sacloud/packages-go v0.0.12
-	github.com/spf13/cobra v1.10.1
+	github.com/spf13/cobra v1.10.2
 	github.com/stretchr/testify v1.11.1
 )
 
