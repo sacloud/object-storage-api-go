@@ -1,5 +1,12 @@
 # Changelog
 
+## [v0.0.13](https://github.com/sacloud/object-storage-api-go/compare/v0.0.12...v0.0.13) - 2025-12-23
+- go: bump github.com/minio/minio-go/v7 from 7.0.95 to 7.0.97 by @dependabot[bot] in https://github.com/sacloud/object-storage-api-go/pull/194
+- go: bump github.com/sacloud/api-client-go from 0.3.3 to 0.3.4 by @dependabot[bot] in https://github.com/sacloud/object-storage-api-go/pull/202
+- ci: bump actions/checkout from 5.0.0 to 6.0.1 by @dependabot[bot] in https://github.com/sacloud/object-storage-api-go/pull/199
+- go: bump github.com/spf13/cobra from 1.10.1 to 1.10.2 by @dependabot[bot] in https://github.com/sacloud/object-storage-api-go/pull/200
+- ci: bump Songmu/tagpr from 1.8.4 to 1.10.0 by @dependabot[bot] in https://github.com/sacloud/object-storage-api-go/pull/201
+
 ## [v0.0.12](https://github.com/sacloud/object-storage-api-go/compare/v0.0.11...v0.0.12) - 2025-10-10
 - Use net/http instead of gin for fake server by @repeatedly in https://github.com/sacloud/object-storage-api-go/pull/191
 
