@@ -16,10 +16,10 @@
 
 #====================
 AUTHOR         ?= The sacloud/object-storage-api-go authors
-COPYRIGHT_YEAR ?= 2022-2025
+COPYRIGHT_YEAR ?= 2022-2026
 
-BIN            ?= dist/sacloud-ojs-fake-server
-GO_ENTRY_FILE  ?= cmd/sacloud-ojs-fake-server/*.go
+BIN            ?=
+GO_ENTRY_FILE  ?=
 BUILD_LDFLAGS  ?=
 
 include includes/go/common.mk
@@ -32,35 +32,19 @@ tools: dev-tools
 .PHONY: tools
 tools: dev-tools
 	npm install -g @redocly/cli
-	go get -tool github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen@latest
+	go get -tool github.com/ogen-go/ogen/cmd/ogen@latest
 
 .PHONY: clean-all
 clean-all:
 	find . -type f -name "*_gen.go" -delete
-	rm -f apis/v1/spec/original-swagger.yaml
-	rm -f apis/v1/spec/swagger.json
+	rm -f apis/v2
 
 .PHONY: gen
 gen: _gen fmt goimports set-license
 
 .PHONY: _gen
-_gen: apis/v1/spec/original-swagger.yaml apis/v1/spec/swagger.json apis/v1/zz_types_gen.go apis/v1/zz_client_gen.go apis/v1/zz_server_gen.go
-	go generate ./...
-
-apis/v1/spec/original-swagger.yaml: apis/v1/spec/original-swagger.json
-	swagger-cli bundle apis/v1/spec/original-swagger.json -o apis/v1/spec/original-swagger.yaml --type yaml
-
-apis/v1/spec/swagger.json: apis/v1/spec/swagger.yaml
-	swagger-cli bundle apis/v1/spec/swagger.yaml -o apis/v1/spec/swagger.json --type json
-
-apis/v1/zz_types_gen.go: apis/v1/spec/swagger.yaml apis/v1/spec/codegen/types.yaml
-	oapi-codegen --old-config-style -config apis/v1/spec/codegen/types.yaml apis/v1/spec/swagger.yaml
-
-apis/v1/zz_client_gen.go: apis/v1/spec/swagger.yaml apis/v1/spec/codegen/client.yaml
-	oapi-codegen --old-config-style  -config apis/v1/spec/codegen/client.yaml apis/v1/spec/swagger.yaml
-
-apis/v1/zz_server_gen.go: apis/v1/spec/swagger.yaml apis/v1/spec/codegen/server.yaml
-	oapi-codegen --old-config-style  -config apis/v1/spec/codegen/server.yaml apis/v1/spec/swagger.yaml
+_gen:
+	go tool ogen -package v1 -target apis/v2 -clean -config ogen-config.yaml openapi/openapi.json
 
 .PHONY: lint-def
 lint-def:
