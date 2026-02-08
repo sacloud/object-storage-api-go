@@ -29,11 +29,6 @@ test:
 	@echo "running 'go test'..."
 	TESTACC= $(GO) test ./... $(TESTARGS) -run Test -v -timeout=120m -parallel=8 -race;
 
-.PHONY: testacc
-testacc:
-	@echo "running 'go test' with TESTACC=1..."
-	TESTACC=1 $(GO) test ./... $(TESTARGS) --tags=acctest -v -timeout=120m -parallel=8 ;
-
 .PHONY: dev-tools
 dev-tools:
 	$(GO) install github.com/rinchsan/gosimports/cmd/gosimports@latest

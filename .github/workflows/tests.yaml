@@ -106,7 +106,6 @@ jobs:
         run: | 
           make tools
 
-      - name: make test # バケットやアカウントのテストはコンフリクトが起きるので現状省く
+      - name: make test
         run: |
-          go test . -timeout=200m -v -count=1 -run "(Example_siteStatusAPI|Example_siteAPI|Example_permissionAPI)"
-          go test ./apis/v2 -timeout=200m -v -count=1
+          make test
