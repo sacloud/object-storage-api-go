@@ -18,12 +18,7 @@
 AUTHOR         ?= The sacloud/object-storage-api-go authors
 COPYRIGHT_YEAR ?= 2022-2026
 
-BIN            ?=
-GO_ENTRY_FILE  ?=
-BUILD_LDFLAGS  ?=
-
 include includes/go/common.mk
-include includes/go/single.mk
 #====================
 
 default: gen $(DEFAULT_GOALS)
@@ -48,4 +43,4 @@ _gen:
 
 .PHONY: lint-def
 lint-def:
-	docker run --rm -v $$PWD:$$PWD -w $$PWD stoplight/spectral:latest lint -F warn apis/v1/spec/swagger.yaml
+	docker run --rm -v $$PWD:$$PWD -w $$PWD stoplight/spectral:latest lint -F warn openapi/openapi.yaml
