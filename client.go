@@ -37,21 +37,23 @@ func NewFedClient(client saclient.ClientAPI) (*FedClient, error) {
 }
 
 func NewFedClientWithAPIRootURL(client saclient.ClientAPI, apiRootURL string) (*FedClient, error) {
-	if dupable, ok := client.(saclient.ClientOptionAPI); !ok {
+	dupable, ok := client.(saclient.ClientOptionAPI)
+	if !ok {
 		return nil, NewError("client does not implement saclient.ClientOptionAPI", nil)
-	} else if augmented, err := dupable.DupWith(
+	}
+	augmented, err := dupable.DupWith(
 		saclient.WithUserAgent(NewUserAgent),
 		saclient.WithBigInt(false),
 		saclient.WithForceAutomaticAuthentication(),
-	); err != nil {
+	)
+	if err != nil {
 		return nil, err
-	} else {
-		c, err := v2.NewClient(apiRootURL, &dummySecuritySource{}, v2.WithClient(augmented))
-		if err != nil {
-			return nil, err
-		}
-		return &FedClient{client: c}, nil
 	}
+	c, err := v2.NewClient(apiRootURL, &dummySecuritySource{}, v2.WithClient(augmented))
+	if err != nil {
+		return nil, err
+	}
+	return &FedClient{client: c}, nil
 }
 
 type SiteClient struct {
@@ -63,19 +65,21 @@ func NewSiteClient(client saclient.ClientAPI, siteId string) (*SiteClient, error
 }
 
 func NewSiteClientWithAPIRootURL(client saclient.ClientAPI, apiRootURL string) (*SiteClient, error) {
-	if dupable, ok := client.(saclient.ClientOptionAPI); !ok {
+	dupable, ok := client.(saclient.ClientOptionAPI)
+	if !ok {
 		return nil, NewError("client does not implement saclient.ClientOptionAPI", nil)
-	} else if augmented, err := dupable.DupWith(
+	}
+	argumented, err := dupable.DupWith(
 		saclient.WithUserAgent(NewUserAgent),
 		saclient.WithBigInt(false),
 		saclient.WithForceAutomaticAuthentication(),
-	); err != nil {
+	)
+	if err != nil {
 		return nil, err
-	} else {
-		c, err := v2.NewClient(apiRootURL, &dummySecuritySource{}, v2.WithClient(augmented))
-		if err != nil {
-			return nil, err
-		}
-		return &SiteClient{client: c}, nil
 	}
+	c, err := v2.NewClient(apiRootURL, &dummySecuritySource{}, v2.WithClient(argumented))
+	if err != nil {
+		return nil, err
+	}
+	return &SiteClient{client: c}, nil
 }
