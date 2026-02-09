@@ -6,7 +6,6 @@ package objectstorage_test
 import (
 	"bytes"
 	"context"
-	"fmt"
 	"io"
 	"os"
 	"strconv"
@@ -193,7 +192,7 @@ func TestAccAccessToBucketObjectWithPermissionKey(t *testing.T) {
 }
 
 func initFedClient() *objectstorage.FedClient {
-	client, err := objectstorage.NewFedClientWithAPIRootURL(&theClient, envvar.StringFromEnv("SAKURA_OJS_ROOT_FED_URL", objectstorage.DefaultAPIRootURLFed))
+	client, err := objectstorage.NewFedClientWithAPIRootURL(&theClient, envvar.StringFromEnv("SAKURA_OJS_ROOT_URL", objectstorage.DefaultAPIRootURL))
 	if err != nil {
 		panic(err)
 	}
@@ -201,7 +200,7 @@ func initFedClient() *objectstorage.FedClient {
 }
 
 func initSiteClient() *objectstorage.SiteClient {
-	client, err := objectstorage.NewSiteClientWithAPIRootURL(&theClient, envvar.StringFromEnv("SAKURA_OJS_ROOT_SITE_URL", fmt.Sprintf(objectstorage.DefaultAPIRootURLSite, siteId)))
+	client, err := objectstorage.NewSiteClientWithAPIRootURL(&theClient, envvar.StringFromEnv("SAKURA_OJS_ROOT_URL", objectstorage.DefaultAPIRootURL), siteId)
 	if err != nil {
 		panic(err)
 	}

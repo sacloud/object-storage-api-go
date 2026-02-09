@@ -6,14 +6,14 @@ package objectstorage
 import (
 	"context"
 	"fmt"
+	"net/url"
 	"runtime"
 
 	v2 "github.com/sacloud/object-storage-api-go/apis/v2"
 	"github.com/sacloud/saclient-go"
 )
 
-const DefaultAPIRootURLFed = "https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/fed/v1/"
-const DefaultAPIRootURLSite = "https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/%s/v2/"
+const DefaultAPIRootURL = "https://secure.sakura.ad.jp/cloud/zone/is1a/api/objectstorage/1.0/"
 
 var NewUserAgent = fmt.Sprintf(
 	"object-storage-api-go/%s (%s/%s; +https://github.com/sacloud/object-storage-api-go)",
@@ -33,7 +33,7 @@ type FedClient struct {
 }
 
 func NewFedClient(client saclient.ClientAPI) (*FedClient, error) {
-	return NewFedClientWithAPIRootURL(client, DefaultAPIRootURLFed)
+	return NewFedClientWithAPIRootURL(client, DefaultAPIRootURL)
 }
 
 func NewFedClientWithAPIRootURL(client saclient.ClientAPI, apiRootURL string) (*FedClient, error) {
@@ -49,7 +49,11 @@ func NewFedClientWithAPIRootURL(client saclient.ClientAPI, apiRootURL string) (*
 	if err != nil {
 		return nil, err
 	}
-	c, err := v2.NewClient(apiRootURL, &dummySecuritySource{}, v2.WithClient(augmented))
+	u, err := url.JoinPath(apiRootURL, "fed", "v1")
+	if err != nil {
+		return nil, err
+	}
+	c, err := v2.NewClient(u, &dummySecuritySource{}, v2.WithClient(augmented))
 	if err != nil {
 		return nil, err
 	}
@@ -61,10 +65,10 @@ type SiteClient struct {
 }
 
 func NewSiteClient(client saclient.ClientAPI, siteId string) (*SiteClient, error) {
-	return NewSiteClientWithAPIRootURL(client, fmt.Sprintf(DefaultAPIRootURLSite, siteId))
+	return NewSiteClientWithAPIRootURL(client, DefaultAPIRootURL, siteId)
 }
 
-func NewSiteClientWithAPIRootURL(client saclient.ClientAPI, apiRootURL string) (*SiteClient, error) {
+func NewSiteClientWithAPIRootURL(client saclient.ClientAPI, apiRootURL string, siteId string) (*SiteClient, error) {
 	dupable, ok := client.(saclient.ClientOptionAPI)
 	if !ok {
 		return nil, NewError("client does not implement saclient.ClientOptionAPI", nil)
@@ -77,7 +81,11 @@ func NewSiteClientWithAPIRootURL(client saclient.ClientAPI, apiRootURL string) (
 	if err != nil {
 		return nil, err
 	}
-	c, err := v2.NewClient(apiRootURL, &dummySecuritySource{}, v2.WithClient(argumented))
+	u, err := url.JoinPath(apiRootURL, siteId, "v2")
+	if err != nil {
+		return nil, err
+	}
+	c, err := v2.NewClient(u, &dummySecuritySource{}, v2.WithClient(argumented))
 	if err != nil {
 		return nil, err
 	}
