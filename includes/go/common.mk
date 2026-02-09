@@ -19,7 +19,7 @@ COPYRIGHT_YEAR          ?= 2023
 COPYRIGHT_FILES         ?= $$(find . -name "*.go" -print | grep -v "/vendor/")
 GO                      ?= go
 DEFAULT_GOALS           ?= fmt set-license go-licenses-check goimports lint vulncheck test
-GOLANG_CI_LINT_VERSION  ?= v2.4.0
+GOLANG_CI_LINT_VERSION  ?= v2.7.2
 TEXTLINT_ACTION_VERSION ?= v0.1.0
 
 .DEFAULT_GOAL = default
@@ -27,12 +27,7 @@ TEXTLINT_ACTION_VERSION ?= v0.1.0
 .PHONY: test
 test:
 	@echo "running 'go test'..."
-	TESTACC= $(GO) test ./... $(TESTARGS) -v -timeout=120m -parallel=8 -race;
-
-.PHONY: testacc
-testacc:
-	@echo "running 'go test' with TESTACC=1..."
-	TESTACC=1 $(GO) test ./... $(TESTARGS) --tags=acctest -v -timeout=120m -parallel=8 ;
+	TESTACC= $(GO) test ./... $(TESTARGS) -run Test -v -timeout=120m -parallel=8 -race;
 
 .PHONY: dev-tools
 dev-tools:

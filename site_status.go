@@ -1,54 +1,84 @@
-// Copyright 2022-2025 The sacloud/object-storage-api-go authors
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// Copyright 2022-2026 The object-storage-api-go Authors
+// SPDX-License-Identifier: Apache-2.0
 
 package objectstorage
 
 import (
 	"context"
+	"errors"
+	"time"
 
-	v1 "github.com/sacloud/object-storage-api-go/apis/v1"
+	v2 "github.com/sacloud/object-storage-api-go/apis/v2"
 )
 
-// SiteStatusAPI サイトステータスAPI
 type SiteStatusAPI interface {
-	// Read サイトステータスの参照
-	Read(ctx context.Context, siteId string) (*v1.Status, error)
+	Read(ctx context.Context) (*v2.StatusData, error)
+	ReadQuota(ctx context.Context) (*v2.QuotaData, error)
+	ReadBucketMetering(ctx context.Context, bucketName string, from, to time.Time) ([]v2.BucketBillingItem, error)
 }
 
 var _ SiteStatusAPI = (*siteStatusOp)(nil)
 
 type siteStatusOp struct {
-	client *Client
+	client *SiteClient
 }
 
-// NewSiteStatusOp サイトステータスAPI
-func NewSiteStatusOp(client *Client) SiteStatusAPI {
+func NewSiteStatusOp(client *SiteClient) SiteStatusAPI {
 	return &siteStatusOp{client: client}
 }
 
-func (op *siteStatusOp) Read(ctx context.Context, siteId string) (*v1.Status, error) {
-	apiClient, err := op.client.apiClient()
+func (op *siteStatusOp) Read(ctx context.Context) (*v2.StatusData, error) {
+	res, err := op.client.client.GetStatus(ctx)
 	if err != nil {
-		return nil, err
+		return nil, NewAPIError("SiteStatus.Read", 0, err)
 	}
-	resp, err := apiClient.GetStatusWithResponse(ctx, siteId)
+
+	switch r := res.(type) {
+	case *v2.Status:
+		return &r.Data.Value, nil
+	case *v2.Error401:
+		return nil, NewAPIError("SiteStatus.Read", int(r.Error.Value.Code.Value), errors.New(string(r.Error.Value.Message.Value)))
+	case *v2.ErrorDefaultStatusCode:
+		return nil, NewAPIError("SiteStatus.Read", r.StatusCode, errors.New(string(r.Response.Error.Value.Message.Value)))
+	default:
+		return nil, NewAPIError("SiteStatus.Read", 0, errors.New("unknown error"))
+	}
+}
+
+func (op *siteStatusOp) ReadQuota(ctx context.Context) (*v2.QuotaData, error) {
+	res, err := op.client.client.GetQuota(ctx)
 	if err != nil {
-		return nil, err
+		return nil, NewAPIError("SiteStatus.ReadQuota", 0, err)
 	}
-	status, err := resp.Result()
+
+	switch r := res.(type) {
+	case *v2.Quota:
+		return &r.Data.Value, nil
+	case *v2.Error401:
+		return nil, NewAPIError("SiteStatus.ReadQuota", int(r.Error.Value.Code.Value), errors.New(string(r.Error.Value.Message.Value)))
+	case *v2.ErrorDefaultStatusCode:
+		return nil, NewAPIError("SiteStatus.ReadQuota", r.StatusCode, errors.New(string(r.Response.Error.Value.Message.Value)))
+	default:
+		return nil, NewAPIError("SiteStatus.ReadQuota", 0, errors.New("unknown error"))
+	}
+}
+
+func (op *siteStatusOp) ReadBucketMetering(ctx context.Context, bucketName string, from, to time.Time) ([]v2.BucketBillingItem, error) {
+	res, err := op.client.client.GetBucketMetering(ctx, v2.GetBucketMeteringParams{Name: v2.BucketName(bucketName), From: from, To: to})
 	if err != nil {
-		return nil, err
+		return nil, NewAPIError("SiteStatus.ReadBucketMetering", 0, err)
 	}
-	return &status.Data, nil
+
+	switch r := res.(type) {
+	case *v2.GetBucketMeteringOK:
+		return r.Data, nil
+	case *v2.Error400:
+		return nil, NewAPIError("SiteStatus.ReadBucketMetering", int(r.Error.Value.Code.Value), errors.New(string(r.Error.Value.Message.Value)))
+	case *v2.Error401:
+		return nil, NewAPIError("SiteStatus.ReadBucketMetering", int(r.Error.Value.Code.Value), errors.New(string(r.Error.Value.Message.Value)))
+	case *v2.ErrorDefaultStatusCode:
+		return nil, NewAPIError("SiteStatus.ReadBucketMetering", r.StatusCode, errors.New(string(r.Response.Error.Value.Message.Value)))
+	default:
+		return nil, NewAPIError("SiteStatus.ReadBucketMetering", 0, errors.New("unknown error"))
+	}
 }

@@ -1,19 +1,5 @@
-// Copyright 2022-2025 The sacloud/object-storage-api-go authors
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-//go:build acctest
-// +build acctest
+// Copyright 2022-2026 The object-storage-api-go Authors
+// SPDX-License-Identifier: Apache-2.0
 
 package objectstorage_test
 
@@ -22,28 +8,36 @@ import (
 	"context"
 	"io"
 	"os"
+	"strconv"
 	"testing"
 
 	"github.com/minio/minio-go/v7"
 	"github.com/minio/minio-go/v7/pkg/credentials"
 	objectstorage "github.com/sacloud/object-storage-api-go"
-	v1 "github.com/sacloud/object-storage-api-go/apis/v1"
+	v2 "github.com/sacloud/object-storage-api-go/apis/v2"
 	"github.com/sacloud/packages-go/envvar"
 	"github.com/sacloud/packages-go/testutil"
+	"github.com/sacloud/saclient-go"
 	"github.com/stretchr/testify/require"
 )
 
-const (
-	siteId = "isk01" // Note: 本来はサイトAPI経由で取得すべきだが現状ではサイトが1つしかないため定数として保持/利用する
-)
+var siteId = envvar.StringFromEnv("SAKURA_OJS_SITE", "isk01")
+var theClient saclient.Client
+var accTestFedClient = initFedClient()
+var accTestSiteClient = initSiteClient()
 
 func s3Client(t *testing.T, token, secret string) *minio.Client {
 	t.Helper()
 
-	endpoint := "s3.isk01.sakurastorage.jp"
-	s3Client, err := minio.New(endpoint, &minio.Options{
+	siteOp := objectstorage.NewSiteOp(accTestFedClient)
+	site, err := siteOp.Read(context.Background(), siteId)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	s3Client, err := minio.New(site.S3Endpoint.Value, &minio.Options{
 		Creds:        credentials.NewStaticV4(token, secret, ""),
-		Region:       "jp-north-1",
+		Region:       site.Region.Value,
 		Secure:       true,
 		BucketLookup: minio.BucketLookupPath,
 	})
@@ -54,7 +48,7 @@ func s3Client(t *testing.T, token, secret string) *minio.Client {
 }
 
 func s3ClientFromEnv(t *testing.T) *minio.Client {
-	return s3Client(t, os.Getenv("SACLOUD_OJS_ACCESS_KEY_ID"), os.Getenv("SACLOUD_OJS_SECRET_ACCESS_KEY"))
+	return s3Client(t, os.Getenv("SAKURA_OJS_ACCESS_TOKEN"), os.Getenv("SAKURA_OJS_ACCESS_TOKEN_SECRET"))
 }
 
 // TestAccSiteAndStatusAPI サイト/ステータス関連APIの疎通確認
@@ -62,7 +56,7 @@ func TestAccSiteAndStatusAPI(t *testing.T) {
 	skipIfNoAPIKey(t)
 
 	ctx := context.Background()
-	siteOp := objectstorage.NewSiteOp(accTestClient)
+	siteOp := objectstorage.NewSiteOp(accTestFedClient)
 
 	// List
 	sites, err := siteOp.List(ctx)
@@ -70,13 +64,13 @@ func TestAccSiteAndStatusAPI(t *testing.T) {
 	require.NotEmpty(t, sites)
 
 	// Read
-	site, err := siteOp.Read(ctx, sites[0].Id)
+	site, err := siteOp.Read(ctx, sites[0].ID.Value)
 	require.NoError(t, err)
 	require.NotEmpty(t, site)
 
 	// Site Status
-	statusOp := objectstorage.NewSiteStatusOp(accTestClient)
-	status, err := statusOp.Read(ctx, site.Id)
+	statusOp := objectstorage.NewSiteStatusOp(accTestSiteClient)
+	status, err := statusOp.Read(ctx)
 
 	require.NoError(t, err)
 	require.NotEmpty(t, status)
@@ -92,15 +86,15 @@ func TestAccSiteAndStatusAPI(t *testing.T) {
 // Note: バケット一覧の参照のためにサイトアカウントのアクセスキーが必要
 func TestAccBucketHandling(t *testing.T) {
 	skipIfNoAPIKey(t)
-	skipIfNoEnv(t, "SACLOUD_OJS_ACCESS_KEY_ID", "SACLOUD_OJS_SECRET_ACCESS_KEY")
+	skipIfNoEnv(t, "SAKURA_OJS_ACCESS_TOKEN", "SAKURA_OJS_ACCESS_TOKEN_SECRET")
 
 	ctx := context.Background()
 	bucketName := testutil.Random(28, testutil.CharSetAlpha)
 
 	// Step1: バケット作成
-	bucketOp := objectstorage.NewBucketOp(accTestClient)
+	bucketOp := objectstorage.NewBucketOp(accTestFedClient, accTestSiteClient)
 	{
-		created, err := bucketOp.Create(ctx, siteId, bucketName)
+		created, err := bucketOp.Create(ctx, &objectstorage.BucketCreateParams{SiteId: siteId, Bucket: bucketName})
 		require.NoError(t, err)
 		require.NotEmpty(t, created)
 	}
@@ -124,7 +118,7 @@ func TestAccBucketHandling(t *testing.T) {
 	}
 
 	// Step3: クリーンアップ
-	require.NoError(t, bucketOp.Delete(ctx, siteId, bucketName))
+	require.NoError(t, bucketOp.Delete(ctx, bucketName))
 }
 
 // TestAccAccessToBucketWithPermissionKey パーミッションキーによるオブジェクトへのアクセス
@@ -135,33 +129,30 @@ func TestAccAccessToBucketObjectWithPermissionKey(t *testing.T) {
 	bucketName := testutil.Random(28, testutil.CharSetAlpha)
 
 	// Step1: バケット作成
-	bucketOp := objectstorage.NewBucketOp(accTestClient)
+	bucketOp := objectstorage.NewBucketOp(accTestFedClient, accTestSiteClient)
 	{
-		created, err := bucketOp.Create(ctx, siteId, bucketName)
+		created, err := bucketOp.Create(ctx, &objectstorage.BucketCreateParams{SiteId: siteId, Bucket: bucketName})
 		require.NoError(t, err)
 		require.NotEmpty(t, created)
 	}
 
 	// Step2: バケットにアクセスできるパーミッション/アクセスキーの作成
-	permissionOp := objectstorage.NewPermissionOp(accTestClient)
-	var permission *v1.Permission
-	var key *v1.PermissionKey
+	permissionOp := objectstorage.NewPermissionOp(accTestSiteClient)
+	var permission *v2.PermissionData
+	var key *v2.PermissionKeyData
 	{
-		created, err := permissionOp.Create(ctx, siteId, &v1.CreatePermissionParams{
-			BucketControls: v1.BucketControls{
-				{
-					BucketName: v1.BucketName(bucketName),
-					CanRead:    true,
-					CanWrite:   true,
-				},
+		created, err := permissionOp.Create(ctx, bucketName, v2.BucketControls{
+			v2.BucketControlsItem{
+				BucketName: v2.NewOptBucketName(v2.BucketName(bucketName)),
+				CanRead:    v2.NewOptCanRead(true),
+				CanWrite:   v2.NewOptCanWrite(true),
 			},
-			DisplayName: v1.DisplayName(bucketName),
 		})
 		require.NoError(t, err)
 		require.NotEmpty(t, created)
 		permission = created
 
-		createdKey, err := permissionOp.CreateAccessKey(ctx, siteId, permission.Id.Int64())
+		createdKey, err := permissionOp.CreateAccessKey(ctx, strconv.Itoa(int(permission.ID.Value)))
 		require.NoError(t, err)
 		require.NotEmpty(t, createdKey)
 		key = createdKey
@@ -169,7 +160,7 @@ func TestAccAccessToBucketObjectWithPermissionKey(t *testing.T) {
 
 	// Step3: 作成したアクセスキーでバケットにアクセス
 	{
-		s3Client := s3Client(t, key.Id.String(), key.Secret.String())
+		s3Client := s3Client(t, string(key.ID.Value), string(key.Secret.Value))
 
 		objectKey := "foobar"
 		objectBodyText := "body of s3://[bucket_name]/foobar"
@@ -195,13 +186,25 @@ func TestAccAccessToBucketObjectWithPermissionKey(t *testing.T) {
 	}
 
 	// Step4: クリーンアップ
-	require.NoError(t, permissionOp.DeleteAccessKey(ctx, siteId, permission.Id.Int64(), key.Id.String()))
-	require.NoError(t, permissionOp.Delete(ctx, siteId, permission.Id.Int64()))
-	require.NoError(t, bucketOp.Delete(ctx, siteId, bucketName))
+	require.NoError(t, permissionOp.DeleteAccessKey(ctx, strconv.Itoa(int(permission.ID.Value)), string(key.ID.Value)))
+	require.NoError(t, permissionOp.Delete(ctx, strconv.Itoa(int(permission.ID.Value))))
+	require.NoError(t, bucketOp.Delete(ctx, bucketName))
 }
 
-var accTestClient = &objectstorage.Client{
-	APIRootURL: envvar.StringFromEnv("SAKURACLOUD_OJS_ROOT_URL", defaultServerURL),
+func initFedClient() *objectstorage.FedClient {
+	client, err := objectstorage.NewFedClientWithAPIRootURL(&theClient, envvar.StringFromEnv("SAKURA_OJS_ROOT_URL", objectstorage.DefaultAPIRootURL))
+	if err != nil {
+		panic(err)
+	}
+	return client
+}
+
+func initSiteClient() *objectstorage.SiteClient {
+	client, err := objectstorage.NewSiteClientWithAPIRootURL(&theClient, envvar.StringFromEnv("SAKURA_OJS_ROOT_URL", objectstorage.DefaultAPIRootURL), siteId)
+	if err != nil {
+		panic(err)
+	}
+	return client
 }
 
 // skipIfNoEnv 指定の環境変数のいずれかが空の場合はt.SkipNow()する
@@ -221,5 +224,5 @@ func skipIfNoEnv(t *testing.T, envs ...string) {
 }
 
 func skipIfNoAPIKey(t *testing.T) {
-	skipIfNoEnv(t, "SAKURACLOUD_ACCESS_TOKEN", "SAKURACLOUD_ACCESS_TOKEN_SECRET")
+	skipIfNoEnv(t, "SAKURA_ACCESS_TOKEN", "SAKURA_ACCESS_TOKEN_SECRET")
 }

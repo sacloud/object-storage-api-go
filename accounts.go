@@ -1,166 +1,176 @@
-// Copyright 2022-2025 The sacloud/object-storage-api-go authors
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// Copyright 2022-2026 The object-storage-api-go Authors
+// SPDX-License-Identifier: Apache-2.0
 
 package objectstorage
 
 import (
 	"context"
+	"errors"
 
-	v1 "github.com/sacloud/object-storage-api-go/apis/v1"
+	v2 "github.com/sacloud/object-storage-api-go/apis/v2"
 )
 
-// AccountAPI アカウント操作関連API
 type AccountAPI interface {
-	// Create アカウントの作成
-	Create(ctx context.Context, siteId string) (*v1.Account, error)
-	// Read アカウントの参照
-	Read(ctx context.Context, siteId string) (*v1.Account, error)
-	// Delete アカウントの削除
-	Delete(ctx context.Context, siteId string) error
+	Create(ctx context.Context) (*v2.AccountData, error)
+	Read(ctx context.Context) (*v2.AccountData, error)
+	Delete(ctx context.Context) error
 
-	// ListAccessKeys アクセスキーの参照
-	//
-	// Secretは常に空文字になっている
-	ListAccessKeys(ctx context.Context, siteId string) ([]*v1.AccountKey, error)
-
-	// CreateAccessKey アクセスキーの作成
-	//
+	ListAccessKeys(ctx context.Context) ([]v2.AccountKeysDataItem, error)
 	// Secretはこの戻り値でのみ参照可能
-	CreateAccessKey(ctx context.Context, siteId string) (*v1.AccountKey, error)
-	// ReadAccessKey アクセスキーの参照
-	//
+	CreateAccessKey(ctx context.Context) (*v2.AccountKeyData, error)
 	// Secretは常に空文字になっている
-	ReadAccessKey(ctx context.Context, siteId, accessKeyId string) (*v1.AccountKey, error)
-	// DeleteAccessKey アクセスキーの削除
-	DeleteAccessKey(ctx context.Context, siteId, accessKeyId string) error
+	ReadAccessKey(ctx context.Context, keyId string) (*v2.AccountKeyData, error)
+	DeleteAccessKey(ctx context.Context, keyId string) error
 }
 
 var _ AccountAPI = (*accountOp)(nil)
 
 type accountOp struct {
-	client *Client
+	client *SiteClient
 }
 
-// NewAccountOp アカウント操作関連API
-func NewAccountOp(client *Client) AccountAPI {
+func NewAccountOp(client *SiteClient) AccountAPI {
 	return &accountOp{client: client}
 }
 
-func (op *accountOp) Create(ctx context.Context, siteId string) (*v1.Account, error) {
-	apiClient, err := op.client.apiClient()
+func (op *accountOp) Create(ctx context.Context) (*v2.AccountData, error) {
+	res, err := op.client.client.CreateAccount(ctx)
 	if err != nil {
-		return nil, err
+		return nil, NewAPIError("Accounts.Create", 0, err)
 	}
-	resp, err := apiClient.CreateAccountWithResponse(ctx, siteId)
-	if err != nil {
-		return nil, err
+
+	switch r := res.(type) {
+	case *v2.Account:
+		return &r.Data.Value, nil
+	case *v2.Error401:
+		return nil, NewAPIError("Accounts.Create", int(r.Error.Value.Code.Value), errors.New(string(r.Error.Value.Message.Value)))
+	case *v2.Error403:
+		return nil, NewAPIError("Accounts.Create", int(r.Error.Value.Code.Value), errors.New(string(r.Error.Value.Message.Value)))
+	case *v2.Error409:
+		return nil, NewAPIError("Accounts.Create", int(r.Error.Value.Code.Value), errors.New(string(r.Error.Value.Message.Value)))
+	case *v2.ErrorDefaultStatusCode:
+		return nil, NewAPIError("Accounts.Create", r.StatusCode, errors.New(string(r.Response.Error.Value.Message.Value)))
+	default:
+		return nil, NewAPIError("Accounts.Create", 0, errors.New("unknown error"))
 	}
-	account, err := resp.Result()
-	if err != nil {
-		return nil, err
-	}
-	return &account.Data, nil
 }
 
-func (op *accountOp) Read(ctx context.Context, siteId string) (*v1.Account, error) {
-	apiClient, err := op.client.apiClient()
+func (op *accountOp) Read(ctx context.Context) (*v2.AccountData, error) {
+	res, err := op.client.client.GetAccount(ctx)
 	if err != nil {
-		return nil, err
+		return nil, NewAPIError("Accounts.Read", 0, err)
 	}
-	resp, err := apiClient.GetAccountWithResponse(ctx, siteId)
-	if err != nil {
-		return nil, err
+
+	switch r := res.(type) {
+	case *v2.Account:
+		return &r.Data.Value, nil
+	case *v2.Error401:
+		return nil, NewAPIError("Accounts.Read", int(r.Error.Value.Code.Value), errors.New(string(r.Error.Value.Message.Value)))
+	case *v2.Error404:
+		return nil, NewAPIError("Accounts.Read", int(r.Error.Value.Code.Value), errors.New(string(r.Error.Value.Message.Value)))
+	case *v2.ErrorDefaultStatusCode:
+		return nil, NewAPIError("Accounts.Read", r.StatusCode, errors.New(string(r.Response.Error.Value.Message.Value)))
+	default:
+		return nil, NewAPIError("Accounts.Read", 0, errors.New("unknown error"))
 	}
-	account, err := resp.Result()
-	if err != nil {
-		return nil, err
-	}
-	return &account.Data, nil
 }
 
-func (op *accountOp) Delete(ctx context.Context, siteId string) error {
-	apiClient, err := op.client.apiClient()
+func (op *accountOp) Delete(ctx context.Context) error {
+	res, err := op.client.client.DeleteAccount(ctx)
 	if err != nil {
-		return err
+		return NewAPIError("Accounts.Delete", 0, err)
 	}
-	resp, err := apiClient.DeleteAccountWithResponse(ctx, siteId)
-	if err != nil {
-		return err
+
+	switch r := res.(type) {
+	case *v2.DeleteAccountNoContent:
+		return nil
+	case *v2.Error401:
+		return NewAPIError("Accounts.Delete", int(r.Error.Value.Code.Value), errors.New(string(r.Error.Value.Message.Value)))
+	case *v2.Error409:
+		return NewAPIError("Accounts.Delete", int(r.Error.Value.Code.Value), errors.New(string(r.Error.Value.Message.Value)))
+	case *v2.ErrorDefaultStatusCode:
+		return NewAPIError("Accounts.Delete", r.StatusCode, errors.New(string(r.Response.Error.Value.Message.Value)))
+	default:
+		return NewAPIError("Accounts.Delete", 0, errors.New("unknown error"))
 	}
-	return resp.Result()
 }
 
-func (op *accountOp) ListAccessKeys(ctx context.Context, siteId string) ([]*v1.AccountKey, error) {
-	apiClient, err := op.client.apiClient()
+func (op *accountOp) ListAccessKeys(ctx context.Context) ([]v2.AccountKeysDataItem, error) {
+	res, err := op.client.client.GetAccountKeys(ctx)
 	if err != nil {
-		return nil, err
+		return nil, NewAPIError("Accounts.ListAccessKeys", 0, err)
 	}
-	resp, err := apiClient.GetAccountKeysWithResponse(ctx, siteId)
-	if err != nil {
-		return nil, err
+
+	switch r := res.(type) {
+	case *v2.AccountKeys:
+		return r.Data, nil
+	case *v2.Error401:
+		return nil, NewAPIError("Accounts.ListAccessKeys", int(r.Error.Value.Code.Value), errors.New(string(r.Error.Value.Message.Value)))
+	case *v2.Error404:
+		return nil, NewAPIError("Accounts.ListAccessKeys", int(r.Error.Value.Code.Value), errors.New(string(r.Error.Value.Message.Value)))
+	case *v2.ErrorDefaultStatusCode:
+		return nil, NewAPIError("Accounts.ListAccessKeys", r.StatusCode, errors.New(string(r.Response.Error.Value.Message.Value)))
+	default:
+		return nil, NewAPIError("Accounts.ListAccessKeys", 0, errors.New("unknown error"))
 	}
-	keys, err := resp.Result()
-	if err != nil {
-		return nil, err
-	}
-	var results []*v1.AccountKey
-	for i := range keys.Data {
-		results = append(results, &keys.Data[i])
-	}
-	return results, nil
 }
 
-func (op *accountOp) CreateAccessKey(ctx context.Context, siteId string) (*v1.AccountKey, error) {
-	apiClient, err := op.client.apiClient()
+func (op *accountOp) CreateAccessKey(ctx context.Context) (*v2.AccountKeyData, error) {
+	res, err := op.client.client.CreateAccountKey(ctx)
 	if err != nil {
-		return nil, err
+		return nil, NewAPIError("Accounts.CreateAccessKey", 0, err)
 	}
-	resp, err := apiClient.CreateAccountKeyWithResponse(ctx, siteId)
-	if err != nil {
-		return nil, err
+
+	switch r := res.(type) {
+	case *v2.AccountKey:
+		return &r.Data.Value, nil
+	case *v2.Error401:
+		return nil, NewAPIError("Accounts.CreateAccessKey", int(r.Error.Value.Code.Value), errors.New(string(r.Error.Value.Message.Value)))
+	case *v2.Error404:
+		return nil, NewAPIError("Accounts.CreateAccessKey", int(r.Error.Value.Code.Value), errors.New(string(r.Error.Value.Message.Value)))
+	case *v2.Error409:
+		return nil, NewAPIError("Accounts.CreateAccessKey", int(r.Error.Value.Code.Value), errors.New(string(r.Error.Value.Message.Value)))
+	case *v2.ErrorDefaultStatusCode:
+		return nil, NewAPIError("Accounts.CreateAccessKey", r.StatusCode, errors.New(string(r.Response.Error.Value.Message.Value)))
+	default:
+		return nil, NewAPIError("Accounts.CreateAccessKey", 0, errors.New("unknown error"))
 	}
-	account, err := resp.Result()
-	if err != nil {
-		return nil, err
-	}
-	return &account.Data, nil
 }
 
-func (op *accountOp) ReadAccessKey(ctx context.Context, siteId, accessKeyId string) (*v1.AccountKey, error) {
-	apiClient, err := op.client.apiClient()
+func (op *accountOp) ReadAccessKey(ctx context.Context, keyId string) (*v2.AccountKeyData, error) {
+	res, err := op.client.client.GetAccountKey(ctx, v2.GetAccountKeyParams{ID: keyId})
 	if err != nil {
-		return nil, err
+		return nil, NewAPIError("Accounts.ReadAccessKey", 0, err)
 	}
-	resp, err := apiClient.GetAccountKeyWithResponse(ctx, siteId, v1.AccessKeyID(accessKeyId))
-	if err != nil {
-		return nil, err
+
+	switch r := res.(type) {
+	case *v2.AccountKey:
+		return &r.Data.Value, nil
+	case *v2.Error401:
+		return nil, NewAPIError("Accounts.ReadAccessKey", int(r.Error.Value.Code.Value), errors.New(string(r.Error.Value.Message.Value)))
+	case *v2.Error404:
+		return nil, NewAPIError("Accounts.ReadAccessKey", int(r.Error.Value.Code.Value), errors.New(string(r.Error.Value.Message.Value)))
+	case *v2.ErrorDefaultStatusCode:
+		return nil, NewAPIError("Accounts.ReadAccessKey", r.StatusCode, errors.New(string(r.Response.Error.Value.Message.Value)))
+	default:
+		return nil, NewAPIError("Accounts.ReadAccessKey", 0, errors.New("unknown error"))
 	}
-	account, err := resp.Result()
-	if err != nil {
-		return nil, err
-	}
-	return &account.Data, nil
 }
 
-func (op *accountOp) DeleteAccessKey(ctx context.Context, siteId, accessKeyId string) error {
-	apiClient, err := op.client.apiClient()
+func (op *accountOp) DeleteAccessKey(ctx context.Context, keyId string) error {
+	res, err := op.client.client.DeleteAccountKey(ctx, v2.DeleteAccountKeyParams{ID: keyId})
 	if err != nil {
-		return err
+		return NewAPIError("Accounts.DeleteAccessKey", 0, err)
 	}
-	resp, err := apiClient.DeleteAccountKeyWithResponse(ctx, siteId, v1.AccessKeyID(accessKeyId))
-	if err != nil {
-		return err
+
+	switch r := res.(type) {
+	case *v2.DeleteAccountKeyNoContent:
+		return nil
+	case *v2.Error401:
+		return NewAPIError("Accounts.DeleteAccessKey", int(r.Error.Value.Code.Value), errors.New(string(r.Error.Value.Message.Value)))
+	case *v2.ErrorDefaultStatusCode:
+		return NewAPIError("Accounts.DeleteAccessKey", r.StatusCode, errors.New(string(r.Response.Error.Value.Message.Value)))
+	default:
+		return NewAPIError("Accounts.DeleteAccessKey", 0, errors.New("unknown error"))
 	}
-	return resp.Result()
 }

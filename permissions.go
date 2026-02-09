@@ -1,205 +1,213 @@
-// Copyright 2022-2025 The sacloud/object-storage-api-go authors
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// Copyright 2022-2026 The object-storage-api-go Authors
+// SPDX-License-Identifier: Apache-2.0
 
 package objectstorage
 
 import (
 	"context"
+	"errors"
 
-	v1 "github.com/sacloud/object-storage-api-go/apis/v1"
+	v2 "github.com/sacloud/object-storage-api-go/apis/v2"
 )
 
-// PermissionAPI パーミッション関連API
-type PermissionAPI interface {
-	List(ctx context.Context, siteId string) ([]*v1.Permission, error)
-	// Create パーミッションの作成
-	Create(ctx context.Context, siteId string, params *v1.CreatePermissionParams) (*v1.Permission, error)
-	// Read パーミッションの参照
-	Read(ctx context.Context, siteId string, permissionId int64) (*v1.Permission, error)
-	// Update パーミッションの更新
-	Update(ctx context.Context, siteId string, permissionId int64, params *v1.UpdatePermissionParams) (*v1.Permission, error)
-	// Delete パーミッションの削除
-	Delete(ctx context.Context, siteId string, permissionId int64) error
+type PermissionsAPI interface {
+	List(ctx context.Context) ([]v2.PermissionsDataItem, error)
+	Create(ctx context.Context, displayName string, controls v2.BucketControls) (*v2.PermissionData, error)
+	Read(ctx context.Context, permissionId string) (*v2.PermissionData, error)
+	Update(ctx context.Context, permissionId string, displayName string, controls v2.BucketControls) (*v2.PermissionData, error)
+	Delete(ctx context.Context, permissionId string) error
 
-	// ListAccessKeys アクセスキー一覧
-	ListAccessKeys(ctx context.Context, siteId string, permissionId int64) ([]*v1.PermissionKey, error)
-	// CreateAccessKey アクセスキーの作成
-	//
+	ListAccessKeys(ctx context.Context, permissionId string) ([]v2.PermissionKeysDataItem, error)
 	// Secretはこの戻り値でのみ参照可能
-	CreateAccessKey(ctx context.Context, siteId string, permissionId int64) (*v1.PermissionKey, error)
-	// ReadAccessKey アクセスキーの参照
-	//
+	CreateAccessKey(ctx context.Context, permissionId string) (*v2.PermissionKeyData, error)
 	// Secretは常に空文字になっている
-	ReadAccessKey(ctx context.Context, siteId string, permissionId int64, accessKeyId string) (*v1.PermissionKey, error)
-	// DeleteAccessKey アクセスキーの削除
-	DeleteAccessKey(ctx context.Context, siteId string, permissionId int64, accessKeyId string) error
+	ReadAccessKey(ctx context.Context, permissionId string, accessKeyId string) (*v2.PermissionKeyData, error)
+	DeleteAccessKey(ctx context.Context, permissionId string, accessKeyId string) error
 }
 
-var _ PermissionAPI = (*permissionOp)(nil)
+var _ PermissionsAPI = (*permissionOp)(nil)
 
 type permissionOp struct {
-	client *Client
+	client *SiteClient
 }
 
 // NewPermissionOp パーミッション関連API
-func NewPermissionOp(client *Client) PermissionAPI {
+func NewPermissionOp(client *SiteClient) PermissionsAPI {
 	return &permissionOp{client: client}
 }
 
-func (op *permissionOp) List(ctx context.Context, siteId string) ([]*v1.Permission, error) {
-	apiClient, err := op.client.apiClient()
+func (op *permissionOp) List(ctx context.Context) ([]v2.PermissionsDataItem, error) {
+	res, err := op.client.client.GetPermissions(ctx)
 	if err != nil {
-		return nil, err
+		return nil, NewAPIError("Permissions.List", 0, err)
 	}
-	resp, err := apiClient.GetPermissionsWithResponse(ctx, siteId)
-	if err != nil {
-		return nil, err
+
+	switch r := res.(type) {
+	case *v2.Permissions:
+		return r.Data, nil
+	case *v2.Error401:
+		return nil, NewAPIError("Permissions.List", int(r.Error.Value.Code.Value), errors.New(string(r.Error.Value.Message.Value)))
+	case *v2.ErrorDefaultStatusCode:
+		return nil, NewAPIError("Permissions.List", r.StatusCode, errors.New(string(r.Response.Error.Value.Message.Value)))
+	default:
+		return nil, NewAPIError("Permissions.List", 0, errors.New("unknown error"))
 	}
-	permissions, err := resp.Result()
-	if err != nil {
-		return nil, err
-	}
-	var results []*v1.Permission
-	for i := range permissions.Data {
-		results = append(results, &permissions.Data[i])
-	}
-	return results, nil
 }
 
-func (op *permissionOp) Create(ctx context.Context, siteId string, params *v1.CreatePermissionParams) (*v1.Permission, error) {
-	apiClient, err := op.client.apiClient()
+func (op *permissionOp) Create(ctx context.Context, displayName string, controls v2.BucketControls) (*v2.PermissionData, error) {
+	res, err := op.client.client.CreatePermission(ctx, &v2.PermissionBucketControlsBody{
+		DisplayName:    v2.NewOptDisplayName(v2.DisplayName(displayName)),
+		BucketControls: controls,
+	})
 	if err != nil {
-		return nil, err
+		return nil, NewAPIError("Permissions.Create", 0, err)
 	}
-	resp, err := apiClient.CreatePermissionWithResponse(ctx, siteId, *params)
-	if err != nil {
-		return nil, err
+
+	switch r := res.(type) {
+	case *v2.Permission:
+		return &r.Data.Value, nil
+	case *v2.Error401:
+		return nil, NewAPIError("Permissions.Create", int(r.Error.Value.Code.Value), errors.New(string(r.Error.Value.Message.Value)))
+	case *v2.Error404:
+		return nil, NewAPIError("Permissions.Create", int(r.Error.Value.Code.Value), errors.New(string(r.Error.Value.Message.Value)))
+	case *v2.Error409:
+		return nil, NewAPIError("Permissions.Create", int(r.Error.Value.Code.Value), errors.New(string(r.Error.Value.Message.Value)))
+	case *v2.ErrorDefaultStatusCode:
+		return nil, NewAPIError("Permissions.Create", r.StatusCode, errors.New(string(r.Response.Error.Value.Message.Value)))
+	default:
+		return nil, NewAPIError("Permissions.Create", 0, errors.New("unknown error"))
 	}
-	permission, err := resp.Result()
-	if err != nil {
-		return nil, err
-	}
-	return &permission.Data, nil
 }
 
-func (op *permissionOp) Read(ctx context.Context, siteId string, permissionId int64) (*v1.Permission, error) {
-	apiClient, err := op.client.apiClient()
+func (op *permissionOp) Read(ctx context.Context, permissionId string) (*v2.PermissionData, error) {
+	res, err := op.client.client.GetPermission(ctx, v2.GetPermissionParams{ID: permissionId})
 	if err != nil {
-		return nil, err
+		return nil, NewAPIError("Permissions.Read", 0, err)
 	}
-	resp, err := apiClient.GetPermissionWithResponse(ctx, siteId, v1.PermissionID(permissionId))
-	if err != nil {
-		return nil, err
+
+	switch r := res.(type) {
+	case *v2.Permission:
+		return &r.Data.Value, nil
+	case *v2.Error401:
+		return nil, NewAPIError("Permissions.Read", int(r.Error.Value.Code.Value), errors.New(string(r.Error.Value.Message.Value)))
+	case *v2.Error404:
+		return nil, NewAPIError("Permissions.Read", int(r.Error.Value.Code.Value), errors.New(string(r.Error.Value.Message.Value)))
+	case *v2.ErrorDefaultStatusCode:
+		return nil, NewAPIError("Permissions.Read", r.StatusCode, errors.New(string(r.Response.Error.Value.Message.Value)))
+	default:
+		return nil, NewAPIError("Permissions.Read", 0, errors.New("unknown error"))
 	}
-	permission, err := resp.Result()
-	if err != nil {
-		return nil, err
-	}
-	return &permission.Data, nil
 }
 
-func (op *permissionOp) Update(ctx context.Context, siteId string, permissionId int64, params *v1.UpdatePermissionParams) (*v1.Permission, error) {
-	apiClient, err := op.client.apiClient()
+func (op *permissionOp) Update(ctx context.Context, permissionId, name string, controls v2.BucketControls) (*v2.PermissionData, error) {
+	res, err := op.client.client.UpdatePermission(ctx, &v2.PermissionBucketControlsBody{
+		DisplayName:    v2.NewOptDisplayName(v2.DisplayName(name)),
+		BucketControls: controls,
+	}, v2.UpdatePermissionParams{ID: permissionId})
 	if err != nil {
-		return nil, err
+		return nil, NewAPIError("Permissions.Update", 0, err)
 	}
-	resp, err := apiClient.UpdatePermissionWithResponse(ctx, siteId,
-		v1.PermissionID(permissionId), v1.UpdatePermissionJSONRequestBody(*params))
-	if err != nil {
-		return nil, err
+
+	switch r := res.(type) {
+	case *v2.Permission:
+		return &r.Data.Value, nil
+	case *v2.Error401:
+		return nil, NewAPIError("Permissions.Update", int(r.Error.Value.Code.Value), errors.New(string(r.Error.Value.Message.Value)))
+	case *v2.Error404:
+		return nil, NewAPIError("Permissions.Update", int(r.Error.Value.Code.Value), errors.New(string(r.Error.Value.Message.Value)))
+	case *v2.ErrorDefaultStatusCode:
+		return nil, NewAPIError("Permissions.Update", r.StatusCode, errors.New(string(r.Response.Error.Value.Message.Value)))
+	default:
+		return nil, NewAPIError("Permissions.Update", 0, errors.New("unknown error"))
 	}
-	permission, err := resp.Result()
-	if err != nil {
-		return nil, err
-	}
-	return &permission.Data, nil
 }
 
-func (op *permissionOp) Delete(ctx context.Context, siteId string, permissionId int64) error {
-	apiClient, err := op.client.apiClient()
+func (op *permissionOp) Delete(ctx context.Context, permissionId string) error {
+	res, err := op.client.client.DeletePermission(ctx, v2.DeletePermissionParams{ID: permissionId})
 	if err != nil {
-		return err
+		return NewAPIError("Permissions.Delete", 0, err)
 	}
-	resp, err := apiClient.DeletePermissionWithResponse(ctx, siteId, v1.PermissionID(permissionId))
-	if err != nil {
-		return err
+
+	switch r := res.(type) {
+	case *v2.DeletePermissionNoContent:
+		return nil
+	case *v2.Error401:
+		return NewAPIError("Permissions.Delete", int(r.Error.Value.Code.Value), errors.New(string(r.Error.Value.Message.Value)))
+	case *v2.ErrorDefaultStatusCode:
+		return NewAPIError("Permissions.Delete", r.StatusCode, errors.New(string(r.Response.Error.Value.Message.Value)))
+	default:
+		return NewAPIError("Permissions.Delete", 0, errors.New("unknown error"))
 	}
-	return resp.Result()
 }
 
-func (op *permissionOp) ListAccessKeys(ctx context.Context, siteId string, permissionId int64) ([]*v1.PermissionKey, error) {
-	apiClient, err := op.client.apiClient()
+func (op *permissionOp) ListAccessKeys(ctx context.Context, permissionId string) ([]v2.PermissionKeysDataItem, error) {
+	res, err := op.client.client.GetPermissionKeys(ctx, v2.GetPermissionKeysParams{ID: permissionId})
 	if err != nil {
-		return nil, err
+		return nil, NewAPIError("Permissions.ListAccessKeys", 0, err)
 	}
-	resp, err := apiClient.GetPermissionKeysWithResponse(ctx, siteId, v1.PermissionID(permissionId))
-	if err != nil {
-		return nil, err
+
+	switch r := res.(type) {
+	case *v2.PermissionKeys:
+		return r.Data, nil
+	case *v2.Error401:
+		return nil, NewAPIError("Permissions.ListAccessKeys", int(r.Error.Value.Code.Value), errors.New(string(r.Error.Value.Message.Value)))
+	case *v2.ErrorDefaultStatusCode:
+		return nil, NewAPIError("Permissions.ListAccessKeys", r.StatusCode, errors.New(string(r.Response.Error.Value.Message.Value)))
+	default:
+		return nil, NewAPIError("Permissions.ListAccessKeys", 0, errors.New("unknown error"))
 	}
-	permissions, err := resp.Result()
-	if err != nil {
-		return nil, err
-	}
-	var results []*v1.PermissionKey
-	for i := range permissions.Data {
-		results = append(results, &permissions.Data[i])
-	}
-	return results, nil
 }
 
-func (op *permissionOp) CreateAccessKey(ctx context.Context, siteId string, permissionId int64) (*v1.PermissionKey, error) {
-	apiClient, err := op.client.apiClient()
+func (op *permissionOp) CreateAccessKey(ctx context.Context, permissionId string) (*v2.PermissionKeyData, error) {
+	res, err := op.client.client.CreatePermissionKey(ctx, v2.CreatePermissionKeyParams{ID: permissionId})
 	if err != nil {
-		return nil, err
+		return nil, NewAPIError("Permissions.CreateAccessKey", 0, err)
 	}
-	resp, err := apiClient.CreatePermissionKeyWithResponse(ctx, siteId, v1.PermissionID(permissionId))
-	if err != nil {
-		return nil, err
+
+	switch r := res.(type) {
+	case *v2.PermissionKey:
+		return &r.Data.Value, nil
+	case *v2.Error401:
+		return nil, NewAPIError("Permissions.CreateAccessKey", int(r.Error.Value.Code.Value), errors.New(string(r.Error.Value.Message.Value)))
+	case *v2.ErrorDefaultStatusCode:
+		return nil, NewAPIError("Permissions.CreateAccessKey", r.StatusCode, errors.New(string(r.Response.Error.Value.Message.Value)))
+	default:
+		return nil, NewAPIError("Permissions.CreateAccessKey", 0, errors.New("unknown error"))
 	}
-	key, err := resp.Result()
-	if err != nil {
-		return nil, err
-	}
-	return &key.Data, nil
 }
 
-func (op *permissionOp) ReadAccessKey(ctx context.Context, siteId string, permissionId int64, accessKeyId string) (*v1.PermissionKey, error) {
-	apiClient, err := op.client.apiClient()
+func (op *permissionOp) ReadAccessKey(ctx context.Context, permissionId, accessKeyId string) (*v2.PermissionKeyData, error) {
+	res, err := op.client.client.GetPermissionKey(ctx, v2.GetPermissionKeyParams{ID: permissionId, KeyID: accessKeyId})
 	if err != nil {
-		return nil, err
+		return nil, NewAPIError("Permissions.ReadAccessKey", 0, err)
 	}
-	resp, err := apiClient.GetPermissionKeyWithResponse(ctx, siteId,
-		v1.PermissionID(permissionId), v1.AccessKeyID(accessKeyId))
-	if err != nil {
-		return nil, err
+
+	switch r := res.(type) {
+	case *v2.PermissionKey:
+		return &r.Data.Value, nil
+	case *v2.Error401:
+		return nil, NewAPIError("Permissions.ReadAccessKey", int(r.Error.Value.Code.Value), errors.New(string(r.Error.Value.Message.Value)))
+	case *v2.ErrorDefaultStatusCode:
+		return nil, NewAPIError("Permissions.ReadAccessKey", r.StatusCode, errors.New(string(r.Response.Error.Value.Message.Value)))
+	default:
+		return nil, NewAPIError("Permissions.ReadAccessKey", 0, errors.New("unknown error"))
 	}
-	key, err := resp.Result()
-	if err != nil {
-		return nil, err
-	}
-	return &key.Data, nil
 }
 
-func (op *permissionOp) DeleteAccessKey(ctx context.Context, siteId string, permissionId int64, accessKeyId string) error {
-	apiClient, err := op.client.apiClient()
+func (op *permissionOp) DeleteAccessKey(ctx context.Context, permissionId, accessKeyId string) error {
+	res, err := op.client.client.DeletePermissionKey(ctx, v2.DeletePermissionKeyParams{ID: permissionId, KeyID: accessKeyId})
 	if err != nil {
-		return err
+		return NewAPIError("Permissions.DeleteAccessKey", 0, err)
 	}
-	resp, err := apiClient.DeletePermissionKeyWithResponse(ctx, siteId,
-		v1.PermissionID(permissionId), v1.AccessKeyID(accessKeyId))
-	if err != nil {
-		return err
+
+	switch r := res.(type) {
+	case *v2.DeletePermissionKeyNoContent:
+		return nil
+	case *v2.Error401:
+		return NewAPIError("Permissions.DeleteAccessKey", int(r.Error.Value.Code.Value), errors.New(string(r.Error.Value.Message.Value)))
+	case *v2.ErrorDefaultStatusCode:
+		return NewAPIError("Permissions.DeleteAccessKey", r.StatusCode, errors.New(string(r.Response.Error.Value.Message.Value)))
+	default:
+		return NewAPIError("Permissions.DeleteAccessKey", 0, errors.New("unknown error"))
 	}
-	return resp.Result()
 }

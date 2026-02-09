@@ -1,77 +1,85 @@
-// Copyright 2022-2025 The sacloud/object-storage-api-go authors
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// Copyright 2022-2026 The object-storage-api-go Authors
+// SPDX-License-Identifier: Apache-2.0
 
 package objectstorage
 
 import (
 	"context"
+	"errors"
 
-	v1 "github.com/sacloud/object-storage-api-go/apis/v1"
+	v2 "github.com/sacloud/object-storage-api-go/apis/v2"
 )
 
-// SiteAPI サイト(クラスター)関連API
 type SiteAPI interface {
-	// List サイト一覧
-	List(ctx context.Context) ([]*v1.Cluster, error)
-	// Read サイト詳細
-	Read(ctx context.Context, siteId string) (*v1.Cluster, error)
+	List(ctx context.Context) ([]v2.ModelCluster, error)
+	Read(ctx context.Context, siteId string) (*v2.ModelCluster, error)
+
+	ListPlans(ctx context.Context) ([]v2.PlanItem, error)
 }
 
 var _ SiteAPI = (*siteOp)(nil)
 
 type siteOp struct {
-	client *Client
+	fedClient  *FedClient
+	siteClient *SiteClient // for ListPlans
 }
 
-// NewSiteOp .
-func NewSiteOp(client *Client) SiteAPI {
-	return &siteOp{client: client}
+func NewSiteOp(fedClient *FedClient) SiteAPI {
+	return NewSiteWithPlansOp(fedClient, nil)
 }
 
-func (op *siteOp) List(ctx context.Context) ([]*v1.Cluster, error) {
-	apiClient, err := op.client.apiClient()
-	if err != nil {
-		return nil, err
-	}
-	resp, err := apiClient.GetClustersWithResponse(ctx)
-	if err != nil {
-		return nil, err
-	}
-	clusters, err := resp.Result()
-	if err != nil {
-		return nil, err
-	}
-
-	var results []*v1.Cluster
-	for i := range clusters.Data {
-		results = append(results, &clusters.Data[i])
-	}
-	return results, nil
+func NewSiteWithPlansOp(fedClient *FedClient, siteClient *SiteClient) SiteAPI {
+	return &siteOp{fedClient: fedClient, siteClient: siteClient}
 }
 
-func (op *siteOp) Read(ctx context.Context, id string) (*v1.Cluster, error) {
-	apiClient, err := op.client.apiClient()
+func (op *siteOp) List(ctx context.Context) ([]v2.ModelCluster, error) {
+	res, err := op.fedClient.client.GetClusters(ctx)
 	if err != nil {
-		return nil, err
+		return nil, NewAPIError("Site.List", 0, err)
 	}
-	resp, err := apiClient.GetClusterWithResponse(ctx, id)
+
+	switch r := res.(type) {
+	case *v2.HandlerListClustersRes:
+		return r.Data, nil
+	case *v2.Error401:
+		return nil, NewAPIError("Site.List", int(r.Error.Value.Code.Value), errors.New(string(r.Error.Value.Message.Value)))
+	default:
+		return nil, NewAPIError("Site.List", 0, errors.New("unknown error"))
+	}
+}
+
+func (op *siteOp) Read(ctx context.Context, id string) (*v2.ModelCluster, error) {
+	res, err := op.fedClient.client.GetCluster(ctx, v2.GetClusterParams{ID: id})
 	if err != nil {
-		return nil, err
+		return nil, NewAPIError("Site.Read", 0, err)
 	}
-	cluster, err := resp.Result()
+
+	switch r := res.(type) {
+	case *v2.HandlerGetClusterRes:
+		return &r.Data.Value, nil
+	case *v2.Error401:
+		return nil, NewAPIError("Site.Read", int(r.Error.Value.Code.Value), errors.New(string(r.Error.Value.Message.Value)))
+	case *v2.Error404:
+		return nil, NewAPIError("Site.Read", int(r.Error.Value.Code.Value), errors.New(string(r.Error.Value.Message.Value)))
+	default:
+		return nil, NewAPIError("Site.Read", 0, errors.New("unknown error"))
+	}
+}
+
+func (op *siteOp) ListPlans(ctx context.Context) ([]v2.PlanItem, error) {
+	res, err := op.siteClient.client.GetPlans(ctx)
 	if err != nil {
-		return nil, err
+		return nil, NewAPIError("Site.ListPlans", 0, err)
 	}
-	return cluster.Data, nil
+
+	switch r := res.(type) {
+	case *v2.GetPlansOK:
+		return r.Data, nil
+	case *v2.Error401:
+		return nil, NewAPIError("Site.ListPlans", int(r.Error.Value.Code.Value), errors.New(string(r.Error.Value.Message.Value)))
+	case *v2.ErrorDefaultStatusCode:
+		return nil, NewAPIError("Site.ListPlans", r.StatusCode, errors.New(string(r.Response.Error.Value.Message.Value)))
+	default:
+		return nil, NewAPIError("Site.ListPlans", 0, errors.New("unknown error"))
+	}
 }
