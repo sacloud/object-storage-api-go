@@ -31,10 +31,9 @@
 
 ## 実装
 
-- 基本的には[sacloud/phy-go](https://github.com/sacloud/phy-go)の実装を踏襲する
-  - コード生成には[oapi-codegen](https://github.com/deepmap/oapi-codegen)を用いる
-  - テスト用モックサーバには[gin](https://github.com/gin-gonic/gin)を用いる
+- コード生成には[ogen](https://github.com/ogen-go/ogen)を用いる
 
 ## 改訂履歴
 
 - 2022/2/26: 初版作成
+- 2026/2/10: ogenベースにしたので実装の項目を更新
