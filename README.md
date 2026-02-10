@@ -26,6 +26,7 @@ import (
 )
 
 func main() {
+	// デフォルトでusacloud互換プロファイル or 環境変数(SAKURA_ACCESS_TOKEN{_SECRET}が利用される
     var theClient saclient.Client
 	ctx := context.Background()
 	// サイトに依存しない処理にはFedClientを利用
