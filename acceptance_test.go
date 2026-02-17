@@ -53,6 +53,7 @@ func s3ClientFromEnv(t *testing.T) *minio.Client {
 
 // TestAccSiteAndStatusAPI サイト/ステータス関連APIの疎通確認
 func TestAccSiteAndStatusAPI(t *testing.T) {
+	skipIfNoTestAcc(t)
 	skipIfNoAPIKey(t)
 
 	ctx := context.Background()
@@ -85,6 +86,7 @@ func TestAccSiteAndStatusAPI(t *testing.T) {
 //
 // Note: バケット一覧の参照のためにサイトアカウントのアクセスキーが必要
 func TestAccBucketHandling(t *testing.T) {
+	skipIfNoTestAcc(t)
 	skipIfNoAPIKey(t)
 	skipIfNoEnv(t, "SAKURA_OJS_ACCESS_TOKEN", "SAKURA_OJS_ACCESS_TOKEN_SECRET")
 
@@ -123,6 +125,7 @@ func TestAccBucketHandling(t *testing.T) {
 
 // TestAccAccessToBucketWithPermissionKey パーミッションキーによるオブジェクトへのアクセス
 func TestAccAccessToBucketObjectWithPermissionKey(t *testing.T) {
+	skipIfNoTestAcc(t)
 	skipIfNoAPIKey(t)
 
 	ctx := context.Background()
@@ -225,4 +228,10 @@ func skipIfNoEnv(t *testing.T, envs ...string) {
 
 func skipIfNoAPIKey(t *testing.T) {
 	skipIfNoEnv(t, "SAKURA_ACCESS_TOKEN", "SAKURA_ACCESS_TOKEN_SECRET")
+}
+
+func skipIfNoTestAcc(t *testing.T) {
+	if os.Getenv("TESTACC") != "1" {
+		t.SkipNow()
+	}
 }

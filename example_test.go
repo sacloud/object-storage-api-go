@@ -1,3 +1,5 @@
+//go:build example
+
 // Copyright 2022-2026 The object-storage-api-go Authors
 // SPDX-License-Identifier: Apache-2.0
 
