@@ -1,5 +1,8 @@
 # Changelog
 
+## [v0.1.1](https://github.com/sacloud/object-storage-api-go/compare/v0.1.0...v0.1.1) - 2026-02-17
+- Prevent accidental acceptance/example test runs by @yamamoto-febc in https://github.com/sacloud/object-storage-api-go/pull/213
+
 ## [v0.1.0](https://github.com/sacloud/object-storage-api-go/compare/v0.0.12...v0.1.0) - 2026-02-10
 - go: bump github.com/minio/minio-go/v7 from 7.0.95 to 7.0.97 by @dependabot[bot] in https://github.com/sacloud/object-storage-api-go/pull/194
 - go: bump github.com/sacloud/api-client-go from 0.3.3 to 0.3.4 by @dependabot[bot] in https://github.com/sacloud/object-storage-api-go/pull/202
