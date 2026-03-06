@@ -1,5 +1,11 @@
 # Changelog
 
+## [v0.1.1](https://github.com/sacloud/object-storage-api-go/compare/v0.1.0...v0.1.1) - 2026-03-06
+- Prevent accidental acceptance/example test runs by @yamamoto-febc in https://github.com/sacloud/object-storage-api-go/pull/213
+- replication: disable replicatoin response validation for temporal fix by @repeatedly in https://github.com/sacloud/object-storage-api-go/pull/220
+- go: bump github.com/sacloud/saclient-go from 0.3.0 to 0.3.1 by @dependabot[bot] in https://github.com/sacloud/object-storage-api-go/pull/212
+- ci: bump actions/setup-go from 5.5.0 to 6.3.0 by @dependabot[bot] in https://github.com/sacloud/object-storage-api-go/pull/219
+
 ## [v0.1.0](https://github.com/sacloud/object-storage-api-go/compare/v0.0.12...v0.1.0) - 2026-02-10
 - go: bump github.com/minio/minio-go/v7 from 7.0.95 to 7.0.97 by @dependabot[bot] in https://github.com/sacloud/object-storage-api-go/pull/194
 - go: bump github.com/sacloud/api-client-go from 0.3.3 to 0.3.4 by @dependabot[bot] in https://github.com/sacloud/object-storage-api-go/pull/202
