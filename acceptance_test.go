@@ -24,7 +24,7 @@ import (
 var siteId = envvar.StringFromEnv("SAKURA_OJS_SITE", "isk01")
 var theClient saclient.Client
 var accTestFedClient = initFedClient()
-var accTestSiteClient = initSiteClient()
+var accTestSiteClient = initSiteClient(siteId)
 
 func s3Client(t *testing.T, token, secret string) *minio.Client {
 	t.Helper()
@@ -91,7 +91,7 @@ func TestAccBucketHandling(t *testing.T) {
 	skipIfNoEnv(t, "SAKURA_OJS_ACCESS_TOKEN", "SAKURA_OJS_ACCESS_TOKEN_SECRET")
 
 	ctx := context.Background()
-	bucketName := testutil.Random(28, testutil.CharSetAlpha)
+	bucketName := "api-go-acc-" + testutil.Random(28, testutil.CharSetAlpha)
 
 	// Step1: バケット作成
 	bucketOp := objectstorage.NewBucketOp(accTestFedClient, accTestSiteClient)
@@ -129,7 +129,7 @@ func TestAccAccessToBucketObjectWithPermissionKey(t *testing.T) {
 	skipIfNoAPIKey(t)
 
 	ctx := context.Background()
-	bucketName := testutil.Random(28, testutil.CharSetAlpha)
+	bucketName := "api-go-acc-" + testutil.Random(28, testutil.CharSetAlpha)
 
 	// Step1: バケット作成
 	bucketOp := objectstorage.NewBucketOp(accTestFedClient, accTestSiteClient)
@@ -194,6 +194,74 @@ func TestAccAccessToBucketObjectWithPermissionKey(t *testing.T) {
 	require.NoError(t, bucketOp.Delete(ctx, bucketName))
 }
 
+// 暗号化やレプリケーションのテスト
+func TestAccBucketExtraOperation(t *testing.T) {
+	skipIfNoTestAcc(t)
+	skipIfNoAPIKey(t)
+
+	ctx := context.Background()
+	isk := "isk01"
+	tky := "tky01"
+	sc1 := initSiteClient(isk)
+	sc2 := initSiteClient(tky)
+	bucketName1 := "api-go-acc-" + testutil.Random(28, testutil.CharSetAlpha)
+	bucketName2 := "api-go-acc-" + testutil.Random(28, testutil.CharSetAlpha)
+
+	b1Op := objectstorage.NewBucketOp(accTestFedClient, sc1)
+	{
+		created, err := b1Op.Create(ctx, &objectstorage.BucketCreateParams{SiteId: isk, Bucket: bucketName1})
+		require.NoError(t, err)
+		require.NotEmpty(t, created)
+	}
+	t.Cleanup(func() {
+		if err := b1Op.Delete(ctx, bucketName1); err != nil {
+			t.Logf("failed to delete bucket %q: %s", bucketName1, err)
+		}
+	})
+
+	b2Op := objectstorage.NewBucketOp(accTestFedClient, sc2)
+	{
+		created, err := b2Op.Create(ctx, &objectstorage.BucketCreateParams{SiteId: tky, Bucket: bucketName2})
+		require.NoError(t, err)
+		require.NotEmpty(t, created)
+	}
+	t.Cleanup(func() {
+		if err := b2Op.Delete(ctx, bucketName2); err != nil {
+			t.Logf("failed to delete bucket %q: %s", bucketName2, err)
+		}
+	})
+
+	// 暗号化
+	{
+		beOp := objectstorage.NewBucketExtraOp(sc2, accTestFedClient, bucketName2)
+		keyId := os.Getenv("SAKURA_KMS_KEY_ID")
+		err := beOp.EnableEncryption(ctx, keyId)
+		require.NoError(t, err)
+
+		enc, err := beOp.ReadEncryption(ctx)
+		require.NoError(t, err)
+		require.Equal(t, keyId, string(enc.KmsKeyID.Value))
+
+		err = beOp.DisableEncryption(ctx)
+		require.NoError(t, err)
+	}
+
+	// レプリケーション
+	{
+		beOp := objectstorage.NewBucketExtraOp(sc1, accTestFedClient, bucketName1)
+		_, err := beOp.EnableReplication(ctx, bucketName2)
+		require.NoError(t, err)
+
+		rep, err := beOp.ReadReplication(ctx)
+		require.NoError(t, err)
+		require.Equal(t, tky, rep.DestBucket.ClusterID.Value)
+		require.Equal(t, bucketName2, rep.DestBucket.Name.Value)
+
+		err = beOp.DisableReplication(ctx)
+		require.NoError(t, err)
+	}
+}
+
 func initFedClient() *objectstorage.FedClient {
 	client, err := objectstorage.NewFedClientWithAPIRootURL(&theClient, envvar.StringFromEnv("SAKURA_OJS_ROOT_URL", objectstorage.DefaultAPIRootURL))
 	if err != nil {
@@ -202,8 +270,8 @@ func initFedClient() *objectstorage.FedClient {
 	return client
 }
 
-func initSiteClient() *objectstorage.SiteClient {
-	client, err := objectstorage.NewSiteClientWithAPIRootURL(&theClient, envvar.StringFromEnv("SAKURA_OJS_ROOT_URL", objectstorage.DefaultAPIRootURL), siteId)
+func initSiteClient(sid string) *objectstorage.SiteClient {
+	client, err := objectstorage.NewSiteClientWithAPIRootURL(&theClient, envvar.StringFromEnv("SAKURA_OJS_ROOT_URL", objectstorage.DefaultAPIRootURL), sid)
 	if err != nil {
 		panic(err)
 	}
